@@ -10,3 +10,10 @@ export interface Recipe {
     notes: unknown[];
     recipeSections: unknown[];
 }
+
+export interface IngredientVariantDTO {
+    id: number;
+    name: string;
+    typeId: number;
+    ingredientCategory: string;
+}

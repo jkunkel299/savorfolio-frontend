@@ -3,25 +3,32 @@ import RecipeCard from "../components/RecipeCard";
 import recipeService from "../api/recipeApi";
 import type { Recipe } from "../types";
 
-function RecipeList() {
+interface RecipeListProps {
+  ingredientIds: number[]; // | undefined
+}
+
+function RecipeList({ ingredientIds = [] }: RecipeListProps) {
     const [recipeData, setRecipeData] = useState<Recipe[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null | unknown >(null);
 
     useEffect(() => {
-        const fetchAllRecipes = async () => {
+        const fetchRecipes = async () => {
+            setLoading(true);
             try {
-                const response = await recipeService.getAllRecipes();
-                setRecipeData(response.data);
+                const response = 
+                    ingredientIds.length > 0
+                        ? await recipeService.getRecipeSearch(ingredientIds)
+                        : await recipeService.getRecipeSearch();
+                    setRecipeData(response.data);
             } catch (err: unknown) {
                 setError(err || "Error fetching Recipes"); // fix this later
             } finally {
                 setLoading(false);
             }
         };
-        fetchAllRecipes();
-    }, []);
-
+        fetchRecipes();
+    }, [ingredientIds]); 
     if (loading) return <p>Loading recipes...</p>;
     if (error) return <p>Error</p>; // fix this later
 

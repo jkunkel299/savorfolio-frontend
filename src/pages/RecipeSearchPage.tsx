@@ -1,8 +1,15 @@
 import { Box } from "@mui/material";
 import SidebarFilters from "../components/SidebarFilters";
 import RecipeList from "../components/RecipeList";
+import { useState } from "react";
+import type { IngredientVariantDTO } from "../types";
 
 export default function RecipeSearchPage() {
+    const [selectedIngredients, setSelectedIngredients] = useState<IngredientVariantDTO[]>([]);
+    let selectedIngredientIds: number[] = [];
+    
+    selectedIngredientIds = selectedIngredients.map(ing => ing.id)
+    
     return (
         <>
             {/* Sidebar */}
@@ -15,8 +22,9 @@ export default function RecipeSearchPage() {
                     borderColor: "divider",
                 }}
             >
-                <SidebarFilters />
+                <SidebarFilters onSelectedIngredientsChange={setSelectedIngredients}/>
             </Box>
+            
             {/* Main content */}
             <Box
                 sx={{
@@ -27,7 +35,7 @@ export default function RecipeSearchPage() {
                     p: 2,
                 }}
             >
-                <RecipeList />
+                <RecipeList ingredientIds={selectedIngredientIds}/>
             </Box>
         </>
     );
