@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import IngredientIncludeFilter from "./IncludeIngredientFilter";
 import IngredientExcludeFilter from "./ExcludeIngredientFilter";
-import type { IngredientVariantDTO } from "../types";
+import type { IngredientVariantDTO } from "../../types";
 
 interface SidebarFiltersProps {
   onIncludeIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;

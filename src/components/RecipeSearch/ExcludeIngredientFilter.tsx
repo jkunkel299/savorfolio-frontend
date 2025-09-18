@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import type { IngredientVariantDTO } from '../types';
-import ingredientService from '../api/ingredientApi';
+import type { IngredientVariantDTO } from '../../types';
+import ingredientService from '../../api/ingredientApi';
 
 interface IngredientExcludeFilterProps {
     onIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import SidebarFilters from "../components/SidebarFilters";
-import RecipeList from "../components/RecipeList";
+import SidebarFilters from "../components/RecipeSearch/SidebarFilters";
+import RecipeList from "../components/RecipeSearch/RecipeList";
 import { useState } from "react";
 import type { IngredientVariantDTO } from "../types";
 

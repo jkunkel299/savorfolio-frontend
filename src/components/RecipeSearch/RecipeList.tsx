@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import RecipeCard from "../components/RecipeCard";
-import recipeService from "../api/recipeApi";
-import type { Recipe } from "../types";
+import RecipeCard from "./RecipeCard";
+import recipeService from "../../api/recipeApi";
+import type { Recipe } from "../../types";
 
 interface RecipeListProps {
   includeIngredientIds: number[]; // | undefined
