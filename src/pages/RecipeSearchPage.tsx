@@ -5,10 +5,14 @@ import { useState } from "react";
 import type { IngredientVariantDTO } from "../types";
 
 export default function RecipeSearchPage() {
-    const [selectedIngredients, setSelectedIngredients] = useState<IngredientVariantDTO[]>([]);
-    let selectedIngredientIds: number[] = [];
+    const [includeIngredients, setIncludeIngredients] = useState<IngredientVariantDTO[]>([]);
+    const [excludeIngredients, setExcludeIngredients] = useState<IngredientVariantDTO[]>([]);
     
-    selectedIngredientIds = selectedIngredients.map(ing => ing.id)
+    let includeIngredientsIds: number[] = [];
+    let excludeIngredientsIds: number[] = [];
+    
+    includeIngredientsIds = includeIngredients.map(ing => ing.id);
+    excludeIngredientsIds = excludeIngredients.map(ing => ing.id);
     
     return (
         <>
@@ -22,7 +26,10 @@ export default function RecipeSearchPage() {
                     borderColor: "divider",
                 }}
             >
-                <SidebarFilters onSelectedIngredientsChange={setSelectedIngredients}/>
+                <SidebarFilters 
+                    onIncludeIngredientsChange={setIncludeIngredients}
+                    onExcludeIngredientsChange={setExcludeIngredients}    
+                />
             </Box>
             
             {/* Main content */}
@@ -35,7 +42,10 @@ export default function RecipeSearchPage() {
                     p: 2,
                 }}
             >
-                <RecipeList ingredientIds={selectedIngredientIds}/>
+                <RecipeList 
+                    includeIngredientIds={includeIngredientsIds}
+                    excludeIngredientIds={excludeIngredientsIds}
+                />
             </Box>
         </>
     );

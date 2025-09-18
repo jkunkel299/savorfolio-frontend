@@ -4,10 +4,14 @@ import recipeService from "../api/recipeApi";
 import type { Recipe } from "../types";
 
 interface RecipeListProps {
-  ingredientIds: number[]; // | undefined
+  includeIngredientIds: number[]; // | undefined
+  excludeIngredientIds: number[];
 }
 
-function RecipeList({ ingredientIds = [] }: RecipeListProps) {
+function RecipeList({ 
+    includeIngredientIds = [],
+    excludeIngredientIds = [], 
+}: RecipeListProps) {
     const [recipeData, setRecipeData] = useState<Recipe[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null | unknown >(null);
@@ -16,11 +20,11 @@ function RecipeList({ ingredientIds = [] }: RecipeListProps) {
         const fetchRecipes = async () => {
             setLoading(true);
             try {
-                const response = 
-                    ingredientIds.length > 0
-                        ? await recipeService.getRecipeSearch(ingredientIds)
-                        : await recipeService.getRecipeSearch();
-                    setRecipeData(response.data);
+                const response = await recipeService.getRecipeSearch(
+                    includeIngredientIds,
+                    excludeIngredientIds
+                );
+                setRecipeData(response.data);
             } catch (err: unknown) {
                 setError(err || "Error fetching Recipes"); // fix this later
             } finally {
@@ -28,7 +32,7 @@ function RecipeList({ ingredientIds = [] }: RecipeListProps) {
             }
         };
         fetchRecipes();
-    }, [ingredientIds]); 
+    }, [includeIngredientIds, excludeIngredientIds]); 
     if (loading) return <p>Loading recipes...</p>;
     if (error) return <p>Error</p>; // fix this later
 
