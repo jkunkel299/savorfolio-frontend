@@ -44,7 +44,9 @@ export default function IngredientExcludeFilter({ onIngredientsChange }: Ingredi
     return (
         <Autocomplete
             multiple
-            id="include-ingredients"
+            id="exclude-ingredients"
+            data-testid="exclude-ingredients"
+            slotProps={{ clearIndicator: { ...({ 'data-testid': 'exclude-clear' } as React.HTMLAttributes<HTMLButtonElement>), } }}
             open={open}
             onOpen={() => setOpen(true)}
             onClose={() => setOpen(false)}
@@ -60,7 +62,6 @@ export default function IngredientExcludeFilter({ onIngredientsChange }: Ingredi
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Search"
                     placeholder="Ingredients"
                 />
             )}
