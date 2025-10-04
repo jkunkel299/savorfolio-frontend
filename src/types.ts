@@ -4,11 +4,13 @@ export interface Recipe {
     servings: number | null;
     cookTime: string | null;
     prepTime: string | null;
+    bakeTemp: number | null;
+    tempUnit: string | null;
     // refine later
-    ingredientLists: unknown[];
-    instruction: string | null;
-    notes: unknown[];
-    recipeSections: unknown[];
+    // ingredientLists: unknown[];
+    // instruction: string | null;
+    // notes: unknown[];
+    // recipeSections: unknown[];
 }
 
 export interface IngredientVariantDTO {
@@ -16,4 +18,48 @@ export interface IngredientVariantDTO {
     name: string;
     typeId: number;
     ingredientCategory: string;
+}
+
+export interface UnitsDTO {
+    id: number;
+    name: string;
+    abbreviation?: string;
+}
+
+export interface NewRecipeDTO {
+    RecipeSummary: {
+        Name: string;
+        Servings: number | null;
+        CookTime: string | null;
+        PrepTime: string | null;
+        BakeTemp: number | null;
+        Temp_unit: string | null;
+    };
+    Ingredients: {
+        IngredientOrder: number;
+        IngredientId: number;
+        IngredientName: string;
+        Quantity: string;
+        UnitId: number;
+        UnitName: string;
+        Qualifier: string | null;
+    }[];
+    Instructions: {
+        StepNumber: number;
+        InstructionText: string;
+    }[];
+    RecipeTags:{
+        Meal?: string | null;
+        Recipe_type?: string | null;
+        Cuisine?: string | null;
+        Dietary?: string[];
+    }
+}
+
+export type IngredientEntry = {
+    variant: IngredientVariantDTO;
+    quantity: string;
+    unitId: number;
+    unitName: string;
+    qualifier: string | null;
 }

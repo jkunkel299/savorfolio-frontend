@@ -2,6 +2,10 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import HomeIcon from '@mui/icons-material/Home';
+// import Link from '@mui/material/Link';
 
 export default function Header() {
     return (
@@ -10,11 +14,12 @@ export default function Header() {
             sx={{ width: "100%", left: 0 }}    
         >
             <Toolbar disableGutters>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1, pl: 2 }}>
+                <IconButton color='inherit' component={Link} to="/"><HomeIcon /></IconButton>
+                <Typography variant="h6" component={"div"} sx={{ flexGrow: 1, pl: 2 }}>
                     Savorfolio
                 </Typography>
-                <Button color="inherit">Search</Button>
-                <Button color="inherit">Add Recipe</Button>
+                <Button color="inherit" component={Link} to="/search">Search</Button>
+                <Button color="inherit" component={Link} to="/add">Add Recipe</Button>
             </Toolbar>
         </AppBar>
     );
