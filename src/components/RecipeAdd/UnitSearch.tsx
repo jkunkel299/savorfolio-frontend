@@ -66,6 +66,7 @@ export default function UnitSearch({ onUnitChange }: UnitSearchProps) {
                     {...params}
                     placeholder="teaspoon / tsp"
                     label="Select Unit"
+                    required
                 />
             )}
 

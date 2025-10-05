@@ -63,3 +63,8 @@ export type IngredientEntry = {
     unitName: string;
     qualifier: string | null;
 }
+
+export type InstructionEntry = {
+    stepNumber: number;
+    instructionText: string;
+}

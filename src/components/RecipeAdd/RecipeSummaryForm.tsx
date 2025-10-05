@@ -9,6 +9,8 @@ import { styled } from '@mui/material/styles';
 
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
 import type { NewRecipeDTO } from '../../types';
+import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 
 const FormGrid = styled(Grid)(() => ({
@@ -16,14 +18,47 @@ const FormGrid = styled(Grid)(() => ({
   flexDirection: 'column',
 }));
 
-export default function RecipeForm() {
+export default function RecipeForm(/* { onValidityChange }: { onValidityChange: (valid: boolean) => void} */) {
     const { control } = useFormContext<NewRecipeDTO>();
+    const { register } = useFormContext<NewRecipeDTO>();
+
+    // watch Name
+    // const recipeName = useWatch({
+    //     control,
+    //     name: "RecipeSummary.Name", 
+    // })
 
     // watch BakeTemp
     const bakeTemp = useWatch({
         control,
         name: "RecipeSummary.BakeTemp",
     });
+
+    // watch Temp_unit
+    // let tempUnit = useWatch({
+    //     control,
+    //     name: "RecipeSummary.Temp_unit",
+    // });
+
+    // useEffect(() => {
+    //     if (recipeName !== null){
+    //         let valid = false;
+    //         if (bakeTemp == null && tempUnit !== null){
+    //             tempUnit = null;
+    //         // } else if (bakeTemp !== null && tempUnit == null) {
+    //         //     valid = false;
+    //         } else {
+    //             valid = true;
+    //         }
+    //         onValidityChange?.(valid);
+    //     }
+    // }, [recipeName, bakeTemp, tempUnit, onValidityChange]);
+
+    useEffect(() => {
+        register("RecipeSummary.Name",{
+            validate: (value) => value !== null || "The recipe must have a title",
+        });
+    }, [register]);
 
     return (
         <>
@@ -34,9 +69,10 @@ export default function RecipeForm() {
             <FormGrid size={{ xs: 12 }}>
                 <FormLabel htmlFor="recipe-title" required>Recipe Title</FormLabel>
                 <Controller 
-                    name="RecipeSummary.Name"
+                    {...register("RecipeSummary.Name", { required: "Recipe title is required" })}
+                    // name="RecipeSummary.Name"
                     control={control}
-                    rules={{ required: "Recipe title is required"}}
+                    // rules={{ required: "Recipe title is required" }}
                     render={({ field, fieldState }) => <>
                         <OutlinedInput
                             id="recipe-title"

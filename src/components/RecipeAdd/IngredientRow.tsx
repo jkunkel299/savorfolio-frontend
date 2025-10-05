@@ -16,18 +16,17 @@ interface IngredientRowProps {
 
 export default function IngredientRow ({ entry, index, onChange, onDelete }: IngredientRowProps) {
     return (
-        // <ListItem key={index} sx={{ display: "flex", gap: 2 }}>
-            <Box 
-                sx={{ display: "flex", 
-                    gap: 2, 
-                    alignItems: "center", 
-                    width: "100%",
-                    flexWrap: "wrap", 
-                }} 
-            > 
-            
+        <Box 
+            sx={{ display: "flex", 
+                gap: 2, 
+                alignItems: "center", 
+                width: "100%",
+                flexWrap: "wrap", 
+            }} 
+        >             
             {/* Quantity */}
             <OutlinedInput 
+                required
                 type="text"
                 placeholder="Quantity (e.g., 1/3, 1/2)"
                 value={entry.quantity}
@@ -57,6 +56,7 @@ export default function IngredientRow ({ entry, index, onChange, onDelete }: Ing
 
             {/* Qualifier */}
             <OutlinedInput 
+                required
                 type="text"
                 placeholder="Qualifier (e.g., chopped)"
                 value={entry.qualifier}
