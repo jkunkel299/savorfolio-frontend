@@ -1,81 +1,60 @@
-import { useState } from "react";
-import type { IngredientEntry, IngredientVariantDTO, NewRecipeDTO } from "../../types";
-import { Box, Button, Stack } from "@mui/material";
-import IngredientsInput from "./IngredientsInput";
+import type { IngredientEntry, NewRecipeDTO } from "../../types";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import IngredientRow from "./IngredientRow";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
-export default function IngredientsList({
-    onIngredientsChange,
-}: {
-    onIngredientsChange: (ingredients: NewRecipeDTO["Ingredients"]) => void;
-}) {
-    const [ingredients, setIngredients] = useState<IngredientEntry[]>([]);
-    const [showSearch, setShowSearch] = useState(true);
+export default function IngredientsList() {
+    const { control } = useFormContext<NewRecipeDTO>();
+    const { fields, append, remove, update } = useFieldArray({
+        control,
+        name: "Ingredients",
+        rules: {
+            validate: (value) => value.length > 0 || "You must add at least one ingredient",
+        },
+    });
 
-    const handleAddIngredients = (ingredient: IngredientVariantDTO) => {
-        const newList = [
-            ...ingredients, 
-            {
-                variant: ingredient,
-                quantity: "",
-                unitId: 0,
-                unitName: "",
-                qualifier: null,
-            },
-        ];
-        setIngredients(newList);
-        setShowSearch(false);
+    // const handleAddIngredients = () => {
+    //     append({
+    //         IngredientOrder: fields.length + 1,
+    //         IngredientId: ingredient.id,
+    //         IngredientName: ingredient.name,
+    //         Quantity: "",
+    //         UnitId: 0,
+    //         UnitName: "",
+    //         Qualifier: null,
+    //     });
+    // };
 
-        propagateToParent(newList);
-    };
-
-    const handleDeleteIngredient = (index: number) => {
-        const updated = ingredients.filter((_, i) => i !== index);
-        setIngredients(updated);
-        propagateToParent(updated); 
-    };
-
-    const propagateToParent = (list: IngredientEntry[]) => {
-        onIngredientsChange(
-            list.map((entry, idx) =>({
-                IngredientOrder: idx + 1,
-                IngredientId: entry.variant.id,
-                IngredientName: entry.variant.name,
-                Quantity: entry.quantity,
-                UnitId: entry.unitId,
-                UnitName: entry.unitName,
-                Qualifier: entry.qualifier,
-            }))
-        );
-    }
-
-    const handleRowChange = (index: number, updated: IngredientEntry) => {
-        const newList = [...ingredients];
-        newList[index] = updated;
-        setIngredients(newList);
-        propagateToParent(newList);
+    const handleRowChange = (index: number, updated: Partial<IngredientEntry>) => {
+        update(index, {...fields[index], ...updated});
     }
 
     return (
-        <Box>
+        <Box width="100%">
+            <Typography variant='h4' gutterBottom>Ingredients List</Typography>
             <Stack spacing={2}>
-                {ingredients.map((entry, idx) => (
+                {fields.map((entry, idx) => (
                     <IngredientRow
-                        key={idx}
-                        entry={entry}
+                        key={entry.id}
                         index={idx}
                         onChange={handleRowChange}
-                        onDelete={handleDeleteIngredient}
+                        onDelete={() => remove(idx)}
                     />
                 ))}
 
-                {showSearch ? (
-                    <IngredientsInput onSelect={handleAddIngredients} />
-                ) : (
-                    <Button variant="outlined" onClick={() => setShowSearch(true)}>
-                        Add Another Ingredient
-                    </Button>
-                )}
+                <Button variant="outlined" onClick={() =>
+                        append({
+                        IngredientOrder: fields.length + 1,
+                        IngredientId: 0,
+                        IngredientName: "",
+                        Quantity: "",
+                        UnitId: 0,
+                        UnitName: "",
+                        Qualifier: null,
+                        })
+                    }>
+                    Add an Ingredient
+                </Button>
             </Stack>
         </Box>
     )

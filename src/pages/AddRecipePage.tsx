@@ -5,10 +5,11 @@ import Button from "@mui/material/Button";
 import type { NewRecipeDTO } from "../types";
 import RecipeSummaryForm from "../components/RecipeAdd/RecipeSummaryForm";
 import TagsForm from "../components/RecipeAdd/TagsForm";
-import IngredientsForm from "../components/RecipeAdd/IngredientsForm";
+// import IngredientsForm from "../components/RecipeAdd/IngredientsForm";
 import recipeService from "../api/recipeApi";
 import { Paper, Typography } from "@mui/material";
 import InstructionsForm from "../components/RecipeAdd/InstructionsForm";
+import IngredientsList from "../components/RecipeAdd/IngredientsList";
 
 
 export function AddRecipePage() {
@@ -99,7 +100,7 @@ export function AddRecipePage() {
         case 1:
             return <TagsForm />;
         case 2:
-            return <IngredientsForm />;
+            return <IngredientsList />;
         case 3:
             return <InstructionsForm />;
         default:

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useFetchIngredients } from "../../utils/useFetchIngredients";
 import Autocomplete from "@mui/material/Autocomplete";
-import type { IngredientVariantDTO } from "../../types";
+// import type { IngredientVariantDTO } from "../../types";
 import TextField from "@mui/material/TextField";
 
-interface IngredientSearchProps {
-    onSelect: (ingredients: IngredientVariantDTO) => void;
-}
+// interface IngredientSearchProps {
+//     onSelect: (ingredients: IngredientVariantDTO) => void;
+// }
 
-export default function IngredientsInput({ onSelect }: IngredientSearchProps) {
+export default function IngredientsInput(/* { onSelect }: IngredientSearchProps */) {
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
@@ -25,12 +25,7 @@ export default function IngredientsInput({ onSelect }: IngredientSearchProps) {
             getOptionLabel={(option) => option.name}
             onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
             filterSelectedOptions
-
-            onChange={(_, value) => {
-                if (value) {
-                    onSelect(value);
-                }
-            }}
+            sx={{ minWidth:300}}
             renderInput={(params) => (
                 <TextField
                     {...params}
