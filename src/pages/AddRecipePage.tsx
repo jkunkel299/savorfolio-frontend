@@ -5,24 +5,26 @@ import Button from "@mui/material/Button";
 import type { NewRecipeDTO } from "../types";
 import RecipeSummaryForm from "../components/RecipeAdd/RecipeSummaryForm";
 import TagsForm from "../components/RecipeAdd/TagsForm";
-// import IngredientsForm from "../components/RecipeAdd/IngredientsForm";
 import recipeService from "../api/recipeApi";
 import { Paper, Typography } from "@mui/material";
-import InstructionsForm from "../components/RecipeAdd/InstructionsForm";
+import InstructionsList from "../components/RecipeAdd/InstructionsList";
 import IngredientsList from "../components/RecipeAdd/IngredientsList";
+import ReviewForm from "../components/RecipeAdd/ReviewForm";
+import { useNavigate } from "react-router-dom";
 
 
 export function AddRecipePage() {
     const [currentStep, setCurrentStep] = useState(0);
-    const [, setIsPageValid] = useState(false);
-    const steps = ["RecipeSummary", "RecipeTags", "Ingredients", "Instructions"]; // add notes, review page
-    
+    const steps = ["RecipeSummary", "RecipeTags", "Ingredients", "Instructions", "Review"]; // add notes page
+    const navigate = useNavigate();
+
     const methods = useForm<NewRecipeDTO>({
         mode: "onChange",
+        shouldUnregister: false,
         defaultValues: {
             RecipeSummary: {
                 Name: "",
-                Servings: 0,
+                Servings: null,
                 CookTime: null,
                 PrepTime: null,
                 BakeTemp: null,
@@ -32,7 +34,7 @@ export function AddRecipePage() {
             Instructions: [],
             RecipeTags: { 
                 Meal: null,
-                Recipe_type: null,
+                Recipe_type: "Main",
                 Cuisine: null,
                 Dietary: [] },
         }
@@ -41,10 +43,9 @@ export function AddRecipePage() {
     const { formState } = methods;
     
     const handleNext = async () => {
-        const isValid = handlePageValid();
-        // const isValid = await methods.trigger();
-        if (await isValid) {
-            setCurrentStep((prev) => prev = prev + 1);            
+        const isValid = await handlePageValid();
+        if (isValid) {
+            setCurrentStep((prev) => prev = prev + 1);       
         }
     };
 
@@ -52,9 +53,9 @@ export function AddRecipePage() {
         setCurrentStep((prev) => prev = prev-1);
     };
 
-    const handleSubmit = async (data: NewRecipeDTO) => {
-        const isValid = handlePageValid();
-        if (await isValid) {
+    const handleSubmitForm = async (data: NewRecipeDTO) => {
+        const isValid = await handlePageValid();
+        if (isValid && currentStep == steps.length-1) {
             const sendData = JSON.stringify(data);
             try {
                 const response = await recipeService.postRecipeManual(sendData);
@@ -63,8 +64,9 @@ export function AddRecipePage() {
             } catch (err) {
                 console.error(err)
             }
-        }
-        
+            console.log("submit")
+            navigate("/confirmed")
+        } 
     }
 
     const handlePageValid = async () => {
@@ -82,13 +84,12 @@ export function AddRecipePage() {
                 break;
             case 3:
                 fieldsToValidate = ["Instructions"];
-            break;
+                break;
+            default:
+                return true;
         }
 
-        const isValid = methods.trigger(fieldsToValidate);
-        if (await isValid) {
-            setIsPageValid(true)
-        }
+        const isValid = await methods.trigger(fieldsToValidate);
         return isValid;
     }
 
@@ -96,15 +97,17 @@ export function AddRecipePage() {
     const renderCurrentPage = () => {
         switch (currentStep) {
         case 0:
-            return <RecipeSummaryForm /* onValidityChange={(isValid) => handlePageValid(0, isValid)}  *//>;
+            return <RecipeSummaryForm />;
         case 1:
             return <TagsForm />;
         case 2:
             return <IngredientsList />;
         case 3:
-            return <InstructionsForm />;
+            return <InstructionsList />;
+        case 4:
+            return <ReviewForm />;
         default:
-            return 0;
+            return <Typography>Unknown Step</Typography>
         }
     };
 
@@ -122,7 +125,7 @@ export function AddRecipePage() {
             <Box display="flex" flexDirection="column" gap={3}>
                 <Typography variant="h4">Add Recipe</Typography>
                 <Paper elevation={3} sx={{ p: 3 }}>
-                    <Box component="form" onSubmit={methods.handleSubmit(handleSubmit)}>
+                    <Box /* onSubmit={methods.handleSubmit(handleSubmit)} */>
                         {renderCurrentPage()}
 
                         <Box display="flex" justifyContent="flex-end" sx={{ width: '100%', paddingTop: 2 }}>
@@ -132,7 +135,7 @@ export function AddRecipePage() {
                             {currentStep < steps.length - 1 ? (
                                 <Button id="next-button" type="button" disabled={!formState.isValid} onClick={handleNext} variant="contained" sx={{ marginLeft: 'auto' }}>Next</Button>
                             ) : (
-                                <Button id="submit-button" type="submit" disabled={!formState.isValid} variant="contained" sx={{ marginLeft: 'auto' }}>Submit Recipe</Button>
+                                <Button id="submit-button" type="submit" /* disabled={!formState.isValid} */ onClick={methods.handleSubmit(handleSubmitForm)} variant="contained" sx={{ marginLeft: 'auto' }}>Submit Recipe</Button>
                             )}
                         </Box>
                     </Box>

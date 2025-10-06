@@ -50,14 +50,14 @@ export interface NewRecipeDTO {
     }[];
     RecipeTags:{
         Meal?: string | null;
-        Recipe_type?: string | null;
+        Recipe_type: string;
         Cuisine?: string | null;
         Dietary?: string[];
     }
 }
 
 export type IngredientEntry = {
-    variant: IngredientVariantDTO;
+    name: string;
     quantity: string;
     unitId: number;
     unitName: string;

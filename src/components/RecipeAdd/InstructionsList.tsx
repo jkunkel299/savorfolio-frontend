@@ -1,73 +1,53 @@
-import { Box, Stack, Button } from "@mui/material";
-import { useState } from "react";
+import { Box, Stack, Button, Typography } from "@mui/material";
+import { useEffect } from "react";
 import type { InstructionEntry, NewRecipeDTO } from "../../types";
 import InstructionRow from "./InstructionRow";
+import { useFormContext, useFieldArray } from "react-hook-form";
 
-export default function InstructionsList({
-    onInstructionsChange,
-}: {
-    onInstructionsChange: (instructions: NewRecipeDTO["Instructions"]) => void;
-}) {
-    const [instructions, setInstructions] = useState<InstructionEntry[]>([]);
-    const [showNewLine, setShowNewLine] = useState(true);
+export default function InstructionsList() {
+    const { register, control } = useFormContext<NewRecipeDTO>();
+    const { fields, append, remove, update } = useFieldArray({
+        control,
+        name: "Instructions",
+        rules: {
+            validate: (value) => value.length > 0 || "You must add at least one instruction",
+        },
+    });
 
-    const handleAddInstructions = () => {
-        const newList = [
-            ...instructions, 
-            {
-                stepNumber: 0,
-                instructionText: ""
-            },
-        ];
-        setInstructions(newList);
-        setShowNewLine(false);
+    useEffect(() => {
+        register("Instructions", {
+            validate: (value) =>
+            value && value.length > 0 || "You must add at least one instruction",
+        });
+    }, [register]);
 
-        propagateToParent(newList);
-    };
-
-    const handleDeleteInstruction = (index: number) => {
-        const updated = instructions.filter((_, i) => i !== index);
-        setInstructions(updated);
-        propagateToParent(updated); 
-    };
-
-    const propagateToParent = (list: InstructionEntry[]) => {
-        onInstructionsChange(
-            list.map((entry, idx) =>({
-                StepNumber: idx + 1,
-                InstructionText: entry.instructionText,
-            }))
-        );
-    }
-
-    const handleRowChange = (index: number, updated: InstructionEntry) => {
-        const newList = [...instructions];
-        newList[index] = updated;
-        setInstructions(newList);
-        propagateToParent(newList);
+    const handleRowChange = (index: number, updated: Partial<InstructionEntry>) => {
+        update(index, {...fields[index], ...updated});
     }
 
     return (
-        <Box>
+        <Box >
+            
             <Stack spacing={2}>
-                {instructions.map((entry, idx) => (
+                <Typography variant='h4' gutterBottom>Instructions List</Typography>
+                {fields.map((entry, idx) => (
                     <InstructionRow
-                        key={idx}
-                        entry={entry}
+                        key={entry.id}
+                        // entry={entry}
                         index={idx}
                         onChange={handleRowChange}
-                        onDelete={handleDeleteInstruction}
+                        onDelete={() => remove(idx)}
                     />
                 ))}
 
-                {showNewLine ? (
-                    // fix this
-                    <Button variant="outlined" onClick={handleAddInstructions}>Add an Instruction</Button>
-                ) : (
-                    <Button variant="outlined" onClick={() => setShowNewLine(true)}>
-                        Add Another Instruction
-                    </Button>
-                )}
+                <Button variant="outlined" onClick={() =>
+                        append({
+                            StepNumber: fields.length + 1,
+                            InstructionText: ""
+                        })
+                    }>
+                    Add an Instruction
+                </Button>
             </Stack>
         </Box>
     )

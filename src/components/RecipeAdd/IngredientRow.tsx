@@ -1,6 +1,6 @@
 // import ListItem from "@mui/material/ListItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import type { IngredientEntry, NewRecipeDTO, UnitsDTO } from "../../types";
+import type { IngredientEntry, NewRecipeDTO/* , UnitsDTO */ } from "../../types";
 // import Typography from "@mui/material/Typography";
 import UnitSearch from "./UnitSearch";
 import Box from "@mui/material/Box";
@@ -10,14 +10,12 @@ import { useFormContext/* , type FieldArrayWithId */ } from "react-hook-form";
 import IngredientsInput from "./IngredientsInput";
 
 interface IngredientRowProps {
-    // entry: IngredientEntry;
-    // entry: FieldArrayWithId<NewRecipeDTO, "Ingredients", "id">;
     index: number;
     onChange: (index: number, updated: Partial<IngredientEntry>) => void;
-    onDelete: (/* index: number */) => void;
+    onDelete: () => void;
 }
 
-export default function IngredientRow ({ /* entry, */ index, onChange, onDelete }: IngredientRowProps) {
+export default function IngredientRow ({ index, onDelete }: IngredientRowProps) {
     const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
     
     return (
@@ -33,50 +31,42 @@ export default function IngredientRow ({ /* entry, */ index, onChange, onDelete 
             <OutlinedInput 
                 required
                 type="text"
-                placeholder="Quantity (e.g., 1/3, 1/2)"
+                placeholder="Quantity"
                 {...register(`Ingredients.${index}.Quantity` as const, 
                     {maxLength: 10, required: true}
                 )}
-                sx={{ width: "fit-content", /* flex: "0 0 auto" */ }} 
+                sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 120}} 
             />
 
             {/* Unit */}
-            <Box sx={{ width: "fit-content", flex: "0 0 180px", minWidth: 120 }}> 
-            <UnitSearch 
-                onUnitChange={(unit: UnitsDTO | null) => {
-                    onChange(index, {
-                        unitId: unit?.id ?? 0,
-                        unitName: unit?.name ?? "",
-                    })
-                }} 
-            />
+            <Box sx={{ width: "fit-content", flex: "0 0 180px"}}> 
+                <UnitSearch index={index} />
+            
             </Box>
             
             {/* Ingredient Search */}
-            <IngredientsInput />
+            <IngredientsInput index={index}/>
+
 
             {/* Qualifier */}
             <OutlinedInput 
-                required
                 type="text"
                 placeholder="Qualifier (e.g., chopped)"
                 {...register(`Ingredients.${index}.Qualifier`, {
                     validate: (value) => {
-                    // allow empty string or null
-                    if (!value) return true; 
-                    // but validate if it's filled
-                    return value.length <= 20 || "Qualifier must be under 20 chars";
+                        // allow empty string or null
+                        if (!value) return true; 
+                        // validate if it's filled
+                        return value.length <= 20 || "Qualifier must be under 20 chars";
                     },
                 })}
                 sx={{ width: "fit-content", flex: "0 0 auto" }}
-                // inputProps={{
-                //     maxLength: 20
-                // }}
             />
             
             {/* Delete Button */}
             <IconButton
                 aria-label="delete"
+                type="button"
                 onClick={onDelete}
                 color="error"
                 size="small"

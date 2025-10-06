@@ -1,19 +1,19 @@
 import Box from "@mui/material/Box";
-import type { InstructionEntry } from "../../types";
+import type { InstructionEntry, NewRecipeDTO } from "../../types";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useFormContext } from "react-hook-form";
 
 interface InstructionRowProps {
-    entry: InstructionEntry;
     index: number;
-    onChange: (index: number, updated: InstructionEntry) => void;
-    onDelete: (index: number) => void;
+    onChange: (index: number, updated: Partial<InstructionEntry>) => void;
+    onDelete: () => void;
 }
 
-export default function InstructionRow ({ entry, index, onChange, onDelete }: InstructionRowProps) {
-    entry.stepNumber = index + 1;
+export default function InstructionRow ({ index, onDelete }: InstructionRowProps) {
+    const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
     
     return (
         <Box 
@@ -25,29 +25,33 @@ export default function InstructionRow ({ entry, index, onChange, onDelete }: In
             }} 
         >  
             {/* Show Step Number */}
-            <Typography>{index + 1}.</Typography>
+            <Typography
+                {...register(`Instructions.${index}.StepNumber`)}
+            >{index + 1}.</Typography>
 
             {/* Instruction Text */}
             <OutlinedInput 
+                required
                 type="text"
                 placeholder="Instruction text"
-                value={entry.instructionText}
-                onChange={(e) => {
-                    onChange(index, {...entry, instructionText: e.target.value})
-                }}
-                sx={{ width: "300"}} 
+                {...register(`Instructions.${index}.InstructionText`)}
+                sx={{ width: 1000}} 
             />
 
             {/* Delete Button */}
             <IconButton
                 aria-label="delete"
-                onClick={() => onDelete(index)}
+                type="button"
+                onClick={onDelete}
                 color="error"
                 size="small"
             >
                 <DeleteIcon fontSize="small" />
             </IconButton>
             
+            {errors.Instructions?.[index] && (
+                <p>Fill out required fields. </p>
+            )}
         </Box>
     )
 }

@@ -1,75 +1,76 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { createFilterOptions } from '@mui/material/Autocomplete';
-import type { UnitsDTO } from '../../types';
-import ingredientService from '../../api/ingredientApi';
+import type { NewRecipeDTO, UnitsDTO } from '../../types';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useFetchUnits } from '../../utils/useFetchUnits';
 
-interface UnitSearchProps {
-    onUnitChange: (unit: UnitsDTO | null) => void;
-}
-
-export default function UnitSearch({ onUnitChange }: UnitSearchProps) {
+export default function UnitSearch({ index }: { index: number}) {
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [options, setOptions] = useState<UnitsDTO[]>([]);
     const [inputValue, setInputValue] = useState('');
+    const { options, loading } = useFetchUnits(inputValue);
+    const { control, setValue, watch } = useFormContext<NewRecipeDTO>();
 
     const filterOptions = createFilterOptions<UnitsDTO>({
         stringify: (option) => `${option.name} ${option.abbreviation}`,
     });
 
-    const fetchUnits = useCallback(async (name: string) => {
-        setLoading(true);
-        try {
-            const response = await ingredientService.getUnitsByName(name);
-            setOptions(response.data);
-        } catch (err: unknown) {
-            console.error(err || "Error fetching Units"); // fix this later
-        } finally {
-            setLoading(false);
-        }
-    }, []);
-    
+    const unitName = watch(`Ingredients.${index}.UnitName`);
+    const unitId = watch(`Ingredients.${index}.UnitId`);
+
+    // Local state to store the selected option object
+    const [selectedOption, setSelectedOption] = useState<UnitsDTO | null>(null);
+
     useEffect(() => {
-        const handler = setTimeout(() => {
-            if (inputValue) {
-                fetchUnits(inputValue);
-            } else {
-                setOptions([]);
-            }
-        }, 500);
-        return () => clearTimeout(handler);
-    }, [inputValue, fetchUnits]);
+        const found = options.find(opt => opt.id === unitId) ?? null;
+        if (found) {
+            setSelectedOption(found);
+        } else if (unitId || unitName) {
+            // If not in options, persist the previous selection as a minimal object
+            setSelectedOption({
+                id: unitId ?? 0,
+                name: unitName ?? '',
+                abbreviation: '',
+        });
+        } else {
+            setSelectedOption(null);
+        }
+    }, [unitId, unitName, options]);
 
     return (
-        <Autocomplete
-            id="units-selection"
-            open={open}
-            onOpen={() => setOpen(true)}
-            onClose={() => setOpen(false)}
-            options={options}
-            loading={loading}
-            getOptionLabel={(option) =>
-                `${option.name} (${option.abbreviation})`
-            }
-            onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
-            filterOptions={filterOptions}
-    
-            onChange={(_, value) => {
-                if (value) {
-                    onUnitChange(value);
-                }
-            }}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    placeholder="teaspoon / tsp"
-                    label="Select Unit"
-                    required
-                />
-            )}
+        <Controller 
+            name={`Ingredients.${index}.UnitName`}
+            control={control}
+            rules={{required: "Unit is requried"}}
+            render={({ field }) => (
+                <Autocomplete
+                    id="units-selection"
+                    value={selectedOption}
+                    open={open}
+                    onOpen={() => setOpen(true)}
+                    onClose={() => setOpen(false)}
+                    options={options}
+                    loading={loading}
+                    getOptionLabel={(option) => option.name}
+                    onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
+                    onChange={(_, newValue) => {
+                        field.onChange(newValue?.name);
+                        setValue(`Ingredients.${index}.UnitId`, newValue ? newValue.id : 0);
+                    }}
+                    filterOptions={filterOptions}
+                    sx={{ minWidth:200}}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            placeholder="teaspoon / tsp"
+                            label="Select Unit"
+                        />
+                    )}
 
+                />
+            )}                
         />
+        
     )
 }

@@ -2,9 +2,10 @@ import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import IngredientRow from "./IngredientRow";
 import { useFieldArray, useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 
 export default function IngredientsList() {
-    const { control } = useFormContext<NewRecipeDTO>();
+    const { register, control } = useFormContext<NewRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
         control,
         name: "Ingredients",
@@ -13,17 +14,12 @@ export default function IngredientsList() {
         },
     });
 
-    // const handleAddIngredients = () => {
-    //     append({
-    //         IngredientOrder: fields.length + 1,
-    //         IngredientId: ingredient.id,
-    //         IngredientName: ingredient.name,
-    //         Quantity: "",
-    //         UnitId: 0,
-    //         UnitName: "",
-    //         Qualifier: null,
-    //     });
-    // };
+    useEffect(() => {
+        register("Ingredients", {
+            validate: (value) =>
+            value && value.length > 0 || "You must add at least one ingredient",
+        });
+    }, [register]);
 
     const handleRowChange = (index: number, updated: Partial<IngredientEntry>) => {
         update(index, {...fields[index], ...updated});
