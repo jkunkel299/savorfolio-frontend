@@ -3,13 +3,13 @@ import { useFetchIngredients } from "../../utils/useFetchIngredients";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { Controller, useFormContext } from "react-hook-form";
-import type { FullRecipeDTO, IngredientVariantDTO } from "../../types";
+import type { NewRecipeDTO, IngredientVariantDTO } from "../../types";
 
 export default function IngredientsInput({ index }: { index: number }) {
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const { options, loading } = useFetchIngredients(inputValue);
-    const { control, setValue, watch } = useFormContext<FullRecipeDTO>();
+    const { control, setValue, watch } = useFormContext<NewRecipeDTO>();
 
     const filterOptions = createFilterOptions<IngredientVariantDTO>({
         stringify: (option) => `${option.name}`,

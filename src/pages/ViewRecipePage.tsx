@@ -50,7 +50,10 @@ export function ViewRecipePage() {
                 width: '100%',            // Ensures the container takes full viewport width
             }}
         >
-            <Paper elevation={3} sx={{ p: 3 }}>
+            <Paper elevation={3} sx={{ 
+                p: 3, 
+                width: '80vw'
+            }}>
                 <Stack>
                     <RecipeSummaryView recipeSummary={recipeData!.recipeSummary}/>
 

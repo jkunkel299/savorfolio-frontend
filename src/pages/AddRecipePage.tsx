@@ -124,7 +124,10 @@ export function AddRecipePage() {
         <FormProvider {...methods}>
             <Box display="flex" flexDirection="column" gap={3}>
                 <Typography variant="h4">Add Recipe</Typography>
-                <Paper elevation={3} sx={{ p: 3 }}>
+                <Paper elevation={3} sx={{ 
+                    p: 3,
+                    width: '80vw'
+                }}>
                     <Box /* onSubmit={methods.handleSubmit(handleSubmit)} */>
                         {renderCurrentPage()}
 
