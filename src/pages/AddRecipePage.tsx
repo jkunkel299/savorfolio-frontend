@@ -7,8 +7,8 @@ import RecipeSummaryForm from "../components/RecipeAdd/RecipeSummaryForm";
 import TagsForm from "../components/RecipeAdd/TagsForm";
 import recipeService from "../api/recipeApi";
 import { Paper, Typography } from "@mui/material";
-import InstructionsList from "../components/RecipeAdd/InstructionsList";
-import IngredientsList from "../components/RecipeAdd/IngredientsList";
+import InstructionsList from "../components/RecipeAdd/InstructionsInputList";
+import IngredientsList from "../components/RecipeAdd/IngredientsInputList";
 import ReviewForm from "../components/RecipeAdd/ReviewForm";
 import { useNavigate } from "react-router-dom";
 

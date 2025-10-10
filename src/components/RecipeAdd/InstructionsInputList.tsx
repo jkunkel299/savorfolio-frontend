@@ -1,7 +1,7 @@
 import { Box, Stack, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import type { InstructionEntry, NewRecipeDTO } from "../../types";
-import InstructionRow from "./InstructionRow";
+import InstructionRow from "./InstructionInputRow";
 import { useFormContext, useFieldArray } from "react-hook-form";
 
 export default function InstructionsList() {

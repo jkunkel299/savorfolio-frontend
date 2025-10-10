@@ -4,6 +4,7 @@ import RecipeSearchPage from "./pages/RecipeSearchPage";
 import { AddRecipePage } from "./pages/AddRecipePage";
 import HomePage from "./pages/HomePage";
 import RecipeConfirmedPage from "./pages/RecipeConfirmedPage";
+import { ViewRecipePage } from "./pages/ViewRecipePage";
 
 
 const App: React.FC = () => {
@@ -14,6 +15,7 @@ const App: React.FC = () => {
         <Route path="/search" element={<Layout><RecipeSearchPage /></Layout>} />
         <Route path="/add" element={<Layout><AddRecipePage /></Layout>} />
         <Route path="/confirmed" element={<Layout><RecipeConfirmedPage /></Layout>} />
+        <Route path="/recipes/view" element={<Layout><ViewRecipePage /></Layout>} />
       </Routes>
     </Router>
   );

@@ -3,7 +3,6 @@ import axiosClient from "./axiosClient";
 
 // Service to get basic recipe information from backend
 const recipeService = {
-    getAllRecipes: () => axiosClient.get('/api/recipes'),
     getRecipeSearch: (
         IncludeIngredients?: number[],
         ExcludeIngredients?: number[]) => axiosClient.post(`/api/recipes/search`, { 
@@ -13,6 +12,7 @@ const recipeService = {
     postRecipeManual: (
         newRecipe: string
     ) => axiosClient.post(`/api/recipes/add/manual`, newRecipe),
+    getRecipeById: (recipeId: number) => axiosClient.get(`/api/recipes/view`, { params: { recipeId } }),
 };
 
 export default recipeService;

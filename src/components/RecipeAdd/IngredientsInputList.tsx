@@ -1,6 +1,6 @@
 import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import IngredientRow from "./IngredientRow";
+import IngredientRow from "./IngredientInputRow";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 
