@@ -1,6 +1,6 @@
 // import ListItem from "@mui/material/ListItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import type { IngredientEntry, NewRecipeDTO/* , UnitsDTO */ } from "../../types";
+import type { IngredientEntry, FullRecipeDTO/* , UnitsDTO */ } from "../../types";
 // import Typography from "@mui/material/Typography";
 import UnitSearch from "./UnitSearch";
 import Box from "@mui/material/Box";
@@ -15,8 +15,8 @@ interface IngredientRowProps {
     onDelete: () => void;
 }
 
-export default function IngredientRow ({ index, onDelete }: IngredientRowProps) {
-    const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
+export default function IngredientInputRow ({ index, onDelete }: IngredientRowProps) {
+    const { register, formState: { errors } } = useFormContext<FullRecipeDTO>();
     
     return (
         <Box 

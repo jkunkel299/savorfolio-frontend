@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import type { InstructionEntry, NewRecipeDTO } from "../../types";
+import type { InstructionEntry, FullRecipeDTO } from "../../types";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -12,8 +12,8 @@ interface InstructionRowProps {
     onDelete: () => void;
 }
 
-export default function InstructionRow ({ index, onDelete }: InstructionRowProps) {
-    const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
+export default function InstructionInputRow ({ index, onDelete }: InstructionRowProps) {
+    const { register, formState: { errors } } = useFormContext<FullRecipeDTO>();
     
     return (
         <Box 

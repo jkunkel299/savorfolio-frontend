@@ -1,11 +1,11 @@
 import { Box, Stack, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
-import type { InstructionEntry, NewRecipeDTO } from "../../types";
-import InstructionRow from "./InstructionInputRow";
+import type { InstructionEntry, FullRecipeDTO } from "../../types";
+import InstructionInputRow from "./InstructionInputRow";
 import { useFormContext, useFieldArray } from "react-hook-form";
 
-export default function InstructionsList() {
-    const { register, control } = useFormContext<NewRecipeDTO>();
+export default function InstructionsInputList() {
+    const { register, control } = useFormContext<FullRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
         control,
         name: "Instructions",
@@ -31,7 +31,7 @@ export default function InstructionsList() {
             <Stack spacing={2}>
                 <Typography variant='h4' gutterBottom>Instructions List</Typography>
                 {fields.map((entry, idx) => (
-                    <InstructionRow
+                    <InstructionInputRow
                         key={entry.id}
                         // entry={entry}
                         index={idx}

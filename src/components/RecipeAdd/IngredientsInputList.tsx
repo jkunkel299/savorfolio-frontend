@@ -1,11 +1,11 @@
-import type { IngredientEntry, NewRecipeDTO } from "../../types";
+import type { IngredientEntry, FullRecipeDTO } from "../../types";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import IngredientRow from "./IngredientInputRow";
+import IngredientInputRow from "./IngredientInputRow";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 
-export default function IngredientsList() {
-    const { register, control } = useFormContext<NewRecipeDTO>();
+export default function IngredientsInputList() {
+    const { register, control } = useFormContext<FullRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
         control,
         name: "Ingredients",
@@ -30,7 +30,7 @@ export default function IngredientsList() {
             <Typography variant='h4' gutterBottom>Ingredients List</Typography>
             <Stack spacing={2}>
                 {fields.map((entry, idx) => (
-                    <IngredientRow
+                    <IngredientInputRow
                         key={entry.id}
                         index={idx}
                         onChange={handleRowChange}

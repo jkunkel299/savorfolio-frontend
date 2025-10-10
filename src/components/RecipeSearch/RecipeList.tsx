@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import RecipeCard from "./RecipeCard";
 import recipeService from "../../api/recipeApi";
 import type { Recipe } from "../../types";
+import Typography from "@mui/material/Typography";
 
 interface RecipeListProps {
   includeIngredientIds: number[]; // | undefined
@@ -16,6 +17,7 @@ function RecipeList({
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null | unknown >(null);
 
+    /* Get all recipes */
     useEffect(() => {
         const fetchRecipes = async () => {
             setLoading(true);
@@ -33,15 +35,15 @@ function RecipeList({
         };
         fetchRecipes();
     }, [includeIngredientIds, excludeIngredientIds]); 
-    if (loading) return <p>Loading recipes...</p>;
-    if (error) return <p>Error</p>; // fix this later
+    if (loading) return <Typography>Loading recipes...</Typography>;
+    if (error) return <Typography>Error</Typography>; // fix this later
 
     return (
         <div style={{ display: "flex", flexWrap: "wrap", padding: "10px" }}>
             {recipeData.map((recipe) => (
                 <div style={{ padding: "10px"}}>
                     <RecipeCard 
-                        key = {recipe.id}
+                        recipeId = {recipe.id}
                         recipeTitle = {recipe.name}
                         servings = {recipe.servings}
                         cookTime = {recipe.cookTime}

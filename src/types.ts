@@ -52,7 +52,7 @@ export interface NewRecipeDTO {
         Meal?: string | null;
         Recipe_type: string;
         Cuisine?: string | null;
-        Dietary?: string[];
+        Dietary: string[];
     }
 }
 
@@ -67,4 +67,41 @@ export type IngredientEntry = {
 export type InstructionEntry = {
     stepNumber: number;
     instructionText: string;
+}
+
+export interface FullRecipeDTO {
+    recipeId: number;
+    recipeSummary: {
+        id: number;
+        name: string;
+        servings: number | null;
+        cookTime: string | null;
+        prepTime: string | null;
+        bakeTemp: number | null;
+        temp_unit: string | null;
+    };
+    recipeTags:{
+        recipeId: number;
+        meal?: string | null;
+        recipe_type: string;
+        cuisine?: string | null;
+        dietary: string[];
+    }
+    ingredients: {
+        id: number;
+        recipeId: number;
+        ingredientOrder: number;
+        ingredientId: number;
+        ingredientName: string;
+        quantity: string;
+        unitId: number;
+        unitName: string;
+        qualifier: string | null;
+    }[];
+    instructions: {
+        id: number;
+        recipeId: number;
+        stepNumber: number;
+        instructionText: string;
+    }[];
 }

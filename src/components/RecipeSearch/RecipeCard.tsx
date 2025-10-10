@@ -3,20 +3,28 @@ import CardContent from '@mui/material/CardContent';
 // import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
+import { useNavigate } from 'react-router-dom';
 
 interface RecipeCardProps {
+    recipeId: number;
     recipeTitle: string;
     servings: number | null;
     cookTime: string | null;
     prepTime: string | null; 
 }
 
-export default function RecipeCard(
-    {recipeTitle,
+export default function RecipeCard({
+    recipeId,
+    recipeTitle,
     servings,
     cookTime,
     prepTime,
 } : RecipeCardProps) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/view?recipeId=${recipeId}`)
+    }
     return (
     <Card sx={{ 
         width: {
@@ -26,7 +34,7 @@ export default function RecipeCard(
         }, 
         padding: "5px" 
     }}>
-        <CardActionArea>
+        <CardActionArea onClick={handleClick}>
             {/* <CardMedia
             component="img"
             height="140"
@@ -34,14 +42,14 @@ export default function RecipeCard(
             alt="green iguana"
             /> */}
             <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-                {recipeTitle}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {servings && <p>Servings: {servings}</p>}
-                {cookTime && <p>Cook Time: {cookTime}</p>}
-                {prepTime && <p>Prep Time: {prepTime}</p>}
-            </Typography>
+                <Typography gutterBottom variant="h5" component="div">
+                    {recipeTitle}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    {servings && <p>Servings: {servings}</p>}
+                    {prepTime && <p>Prep Time: {prepTime}</p>}
+                    {cookTime && <p>Cook Time: {cookTime}</p>}                    
+                </Typography>
             </CardContent>
         </CardActionArea>
     </Card>
