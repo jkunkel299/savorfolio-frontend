@@ -58,7 +58,8 @@ export function ViewRecipePage() {
                     <IconButton
                         onClick={() => {navigate(-1);}}
                     >
-                        <ArrowBack />
+                        <ArrowBack sx={{ fontSize: 16 }} />
+                        <Typography>Back to Search</Typography>
                     </IconButton>
                 </Box>
                 
