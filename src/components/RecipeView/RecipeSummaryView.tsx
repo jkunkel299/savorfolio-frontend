@@ -1,7 +1,7 @@
-import type { FullRecipeDTO } from "../../types";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import type { FullRecipeDTO } from "../../types";
 
 export default function RecipeSummaryView ({
     recipeSummary

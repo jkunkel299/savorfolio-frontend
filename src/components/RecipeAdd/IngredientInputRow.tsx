@@ -1,12 +1,10 @@
-// import ListItem from "@mui/material/ListItem";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import type { IngredientEntry, NewRecipeDTO } from "../../types";
-// import Typography from "@mui/material/Typography";
-import UnitSearch from "./UnitSearch";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useFormContext/* , type FieldArrayWithId */ } from "react-hook-form";
+import IconButton from "@mui/material/IconButton";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { useFormContext } from "react-hook-form";
+import type { IngredientEntry, NewRecipeDTO } from "../../types";
+import UnitSearch from "./UnitSearch";
 import IngredientsInput from "./IngredientsInput";
 
 interface IngredientRowProps {

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useFetchIngredients } from "../../utils/useFetchIngredients";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { useFetchIngredients } from "../../utils/useFetchIngredients";
 import type { NewRecipeDTO, IngredientVariantDTO } from "../../types";
 
 export default function IngredientsInput({ index }: { index: number }) {

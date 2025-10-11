@@ -1,14 +1,15 @@
-import { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 import type { IngredientVariantDTO } from '../../types';
 import { useFetchIngredients } from '../../utils/useFetchIngredients';
 
 interface IngredientIncludeFilterProps {
+    value: IngredientVariantDTO[];
     onIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;
 }
 
-export default function IngredientIncludeFilter({ onIngredientsChange }: IngredientIncludeFilterProps) {
+export default function IngredientIncludeFilter({ onIngredientsChange, value }: IngredientIncludeFilterProps) {
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
@@ -25,6 +26,7 @@ export default function IngredientIncludeFilter({ onIngredientsChange }: Ingredi
             onClose={() => setOpen(false)}
             options={options}
             loading={loading}
+            value={value}
             getOptionLabel={(option) => option.name}
             onInputChange={(_event, newInputValue) => setInputValue(newInputValue)}
             filterSelectedOptions

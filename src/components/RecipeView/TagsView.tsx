@@ -1,10 +1,10 @@
-import Box from "@mui/material/Box";
-import type { FullRecipeDTO } from "../../types";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import type { FullRecipeDTO } from "../../types";
 
 export default function TagsView ({ recipeTags }: Partial<FullRecipeDTO>) {
     return (
-        <Box>
+        <Stack spacing={1}>
             <Typography variant="h5">Recipe Type: </Typography>
             <Typography>{recipeTags!.recipe_type}</Typography>
 
@@ -30,6 +30,6 @@ export default function TagsView ({ recipeTags }: Partial<FullRecipeDTO>) {
                     ))}
                 </>
             )}
-        </Box>
+        </Stack>
     )
 }

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 import { createFilterOptions } from '@mui/material/Autocomplete';
-import type { NewRecipeDTO, UnitsDTO } from '../../types';
+import TextField from '@mui/material/TextField';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import type { NewRecipeDTO, UnitsDTO } from '../../types';
 import { useFetchUnits } from '../../utils/useFetchUnits';
 
 export default function UnitSearch({ index }: { index: number}) {

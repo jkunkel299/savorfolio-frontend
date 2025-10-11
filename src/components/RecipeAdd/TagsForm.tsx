@@ -1,6 +1,6 @@
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import TagSelector from "./TagSelector";
-import { Grid, Typography } from "@mui/material";
-
 
 export default function TagsForm() {    
     return (

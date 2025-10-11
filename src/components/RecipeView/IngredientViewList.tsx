@@ -1,10 +1,10 @@
-import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import type { FullRecipeDTO } from "../../types";
 import IngredientViewRow from "./IngredientViewRow";
 
 export default function IngredientViewList ({ ingredients }: Partial<FullRecipeDTO>) {
     return (
-        <Box>
+        <Stack>
             {ingredients!.map((ing) => (
                 <IngredientViewRow 
                     ingredientName={ing.ingredientName}
@@ -13,6 +13,6 @@ export default function IngredientViewList ({ ingredients }: Partial<FullRecipeD
                     qualifier={ing.qualifier}
                 />
             ))}
-        </Box>
+        </Stack>
     )
 }

@@ -1,7 +1,13 @@
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import tagsService from "../../api/tagsApi";
-import { Checkbox, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup, Typography } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
+import tagsService from "../../api/tagsApi";
 import type { NewRecipeDTO } from "../../types";
 
 type SelectorType = "Meal" | "Recipe_type" | "Cuisine" | "Dietary";

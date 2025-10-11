@@ -1,17 +1,18 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import { useEffect, useState } from "react";
-import type { FullRecipeDTO } from "../types";
-import recipeService from "../api/recipeApi";
-import { useLocation } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Divider from '@mui/material/Divider';
+import IconButton from "@mui/material/IconButton";
+import { ArrowBack } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import RecipeSummaryView from "../components/RecipeView/RecipeSummaryView";
 import IngredientViewList from "../components/RecipeView/IngredientViewList";
 import InstructionViewList from "../components/RecipeView/InstructionViewList";
 import TagsView from "../components/RecipeView/TagsView";
-
+import type { FullRecipeDTO } from "../types";
+import recipeService from "../api/recipeApi";
 
 export function ViewRecipePage() {
     const [recipeData, setRecipeData] = useState<FullRecipeDTO>();
@@ -21,6 +22,8 @@ export function ViewRecipePage() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const recipeId = Number(queryParams.get('recipeId'));
+
+    const navigate = useNavigate();
 
     /* Get recipe by ID */
     useEffect(() => {
@@ -50,24 +53,34 @@ export function ViewRecipePage() {
                 width: '100%',            // Ensures the container takes full viewport width
             }}
         >
-            <Paper elevation={3} sx={{ 
-                p: 3, 
-                width: '80vw'
-            }}>
-                <Stack>
-                    <RecipeSummaryView recipeSummary={recipeData!.recipeSummary}/>
+            <Stack>
+                <Box sx={{ justifyContent:'flex-start' }}>
+                    <IconButton
+                        onClick={() => {navigate(-1);}}
+                    >
+                        <ArrowBack />
+                    </IconButton>
+                </Box>
+                
+                <Paper elevation={3} sx={{ 
+                    p: 3, 
+                    width: '80vw'
+                }}>
+                    <Stack spacing={2}>
+                        <RecipeSummaryView recipeSummary={recipeData!.recipeSummary}/>
 
-                    <Typography variant="h4">Ingredients</Typography>
-                    <IngredientViewList ingredients={recipeData!.ingredients} />
+                        <Typography variant="h4">Ingredients</Typography>
+                        <IngredientViewList ingredients={recipeData!.ingredients} />
 
-                    <Typography variant="h4">Instructions</Typography>
-                    <InstructionViewList instructions={recipeData!.instructions} />
+                        <Typography variant="h4">Instructions</Typography>
+                        <InstructionViewList instructions={recipeData!.instructions} />
 
-                    <Divider />
-                    <Typography variant="h4">Recipe Tags</Typography>
-                    <TagsView recipeTags={recipeData!.recipeTags} />
-                </Stack>
-            </Paper>
+                        <Divider />
+                        <Typography variant="h4">Recipe Tags</Typography>
+                        <TagsView recipeTags={recipeData!.recipeTags} />
+                    </Stack>
+                </Paper>
+            </Stack>
         </Box>
     )
 }

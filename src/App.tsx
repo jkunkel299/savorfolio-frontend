@@ -8,7 +8,7 @@ import { ViewRecipePage } from "./pages/ViewRecipePage";
 
 
 const App: React.FC = () => {
-  return (
+  return ( 
     <Router>
       <Routes>
         <Route path="/" element={<Layout><HomePage /></Layout>} />

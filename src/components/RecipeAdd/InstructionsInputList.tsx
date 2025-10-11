@@ -1,8 +1,11 @@
-import { Box, Stack, Button, Typography } from "@mui/material";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { useEffect } from "react";
+import { useFormContext, useFieldArray } from "react-hook-form";
 import type { InstructionEntry, NewRecipeDTO } from "../../types";
 import InstructionInputRow from "./InstructionInputRow";
-import { useFormContext, useFieldArray } from "react-hook-form";
 
 export default function InstructionsInputList() {
     const { register, control } = useFormContext<NewRecipeDTO>();

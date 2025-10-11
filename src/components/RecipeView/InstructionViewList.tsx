@@ -1,16 +1,16 @@
-import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import type { FullRecipeDTO } from "../../types";
 import InstructionViewRow from "./InstructionViewRow";
 
 export default function InstructionViewList ({ instructions }: Partial<FullRecipeDTO>) {
     return (
-        <Box>
+        <Stack spacing={0.5}>
             {instructions!.map((ins) => (
                 <InstructionViewRow 
                     stepNumber={ins.stepNumber}
                     instructionText={ins.instructionText}
                 />
             ))}
-        </Box>
+        </Stack>
     )
 }

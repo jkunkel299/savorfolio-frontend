@@ -1,18 +1,24 @@
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../react-redux/store";
+import {
+    setIncludeIngredients,
+    setExcludeIngredients,
+} from "../react-redux/slices/recipeFiltersSlice";
 import SidebarFilters from "../components/RecipeSearch/SidebarFilters";
 import RecipeList from "../components/RecipeSearch/RecipeList";
-import { useState } from "react";
-import type { IngredientVariantDTO } from "../types";
 
 export default function RecipeSearchPage() {
-    const [includeIngredients, setIncludeIngredients] = useState<IngredientVariantDTO[]>([]);
-    const [excludeIngredients, setExcludeIngredients] = useState<IngredientVariantDTO[]>([]);
+    const dispatch = useDispatch();
+    const includeIngredients = useSelector(
+        (state: RootState) => state.recipeFiltersReducer.includeIngredients
+    );
+    const excludeIngredients = useSelector(
+        (state: RootState) => state.recipeFiltersReducer.excludeIngredients
+    );
     
-    let includeIngredientsIds: number[] = [];
-    let excludeIngredientsIds: number[] = [];
-    
-    includeIngredientsIds = includeIngredients.map(ing => ing.id);
-    excludeIngredientsIds = excludeIngredients.map(ing => ing.id);
+    const includeIngredientsIds = includeIngredients.map(ing => ing.id);
+    const excludeIngredientsIds = excludeIngredients.map(ing => ing.id);
     
     return (
         <>
@@ -27,8 +33,14 @@ export default function RecipeSearchPage() {
                 }}
             >
                 <SidebarFilters 
-                    onIncludeIngredientsChange={setIncludeIngredients}
-                    onExcludeIngredientsChange={setExcludeIngredients}    
+                    includeIngredients={includeIngredients}
+                    excludeIngredients={excludeIngredients}
+                    onIncludeIngredientsChange={(ings) =>
+                        dispatch(setIncludeIngredients(ings))
+                    }
+                    onExcludeIngredientsChange={(ings) =>
+                        dispatch(setExcludeIngredients(ings))
+                    }    
                 />
             </Box>
             

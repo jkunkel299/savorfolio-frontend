@@ -1,8 +1,8 @@
+import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import RecipeCard from "./RecipeCard";
 import recipeService from "../../api/recipeApi";
 import type { Recipe } from "../../types";
-import Typography from "@mui/material/Typography";
 
 interface RecipeListProps {
   includeIngredientIds: number[]; // | undefined

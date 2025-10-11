@@ -1,8 +1,11 @@
-import type { IngredientEntry, NewRecipeDTO } from "../../types";
-import { Box, Button, Stack, Typography } from "@mui/material";
-import IngredientInputRow from "./IngredientInputRow";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useEffect } from "react";
+import type { IngredientEntry, NewRecipeDTO } from "../../types";
+import IngredientInputRow from "./IngredientInputRow";
 
 export default function IngredientsInputList() {
     const { register, control } = useFormContext<NewRecipeDTO>();

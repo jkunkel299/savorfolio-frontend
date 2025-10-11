@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
-import type { InstructionEntry, NewRecipeDTO } from "../../types";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useFormContext } from "react-hook-form";
+import type { InstructionEntry, NewRecipeDTO } from "../../types";
 
 interface InstructionRowProps {
     index: number;
