@@ -31,10 +31,10 @@ export default function InstructionInputRow ({ index, onDelete }: InstructionRow
 
             {/* Instruction Text */}
             <OutlinedInput 
-                required
                 type="text"
                 placeholder="Instruction text"
-                {...register(`Instructions.${index}.InstructionText`)}
+                {...register(`Instructions.${index}.InstructionText` as const, 
+                    {required: "Instruction text is required"})}
                 sx={{ width: 1000}} 
             />
 
@@ -49,8 +49,9 @@ export default function InstructionInputRow ({ index, onDelete }: InstructionRow
                 <DeleteIcon fontSize="small" />
             </IconButton>
             
+            {/* Error message */}
             {errors.Instructions?.[index] && (
-                <p>Fill out required fields. </p>
+                <Typography color="error">Fill out required fields. </Typography>
             )}
         </Box>
     )

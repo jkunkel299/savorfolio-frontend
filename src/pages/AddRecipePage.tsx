@@ -20,7 +20,7 @@ export function AddRecipePage() {
     const navigate = useNavigate();
 
     const methods = useForm<NewRecipeDTO>({
-        mode: "onChange",
+        mode: "all",
         shouldUnregister: false,
         defaultValues: {
             RecipeSummary: {
