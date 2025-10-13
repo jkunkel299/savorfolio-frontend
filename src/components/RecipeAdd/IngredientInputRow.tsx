@@ -27,11 +27,10 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
         >             
             {/* Quantity */}
             <OutlinedInput 
-                required
                 type="text"
                 placeholder="Quantity"
                 {...register(`Ingredients.${index}.Quantity` as const, 
-                    {maxLength: 10, required: true}
+                    {maxLength: 10}
                 )}
                 sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 120}} 
             />
