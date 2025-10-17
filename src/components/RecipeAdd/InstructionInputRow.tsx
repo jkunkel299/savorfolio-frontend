@@ -35,7 +35,7 @@ export default function InstructionInputRow ({ index, onDelete }: InstructionRow
                 placeholder="Instruction text"
                 {...register(`Instructions.${index}.InstructionText` as const, 
                     {required: "Instruction text is required"})}
-                sx={{ width: 1000}} 
+                sx={{ width:"90%", maxWidth: 1000}} 
             />
 
             {/* Delete Button */}
