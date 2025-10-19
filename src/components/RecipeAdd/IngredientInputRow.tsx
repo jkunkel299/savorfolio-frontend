@@ -54,7 +54,7 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
                         // allow empty string or null
                         if (!value) return true; 
                         // validate if it's filled
-                        return value.length <= 20 || "Qualifier must be under 20 chars";
+                        return value.length <= 1000 || "Qualifier must be under 1000 chars";
                     },
                 })}
                 sx={{ width: "fit-content", flex: "0 0 auto" }}
