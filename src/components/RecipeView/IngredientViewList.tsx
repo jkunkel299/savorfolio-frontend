@@ -8,8 +8,10 @@ export default function IngredientViewList ({ ingredients }: Partial<FullRecipeD
             {ingredients!.map((ing) => (
                 <IngredientViewRow 
                     ingredientName={ing.ingredientName}
+                    ingPluralName={ing.ingNamePlural}
                     quantity={ing.quantity}
                     unitName={ing.unitName}
+                    unitPluralName={ing.unitNamePlural}
                     qualifier={ing.qualifier}
                 />
             ))}

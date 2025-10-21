@@ -1,29 +1,47 @@
 import Autocomplete from '@mui/material/Autocomplete';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import type { NewRecipeDTO, UnitsDTO } from '../../types';
 import { useFetchUnits } from '../../utils/useFetchUnits';
 
+type UnitOption = UnitsDTO & {
+  displayName: string;
+  isPlural?: boolean;
+};
+
 export default function UnitSearch({ index }: { index: number}) {
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const { options, loading } = useFetchUnits(inputValue);
+    const { options: rawUnits, loading } = useFetchUnits(inputValue);
     const { control, setValue, watch } = useFormContext<NewRecipeDTO>();
 
-    const filterOptions = createFilterOptions<UnitsDTO>({
-        stringify: (option) => `${option.name} ${option.abbreviation}`,
+    const filterOptions = createFilterOptions<UnitOption>({
+        stringify: (option) => `${option.name} ${option.pluralName} ${option.abbreviation}`,
     });
 
     const unitName = watch(`Ingredients.${index}.UnitName`);
     const unitId = watch(`Ingredients.${index}.UnitId`);
 
     // Local state to store the selected option object
-    const [selectedOption, setSelectedOption] = useState<UnitsDTO | null>(null);
+    const [selectedOption, setSelectedOption] = useState<UnitOption | null>(null);
+
+    const options = useMemo<UnitOption[]>(() => {
+        if (!rawUnits) return [];
+        return rawUnits.flatMap((u) => {
+            const base: UnitOption = {
+                ...u, displayName: u.name, isPlural: false,
+            };
+            const plural: UnitOption | null = u.pluralName ? {
+                ...u, displayName: u.pluralName, isPlural: true,
+            } : null;
+            return plural ? [base, plural] : [base];
+        });        
+    }, [rawUnits]);
 
     useEffect(() => {
-        const found = options.find(opt => opt.id === unitId) ?? null;
+        const found = options.find(opt => opt.id === unitId && opt.displayName === unitName) ?? null;
         if (found) {
             setSelectedOption(found);
         } else if (unitId || unitName) {
@@ -32,7 +50,9 @@ export default function UnitSearch({ index }: { index: number}) {
                 id: unitId ?? 0,
                 name: unitName ?? '',
                 abbreviation: '',
-        });
+                pluralName: '',
+                displayName: unitName ?? '',
+        } as UnitOption);
         } else {
             setSelectedOption(null);
         }
@@ -52,11 +72,12 @@ export default function UnitSearch({ index }: { index: number}) {
                     onClose={() => setOpen(false)}
                     options={options}
                     loading={loading}
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) => option.displayName}
                     onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
-                    onChange={(_, newValue) => {
-                        field.onChange(newValue?.name);
+                    onChange={(_, newValue: UnitOption | null) => {
+                        field.onChange(newValue?.displayName ?? '');
                         setValue(`Ingredients.${index}.UnitId`, newValue ? newValue.id : 0);
+                        setSelectedOption(newValue);
                     }}
                     filterOptions={filterOptions}
                     sx={{ minWidth:200}}

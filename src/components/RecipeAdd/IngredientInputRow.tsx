@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import Typography from "@mui/material/Typography";
 import { useFormContext } from "react-hook-form";
 import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import UnitSearch from "./UnitSearch";
@@ -72,7 +73,7 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
             </IconButton>
 
             {errors.Ingredients?.[index] && (
-                <p>Fill out required fields. </p>
+                <Typography>Fill out required fields. </Typography>
             )}
         </Box>
     )

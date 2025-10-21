@@ -6,6 +6,7 @@ export interface Recipe {
     prepTime: string | null;
     bakeTemp: number | null;
     tempUnit: string | null;
+    description: string | null;
     // refine later
     // ingredientLists: unknown[];
     // instruction: string | null;
@@ -18,12 +19,14 @@ export interface IngredientVariantDTO {
     name: string;
     typeId: number;
     ingredientCategory: string;
+    pluralName?: string;
 }
 
 export interface UnitsDTO {
     id: number;
     name: string;
     abbreviation?: string;
+    pluralName: string;
 }
 
 export interface NewRecipeDTO {
@@ -34,14 +37,17 @@ export interface NewRecipeDTO {
         PrepTime: string | null;
         BakeTemp: number | null;
         Temp_unit: string | null;
+        Description: string | null;
     };
     Ingredients: {
         IngredientOrder: number;
         IngredientId: number;
         IngredientName: string;
+        IngNamePlural: string | null;
         Quantity: string;
         UnitId: number;
         UnitName: string;
+        UnitPlural: string;
         Qualifier: string | null;
     }[];
     Instructions: {
@@ -58,9 +64,11 @@ export interface NewRecipeDTO {
 
 export type IngredientEntry = {
     name: string;
+    plural: string | null;
     quantity: string;
     unitId: number;
     unitName: string;
+    unitPlural: string;
     qualifier: string | null;
 }
 
@@ -79,6 +87,7 @@ export interface FullRecipeDTO {
         prepTime: string | null;
         bakeTemp: number | null;
         temp_unit: string | null;
+        description: string | null;
     };
     recipeTags:{
         recipeId: number;
@@ -93,9 +102,11 @@ export interface FullRecipeDTO {
         ingredientOrder: number;
         ingredientId: number;
         ingredientName: string;
+        ingNamePlural: string | null;
         quantity: string;
         unitId: number;
         unitName: string;
+        unitNamePlural: string;
         qualifier: string | null;
     }[];
     instructions: {

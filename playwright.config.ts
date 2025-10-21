@@ -66,7 +66,7 @@ export default defineConfig({
             command: 'npm run dev', // Command to start frontend
             url: 'http://localhost:5173/', // frontend URL
             name: 'Frontend',
-            reuseExistingServer: true,
+            reuseExistingServer: false,
         },
     ],
 });

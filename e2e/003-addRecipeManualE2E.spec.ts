@@ -9,13 +9,17 @@ test('can add a recipe manually', async ({ page }) => {
     // from the homepage, use the nav bar to navigate to the 'Add Recipe' page
     await page.getByRole('link', { name: 'Add Recipe' }).click();
     // assert the first page of the add recipes form is visible - recipe summary
-    await expect(page.locator('#root')).toContainText('Add RecipeThe BasicsRecipe Title *Servings *Prep TimeCook TimeBake TemperatureNext');
+    await expect(page.locator('#root')).toContainText('Add RecipeThe BasicsRecipe Title *Recipe Description *Servings *Prep TimeCook TimeBake TemperatureNext');
     // click on the text box for the recipe title
     await page.getByRole('textbox', { name: 'Recipe Title' }).click();
     // add the title 'Scrambled eggs'
     await page.getByRole('textbox', { name: 'Recipe Title' }).fill('Scrambled eggs');
-    // tab to the next text entry - servings
+    // tab to the next text entry - description
     await page.getByRole('textbox', { name: 'Recipe Title' }).press('Tab');
+    // enter a basic description
+    await page.getByRole('textbox', { name: 'Add a description here' }).fill('A basic description');
+    // tab to the next text entry - servings
+    await page.getByRole('textbox', { name: 'Add a description here' }).press('Tab');
     // enter 1 as the number of servings
     await page.getByRole('textbox', { name: 'Servings' }).fill('1');
     // tab to the next text entry - prep time
@@ -79,7 +83,7 @@ test('can add a recipe manually', async ({ page }) => {
     // enter 'tab' into the units combobox, shows a dynamic list of options
     await page.getByRole('combobox', { name: 'Select Unit' }).fill('tab');
     // select 'Tablespoon' from the available options
-    await page.getByRole('option', { name: 'Tablespoon' }).click();
+    await page.getByRole('option', { name: 'tablespoons' }).click();
     // tab to the next input - select ingredient
     await page.getByRole('combobox', { name: 'Select Unit' }).press('Tab');
     // enter 'butter' into the ingredients combobox, shows a dynamic list of options
@@ -93,10 +97,10 @@ test('can add a recipe manually', async ({ page }) => {
     await page.locator('input[name="Ingredients.1.Quantity"]').fill('2');
     await page.locator('input[name="Ingredients.1.Quantity"]').press('Tab');
     await page.getByRole('combobox', { name: 'teaspoon / tsp' }).fill('whole');
-    await page.getByRole('option', { name: 'Whole' }).click();
+    await page.getByRole('option', { name: 'whole' }).click();
     await page.locator('#ingredient-input-1').click();
     await page.locator('#ingredient-input-1').fill('egg');
-    await page.getByRole('option', { name: 'egg', exact: true }).click();
+    await page.getByRole('option', { name: 'eggs', exact: true }).click();
     await page.getByRole('button', { name: 'Add an Ingredient' }).click();
     await page.getByRole('combobox', { name: 'teaspoon / tsp' }).nth(1).click();
     await page.getByRole('combobox', { name: 'teaspoon / tsp' }).nth(1).fill('to taste');
@@ -159,7 +163,7 @@ test('can add a recipe manually', async ({ page }) => {
     await page.getByRole('button', { name: 'Next' }).click();
 
     // assert the page contains the recipe data entered in the previous actions
-    await expect(page.locator('#root')).toContainText('Add RecipeReview Your RecipeTitle: Scrambled eggs Servings: 1Prep Time: 5 minutesCook Time: 5 minutesTagsMeal: Breakfast Recipe Type: Main Cuisine: American Dietary Considerations: Gluten-FreeVegetarianIngredients2 Tablespoon butter, salted2 Whole egg to taste salt to taste black pepperInstructions1. melt butter in the pan on medium heat2. crack eggs into the pan3. scramble.4. season with salt and pepper, to taste.BackSubmit Recipe');
+    await expect(page.locator('#root')).toContainText('SavorfolioSearchAdd RecipeAdd RecipeReview Your RecipeTitle: Scrambled eggs Description: A basic descriptionServings: 1Prep Time: 5 minutesCook Time: 5 minutesTagsMeal: Breakfast Recipe Type: Main Cuisine: American Dietary Considerations: Gluten-FreeVegetarianIngredients2 tablespoons butter, salted2 whole eggs to taste salt to taste black pepperInstructions1. melt butter in the pan on medium heat2. crack eggs into the pan3. scramble.4. season with salt and pepper, to taste.BackSubmit Recipe');
     // click the 'Submit Recipe' button - calls the API and navigates to the recipe confirmation page
     await page.getByRole('button', { name: 'Submit Recipe' }).click();
 
@@ -180,6 +184,8 @@ test('tests functionality related to bake temperature', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Recipe Title' }).click();
     await page.getByRole('textbox', { name: 'Recipe Title' }).fill('Baked');
     await page.getByRole('textbox', { name: 'Recipe Title' }).press('Tab');
+    await page.getByRole('textbox', { name: 'Add a description here' }).fill('Basic Description');
+    await page.getByRole('textbox', { name: 'Add a description here' }).press('Tab');
     await page.getByRole('textbox', { name: 'Servings' }).fill('1');
     await page.getByRole('textbox', { name: 'Servings' }).press('Tab');
     await page.getByRole('textbox', { name: 'Prep Time' }).fill('5 minutes');
@@ -189,7 +195,7 @@ test('tests functionality related to bake temperature', async ({ page }) => {
     // fill in the bake temp field with '350' - the temperature units field appears
     await page.locator('#bake-temp').fill('350');
     // assert the page now contains the temperature units field
-    await expect(page.locator('#root')).toContainText('The BasicsRecipe Title *Servings *Prep TimeCook TimeBake TemperatureUnitFCNext');
+    await expect(page.locator('#root')).toContainText('The BasicsRecipe Title *Recipe Description *Servings *Prep TimeCook TimeBake TemperatureUnitFCNext');
     // click on the radio button for 'F'
     await page.getByRole('radio', { name: 'F' }).check();
     // click the 'Next' button - navigates to the tags page
@@ -206,10 +212,10 @@ test('tests functionality related to bake temperature', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Quantity' }).fill('2');
     await page.getByRole('combobox', { name: 'Select Unit' }).click();
     await page.getByRole('combobox', { name: 'Select Unit' }).fill('whole');
-    await page.getByRole('option', { name: 'Whole' }).click();
+    await page.getByRole('option', { name: 'whole' }).click();
     await page.getByRole('combobox', { name: 'Select Ingredient' }).click();
     await page.getByRole('combobox', { name: 'Select Ingredient' }).fill('egg');
-    await page.getByRole('option', { name: 'egg', exact: true }).click();
+    await page.getByRole('option', { name: 'eggs', exact: true }).click();
     // click the 'Next' button - navigates to the instructions page
     await page.getByRole('button', { name: 'Next' }).click();
     // add an instruction
@@ -219,5 +225,5 @@ test('tests functionality related to bake temperature', async ({ page }) => {
     // click the 'Next' button - navigates to the recipe confirmation page
     await page.getByRole('button', { name: 'Next' }).click();
     // assert the review page contains the data for the bake temperature and unit "Bake Temperature: 350 °F"
-    await expect(page.locator('#root')).toContainText('Review Your RecipeTitle: Baked Servings: 1Prep Time: 5 minutesCook Time: 5 minutesBake Temperature: 350 °FTagsMeal: Breakfast Recipe Type: Main Cuisine: American Dietary Considerations: VegetarianGluten-FreeIngredients2 Whole eggInstructions1. Bake - this is a testBackSubmit Recipe');
+    await expect(page.locator('#root')).toContainText('SavorfolioSearchAdd RecipeAdd RecipeReview Your RecipeTitle: Baked Description: Basic DescriptionServings: 1Prep Time: 5 minutesCook Time: 5 minutesBake Temperature: 350 °FTagsMeal: Breakfast Recipe Type: Main Cuisine: American Dietary Considerations: VegetarianGluten-FreeIngredients2 whole eggsInstructions1. Bake - this is a testBackSubmit Recipe');
 });

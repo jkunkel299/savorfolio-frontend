@@ -18,6 +18,8 @@ export default function ReviewForm(){
             {/* RecipeSummary */}
             <Typography variant="h5">Title: {values.RecipeSummary.Name} </Typography>
 
+            <Typography variant="h6">Description: {values.RecipeSummary.Description}</Typography>
+
             <Typography variant="h6">Servings: {values.RecipeSummary.Servings}</Typography>
 
             <Typography variant="h6">Prep Time: {values.RecipeSummary.PrepTime}</Typography>

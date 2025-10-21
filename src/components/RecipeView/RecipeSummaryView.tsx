@@ -13,6 +13,13 @@ export default function RecipeSummaryView ({
                 <Typography variant="h3" key={recipeSummary?.id}>{recipeSummary?.name}</Typography>
             </Grid>
 
+            <Grid size={1}/>
+            {/* recipe description */}
+            <Grid size={10}>
+                <Typography variant="h6" key={recipeSummary?.id}><i>{recipeSummary?.description}</i></Typography>
+            </Grid>
+            <Grid size={1}/>
+
             {/* servings */}
             <Grid size={3}>
                 <Stack>

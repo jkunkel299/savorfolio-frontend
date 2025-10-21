@@ -11,7 +11,6 @@ import { styled } from '@mui/material/styles';
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
 import type { NewRecipeDTO } from '../../types';
 import { useEffect } from 'react';
-// import { useEffect } from 'react';
 
 
 const FormGrid = styled(Grid)(() => ({
@@ -19,41 +18,15 @@ const FormGrid = styled(Grid)(() => ({
   flexDirection: 'column',
 }));
 
-export default function RecipeForm(/* { onValidityChange }: { onValidityChange: (valid: boolean) => void} */) {
+export default function RecipeForm() {
     const { control } = useFormContext<NewRecipeDTO>();
     const { register } = useFormContext<NewRecipeDTO>();
-
-    // watch Name
-    // const recipeName = useWatch({
-    //     control,
-    //     name: "RecipeSummary.Name", 
-    // })
 
     // watch BakeTemp
     const bakeTemp = useWatch({
         control,
         name: "RecipeSummary.BakeTemp",
     });
-
-    // watch Temp_unit
-    // let tempUnit = useWatch({
-    //     control,
-    //     name: "RecipeSummary.Temp_unit",
-    // });
-
-    // useEffect(() => {
-    //     if (recipeName !== null){
-    //         let valid = false;
-    //         if (bakeTemp == null && tempUnit !== null){
-    //             tempUnit = null;
-    //         // } else if (bakeTemp !== null && tempUnit == null) {
-    //         //     valid = false;
-    //         } else {
-    //             valid = true;
-    //         }
-    //         onValidityChange?.(valid);
-    //     }
-    // }, [recipeName, bakeTemp, tempUnit, onValidityChange]);
 
     useEffect(() => {
         register("RecipeSummary.Name",{
@@ -71,14 +44,12 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
                 <FormLabel htmlFor="recipe-title" required>Recipe Title</FormLabel>
                 <Controller 
                     {...register("RecipeSummary.Name", { required: "Recipe title is required" })}
-                    // name="RecipeSummary.Name"
                     control={control}
-                    // rules={{ required: "Recipe title is required" }}
                     render={({ field, fieldState }) => <>
                         <OutlinedInput
                             id="recipe-title"
                             type="text"
-                            placeholder="Grandma's Chocolate Chip Cookies"
+                            placeholder="The recipe's title"
                             size="small"
                             {...field}
                         />
@@ -87,6 +58,24 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
                                 {fieldState.error.message}
                             </span>
                         )}
+                    </>}
+                />
+            </FormGrid>
+
+            {/* Recipe Description */}
+            <FormGrid size={{ xs: 12 }}>
+                <FormLabel htmlFor="recipe-description" required>Recipe Description</FormLabel>
+                <Controller 
+                    name="RecipeSummary.Description"
+                    control={control}
+                    render={({ field }) => <>
+                        <OutlinedInput
+                            id="recipe-title"
+                            type="text"
+                            placeholder="Add a description here"
+                            size="small"
+                            {...field}
+                        />
                     </>}
                 />
             </FormGrid>

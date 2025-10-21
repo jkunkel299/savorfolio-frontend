@@ -43,13 +43,15 @@ export default function IngredientsInputList() {
 
                 <Button variant="outlined" onClick={() =>
                         append({
-                        IngredientOrder: fields.length + 1,
-                        IngredientId: 0,
-                        IngredientName: "",
-                        Quantity: "",
-                        UnitId: 0,
-                        UnitName: "",
-                        Qualifier: null,
+                            IngredientOrder: fields.length + 1,
+                            IngredientId: 0,
+                            IngredientName: "",
+                            IngNamePlural: "",
+                            Quantity: "",
+                            UnitId: 0,
+                            UnitName: "",
+                            UnitPlural: "",
+                            Qualifier: null,
                         })
                     }>
                     Add an Ingredient
