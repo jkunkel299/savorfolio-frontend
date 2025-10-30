@@ -1,3 +1,4 @@
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 interface InstructionViewRowProps {
@@ -10,8 +11,13 @@ export default function InstructionViewRow ({
     instructionText,
 }: InstructionViewRowProps) {
     return (
-        <>
-            <Typography>{stepNumber}. {instructionText}</Typography>
-        </>
+        <Grid container>
+            <Grid size={{xs: 0.25}}>
+                <Typography>{stepNumber}. </Typography>
+            </Grid>
+            <Grid size={{xs: 11.75}}>
+                <Typography>{instructionText}</Typography>
+            </Grid>
+        </Grid>
     )
 }

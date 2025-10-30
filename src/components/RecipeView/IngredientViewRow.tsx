@@ -33,26 +33,6 @@ export default function IngredientViewRow ({
 
     const displayIngredient = qtyNum > 1 && ingPluralName ? ingPluralName : ingredientName;
     
-    // const contentWithQuantity = (
-    //     <>
-    //         <span>{quantity} </span>
-    //         <span>{unitName} </span>
-    //         <span>{ingredientName}</span>
-    //         { qualifier && (
-    //             <span> ({qualifier})</span>
-    //         )}
-    //     </>
-    // )
-
-    // const contentWithoutQuantity = (
-    //     <>
-    //         <span>{ingredientName} </span>
-    //         <span>{unitName} </span>
-    //         {qualifier && (
-    //             <span> ({qualifier})</span>
-    //         )}
-    //     </>
-    // )
     const content = (
         <>
             {quantity && <span>{quantity} </span>}
@@ -71,24 +51,7 @@ export default function IngredientViewRow ({
                 />
             } 
             label={checked ? <s>{content}</s> : content}
-            // label={ checked ? (
-            //     <s>
-            //         {quantity ? (
-            //             contentWithQuantity
-            //         ) : (
-            //             contentWithoutQuantity
-            //         )}
-            //     </s>
-            // ) : (
-            //     <>
-            //         {quantity ? (
-            //             contentWithQuantity
-            //         ) : (
-            //             contentWithoutQuantity
-            //         )}
-            //     </>
-            // )
-            /* } *//>
+            />
         </FormGroup>
     )
 }

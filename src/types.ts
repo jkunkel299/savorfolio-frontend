@@ -80,7 +80,7 @@ export type InstructionEntry = {
 export interface FullRecipeDTO {
     recipeId: number;
     recipeSummary: {
-        id: number;
+        id?: number;
         name: string;
         servings: number | null;
         cookTime: string | null;
@@ -90,15 +90,15 @@ export interface FullRecipeDTO {
         description: string | null;
     };
     recipeTags:{
-        recipeId: number;
+        recipeId?: number;
         meal?: string | null;
         recipe_type: string;
         cuisine?: string | null;
         dietary: string[];
     }
     ingredients: {
-        id: number;
-        recipeId: number;
+        id?: number;
+        recipeId?: number;
         ingredientOrder: number;
         ingredientId: number;
         ingredientName: string;
@@ -106,12 +106,12 @@ export interface FullRecipeDTO {
         quantity: string;
         unitId: number;
         unitName: string;
-        unitNamePlural: string;
+        unitNamePlural?: string;
         qualifier: string | null;
     }[];
     instructions: {
-        id: number;
-        recipeId: number;
+        id?: number;
+        recipeId?: number;
         stepNumber: number;
         instructionText: string;
     }[];

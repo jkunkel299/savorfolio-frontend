@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
 
 interface IngredientsWPanelProps {
     rawIngredients: string[];
@@ -32,7 +33,9 @@ export default function IngredientsWPanel({rawIngredients}: IngredientsWPanelPro
                 p:2
             }}
         >
+            
             <List>
+                <Typography variant="h5">Extracted Ingredients</Typography>
                 {rawIngredients.map((ing, i) => (
                 <ListItem key={i}><ListItemText>{ing}</ListItemText></ListItem>
             ))}

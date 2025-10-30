@@ -21,7 +21,7 @@ import { clearDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
 export function AddRecipePage() {
     const [currentStep, setCurrentStep] = useState(0);
 
-    const steps = ["RecipeSummary", "RecipeTags", "Ingredients", "Instructions", "Review"]; // add notes page
+    const steps = ["RecipeSummary", "RecipeTags", "Ingredients", "Instructions", "Review"]; // add notes page and sections page
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const draftRecipe = useSelector((state: RootState) => state.draftRecipe.data);
@@ -37,8 +37,8 @@ export function AddRecipePage() {
                 description: draftRecipe?.recipeSummary.description || null,
                 cookTime: draftRecipe?.recipeSummary.cookTime || null,
                 prepTime: draftRecipe?.recipeSummary.prepTime || null,
-                bakeTemp: null,
-                temp_unit: null,
+                bakeTemp: draftRecipe?.recipeSummary.bakeTemp || null,
+                temp_unit: draftRecipe?.recipeSummary.temp_unit || null,
             },
             ingredients: [],
             instructions: draftRecipe?.instructions || [],

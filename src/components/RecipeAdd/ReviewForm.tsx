@@ -1,10 +1,16 @@
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
+// import List from "@mui/material/List";
+// import ListItem from "@mui/material/ListItem";
+// import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import { useFormContext } from "react-hook-form";
 import type { NewRecipeDTO } from "../../types";
+import Stack from "@mui/material/Stack";
+import RecipeSummaryView from "../RecipeView/RecipeSummaryView";
+import IngredientViewList from "../RecipeView/IngredientViewList";
+import InstructionViewList from "../RecipeView/InstructionViewList";
+import Divider from "@mui/material/Divider";
+import TagsView from "../RecipeView/TagsView";
 
 export default function ReviewForm(){
     const { getValues } = useFormContext<NewRecipeDTO>();
@@ -13,85 +19,28 @@ export default function ReviewForm(){
     if (!values) return <Typography>Loading review...</Typography>;
 
     return (
-        <Box width={1000}>
-            <Typography variant="h4" color="primary" gutterBottom>Review Your Recipe</Typography>
-            {/* RecipeSummary */}
-            <Typography variant="h5">Title: {values.recipeSummary.name} </Typography>
+        <Box 
+            sx={{
+                display: 'flex',
+                justifyContent: 'center', // Centers horizontally
+                minHeight: '100vh',       // Ensures the container takes full viewport height
+                width: '100%',            // Ensures the container takes full viewport width
+            }}
+        >
+            <Stack spacing={2}>
+                <Typography variant="h4" color="primary" gutterBottom>Review Your Recipe</Typography>
+                <RecipeSummaryView recipeSummary={values.recipeSummary}/>
 
-            <Typography variant="h6">Description: {values.recipeSummary.description}</Typography>
+                <Typography variant="h4">Ingredients</Typography>
+                <IngredientViewList ingredients={values.ingredients} />
 
-            <Typography variant="h6">Servings: {values.recipeSummary.servings}</Typography>
+                <Typography variant="h4">Instructions</Typography>
+                <InstructionViewList instructions={values.instructions} />
 
-            <Typography variant="h6">Prep Time: {values.recipeSummary.prepTime}</Typography>
-
-            <Typography variant="h6">Cook Time: {values.recipeSummary.cookTime}</Typography>
-
-            {values.recipeSummary.bakeTemp !== null && (
-                <Typography variant="h6">
-                    Bake Temperature: {values.recipeSummary.bakeTemp} °{values.recipeSummary.temp_unit} 
-                </Typography>
-            )}
-
-            {/* RecipeTags */}
-            <Typography variant="h5">Tags</Typography>
-            {values.recipeTags.meal == null && values.recipeTags.recipe_type == null
-                && values.recipeTags.cuisine == null && values.recipeTags.dietary?.length == 0 && (
-                    <Typography>No tags added</Typography>
-                )}
-            {values.recipeTags.meal !== null && (
-                <Box>
-                    <Typography variant="h6">Meal: </Typography>
-                    <Typography>{values.recipeTags.meal} </Typography>
-                </Box>
-            )}
-            {values.recipeTags.recipe_type !== null && (
-                <Box>
-                    <Typography variant="h6">Recipe Type: </Typography>
-                    <Typography>{values.recipeTags.recipe_type} </Typography>
-                </Box>
-            )}
-            {values.recipeTags.cuisine !== null && (
-                <Box>
-                    <Typography variant="h6">Cuisine: </Typography>
-                    <Typography>{values.recipeTags.cuisine} </Typography>
-                </Box>
-            )}
-            {values.recipeTags.dietary?.length !== 0 && (
-                <Box>
-                    <Typography variant="h6">Dietary Considerations: </Typography>
-                    <List>
-                        {values.recipeTags.dietary?.map((diet, d) => (
-                            <ListItem key={d}><ListItemText>{diet}</ListItemText></ListItem>
-                        ))} 
-                    </List>
-                </Box>
-            )}
-
-            {/* Ingredients */}
-            <Typography variant="h5">Ingredients</Typography>
-            <List>
-                {Array.isArray(values.ingredients) && values.ingredients.length > 0 ? (
-                    values.ingredients.map((ing, i) => (
-                    <ListItem key={i}>
-                        <ListItemText>{ing.quantity ?? ""} {ing.unitName ?? ""} {ing.ingredientName ?? ""}
-                        {ing.qualifier ? ` (${ing.qualifier})` : ""}</ListItemText>
-                    </ListItem>
-                    ))
-                ) : (
-                    <ListItem>No ingredients added.</ListItem>
-                )}
-            </List>
-
-            {/* Instructions */}
-            <Typography variant="h5">Instructions</Typography>
-            <List>
-                {values.instructions?.map((ins, i) => (
-                    <ListItem key={i}>
-                        <Typography>{ins.stepNumber}. {ins.instructionText}</Typography>
-                    </ListItem>
-                ))}
-            </List>
-            
+                <Divider />
+                <Typography variant="h4">Recipe Tags</Typography>
+                <TagsView recipeTags={values.recipeTags} />
+            </Stack>
         </Box>
     )
 }

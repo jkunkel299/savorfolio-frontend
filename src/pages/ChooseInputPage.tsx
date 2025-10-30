@@ -10,10 +10,12 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export function ChooseInputPage() {
     const [recipeUrl, setRecipeUrl] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -33,16 +35,20 @@ export function ChooseInputPage() {
         }
         setErrorMessage("");
         try {
+            // set page to loading
+            setLoading(true);
             const response = await recipeService.postScrapedRecipe(url);
             const draftRecipe = response.data;
             // store draft recipe in Redux
-            dispatch(setDraftRecipe(draftRecipe));
+            dispatch(setDraftRecipe(draftRecipe));           
             // navigate to form page
             navigate("/add")
         } catch (err) {
             console.error(err);
             setErrorMessage("Failed to get recipe. Please try again.");
         }
+
+        setTimeout(() => { setLoading(false); }, 2000);
     };
 
     return <Box display="flex" justifyContent="center" sx={{ width: '100%', paddingTop: "20%", paddingBottom: "20%" }} flexDirection="row">
@@ -61,6 +67,22 @@ export function ChooseInputPage() {
                     </Button>
                 </Grid>
                 <Grid size={{ xs: 8 }} justifyContent="center">
+                    {loading && (
+                        <Stack
+                        position="absolute"
+                        top={0}
+                        left={0}
+                        right={0}
+                        bottom={0}
+                        alignItems="center"
+                        justifyContent="center"
+                        bgcolor="rgba(255, 255, 255, 0.7)" // Semi-transparent overlay
+                        zIndex={1}
+                        >
+                        <CircularProgress />
+                        <Typography variant="h6" mt={2}>Loading data...</Typography>
+                        </Stack>
+                    )}
                     <Stack spacing={3}>
                     <TextField
                         type="text"
