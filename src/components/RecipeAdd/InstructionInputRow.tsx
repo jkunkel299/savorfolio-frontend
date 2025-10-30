@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,14 +26,15 @@ export default function InstructionInputRow ({ index, onDelete }: InstructionRow
         >  
             {/* Show Step Number */}
             <Typography
-                {...register(`Instructions.${index}.StepNumber`)}
+                {...register(`instructions.${index}.stepNumber`)}
             >{index + 1}.</Typography>
 
             {/* Instruction Text */}
-            <OutlinedInput 
+            <TextField 
                 type="text"
+                multiline
                 placeholder="Instruction text"
-                {...register(`Instructions.${index}.InstructionText` as const, 
+                {...register(`instructions.${index}.instructionText` as const, 
                     {required: "Instruction text is required"})}
                 sx={{ width:"90%", maxWidth: 1000}} 
             />
@@ -50,7 +51,7 @@ export default function InstructionInputRow ({ index, onDelete }: InstructionRow
             </IconButton>
             
             {/* Error message */}
-            {errors.Instructions?.[index] && (
+            {errors.instructions?.[index] && (
                 <Typography color="error">Fill out required fields. </Typography>
             )}
         </Box>

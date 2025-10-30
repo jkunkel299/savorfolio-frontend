@@ -5,6 +5,7 @@ import { AddRecipePage } from "./pages/AddRecipePage";
 import HomePage from "./pages/HomePage";
 import RecipeConfirmedPage from "./pages/RecipeConfirmedPage";
 import { ViewRecipePage } from "./pages/ViewRecipePage";
+import { ChooseInputPage } from "./pages/ChooseInputPage";
 
 
 const App: React.FC = () => {
@@ -13,6 +14,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Layout><HomePage /></Layout>} />
         <Route path="/search" element={<Layout><RecipeSearchPage /></Layout>} />
+        <Route path="/add-input" element={<Layout><ChooseInputPage /></Layout>} />
         <Route path="/add" element={<Layout><AddRecipePage /></Layout>} />
         <Route path="/confirmed" element={<Layout><RecipeConfirmedPage /></Layout>} />
         <Route path="/view" element={<Layout><ViewRecipePage /></Layout>} />

@@ -11,14 +11,14 @@ export default function IngredientsInputList() {
     const { register, control } = useFormContext<NewRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
         control,
-        name: "Ingredients",
+        name: "ingredients",
         rules: {
             validate: (value) => value.length > 0 || "You must add at least one ingredient",
         },
     });
 
     useEffect(() => {
-        register("Ingredients", {
+        register("ingredients", {
             validate: (value) =>
             value && value.length > 0 || "You must add at least one ingredient",
         });
@@ -29,7 +29,7 @@ export default function IngredientsInputList() {
     }
 
     return (
-        <Box width="100%">
+        <Box >
             <Typography variant='h4' gutterBottom>Ingredients List</Typography>
             <Stack spacing={2}>
                 {fields.map((entry, idx) => (
@@ -43,15 +43,15 @@ export default function IngredientsInputList() {
 
                 <Button variant="outlined" onClick={() =>
                         append({
-                            IngredientOrder: fields.length + 1,
-                            IngredientId: 0,
-                            IngredientName: "",
-                            IngNamePlural: "",
-                            Quantity: "",
-                            UnitId: 0,
-                            UnitName: "",
-                            UnitPlural: "",
-                            Qualifier: null,
+                            ingredientOrder: fields.length + 1,
+                            ingredientId: 0,
+                            ingredientName: "",
+                            ingNamePlural: "",
+                            quantity: "",
+                            unitId: 0,
+                            unitName: "",
+                            unitPlural: "",
+                            qualifier: null,
                         })
                     }>
                     Add an Ingredient

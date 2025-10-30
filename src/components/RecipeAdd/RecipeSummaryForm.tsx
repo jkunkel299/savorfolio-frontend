@@ -5,6 +5,7 @@ import FormLabel from '@mui/material/FormLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
@@ -25,11 +26,11 @@ export default function RecipeForm() {
     // watch BakeTemp
     const bakeTemp = useWatch({
         control,
-        name: "RecipeSummary.BakeTemp",
+        name: "recipeSummary.bakeTemp",
     });
 
     useEffect(() => {
-        register("RecipeSummary.Name",{
+        register("recipeSummary.name",{
             validate: (value) => value !== null || "The recipe must have a title",
         });
     }, [register]);
@@ -43,7 +44,7 @@ export default function RecipeForm() {
             <FormGrid size={{ xs: 12 }}>
                 <FormLabel htmlFor="recipe-title" required>Recipe Title</FormLabel>
                 <Controller 
-                    {...register("RecipeSummary.Name", { required: "Recipe title is required" })}
+                    {...register("recipeSummary.name", { required: "Recipe title is required" })}
                     control={control}
                     render={({ field, fieldState }) => <>
                         <OutlinedInput
@@ -66,12 +67,13 @@ export default function RecipeForm() {
             <FormGrid size={{ xs: 12 }}>
                 <FormLabel htmlFor="recipe-description" required>Recipe Description</FormLabel>
                 <Controller 
-                    name="RecipeSummary.Description"
+                    name="recipeSummary.description"
                     control={control}
                     render={({ field }) => <>
-                        <OutlinedInput
+                        <TextField
                             id="recipe-title"
                             type="text"
+                            multiline
                             placeholder="Add a description here"
                             size="small"
                             {...field}
@@ -84,7 +86,7 @@ export default function RecipeForm() {
             <FormGrid size={{ xs: 12 }}>
                 <FormLabel htmlFor="servings" required>Servings</FormLabel>
                 <Controller 
-                    name="RecipeSummary.Servings"
+                    name="recipeSummary.servings"
                     control={control}
                     render={({ field }) => <>
                         <OutlinedInput
@@ -102,7 +104,7 @@ export default function RecipeForm() {
             <FormGrid size={{ xs: 6 }}>
                 <FormLabel htmlFor="prep-time">Prep Time</FormLabel>
                 <Controller 
-                    name="RecipeSummary.PrepTime"
+                    name="recipeSummary.prepTime"
                     control={control}
                     render={({ field }) => <>
                         <OutlinedInput
@@ -123,7 +125,7 @@ export default function RecipeForm() {
             <FormGrid size={{ xs: 6 }}>
                 <FormLabel htmlFor="cook-time">Cook Time</FormLabel>
                 <Controller 
-                    name="RecipeSummary.CookTime"
+                    name="recipeSummary.cookTime"
                     control={control}
                     render={({ field }) => <>
                         <OutlinedInput
@@ -144,7 +146,7 @@ export default function RecipeForm() {
             <FormGrid size={{ xs: 6 }}>
                 <FormLabel htmlFor="bakeTemp">Bake Temperature</FormLabel>
                 <Controller
-                    name="RecipeSummary.BakeTemp"
+                    name="recipeSummary.bakeTemp"
                     control={control}
                     render={({ field }) => 
                         <OutlinedInput
@@ -165,7 +167,7 @@ export default function RecipeForm() {
                     <FormControl>
                         <FormLabel id="temp-unit">Unit</FormLabel>
                         <Controller 
-                            name="RecipeSummary.Temp_unit"
+                            name="recipeSummary.temp_unit"
                             control={control}
                             render={({field}) => <RadioGroup row {...field}>
                                 <FormControlLabel value="F" control={<Radio />} label="F" />

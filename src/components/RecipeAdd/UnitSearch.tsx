@@ -21,8 +21,8 @@ export default function UnitSearch({ index }: { index: number}) {
         stringify: (option) => `${option.name} ${option.pluralName} ${option.abbreviation}`,
     });
 
-    const unitName = watch(`Ingredients.${index}.UnitName`);
-    const unitId = watch(`Ingredients.${index}.UnitId`);
+    const unitName = watch(`ingredients.${index}.unitName`);
+    const unitId = watch(`ingredients.${index}.unitId`);
 
     // Local state to store the selected option object
     const [selectedOption, setSelectedOption] = useState<UnitOption | null>(null);
@@ -60,9 +60,9 @@ export default function UnitSearch({ index }: { index: number}) {
 
     return (
         <Controller 
-            name={`Ingredients.${index}.UnitName`}
+            name={`ingredients.${index}.unitName`}
             control={control}
-            rules={{required: "Unit is requried"}}
+            // rules={{required: "Unit is requried"}}
             render={({ field }) => (
                 <Autocomplete
                     id="units-selection"
@@ -76,7 +76,7 @@ export default function UnitSearch({ index }: { index: number}) {
                     onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
                     onChange={(_, newValue: UnitOption | null) => {
                         field.onChange(newValue?.displayName ?? '');
-                        setValue(`Ingredients.${index}.UnitId`, newValue ? newValue.id : 0);
+                        setValue(`ingredients.${index}.unitId`, newValue ? newValue.id : 0);
                         setSelectedOption(newValue);
                     }}
                     filterOptions={filterOptions}

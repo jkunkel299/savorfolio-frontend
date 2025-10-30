@@ -30,35 +30,35 @@ export interface UnitsDTO {
 }
 
 export interface NewRecipeDTO {
-    RecipeSummary: {
-        Name: string;
-        Servings: number | null;
-        CookTime: string | null;
-        PrepTime: string | null;
-        BakeTemp: number | null;
-        Temp_unit: string | null;
-        Description: string | null;
+    recipeSummary: {
+        name: string;
+        servings: number | null;
+        cookTime: string | null;
+        prepTime: string | null;
+        bakeTemp: number | null;
+        temp_unit: string | null;
+        description: string | null;
     };
-    Ingredients: {
-        IngredientOrder: number;
-        IngredientId: number;
-        IngredientName: string;
-        IngNamePlural: string | null;
-        Quantity: string;
-        UnitId: number;
-        UnitName: string;
-        UnitPlural: string;
-        Qualifier: string | null;
+    ingredients: {
+        ingredientOrder: number;
+        ingredientId: number;
+        ingredientName: string;
+        ingNamePlural: string | null;
+        quantity: string;
+        unitId: number;
+        unitName: string;
+        unitPlural: string;
+        qualifier: string | null;
     }[];
-    Instructions: {
-        StepNumber: number;
-        InstructionText: string;
+    instructions: {
+        stepNumber: number;
+        instructionText: string;
     }[];
-    RecipeTags:{
-        Meal?: string | null;
-        Recipe_type: string;
-        Cuisine?: string | null;
-        Dietary: string[];
+    recipeTags:{
+        meal?: string | null;
+        recipe_type: string;
+        cuisine?: string | null;
+        dietary: string[];
     }
 }
 
@@ -115,4 +115,27 @@ export interface FullRecipeDTO {
         stepNumber: number;
         instructionText: string;
     }[];
+}
+
+export interface DraftRecipeDTO {
+    recipeSummary: {
+        name: string;
+        servings: number | null;
+        cookTime: string | null;
+        prepTime: string | null;
+        bakeTemp: number | null;
+        temp_unit: string | null;
+        description: string | null;
+    };
+    ingredientsString: string[];
+    instructions: {
+        stepNumber: number;
+        instructionText: string;
+    }[];
+    recipeTags:{
+        meal?: string | null;
+        recipe_type: string;
+        cuisine?: string | null;
+        dietary: string[];
+    }
 }

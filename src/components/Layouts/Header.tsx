@@ -18,7 +18,7 @@ export default function Header() {
                     Savorfolio
                 </Typography>
                 <Button color="inherit" component={Link} to="/search">Search</Button>
-                <Button color="inherit" component={Link} to="/add">Add Recipe</Button>
+                <Button color="inherit" component={Link} to="/add-input">Add Recipe</Button>
             </Toolbar>
         </AppBar>
     );

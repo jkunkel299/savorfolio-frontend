@@ -10,7 +10,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import tagsService from "../../api/tagsApi";
 import type { NewRecipeDTO } from "../../types";
 
-type SelectorType = "Meal" | "Recipe_type" | "Cuisine" | "Dietary";
+type SelectorType = "meal" | "recipe_type" | "cuisine" | "dietary";
 
 interface TagSelectorProps {
     type: SelectorType;
@@ -32,16 +32,16 @@ export default function TagSelector({
             try {
                 let response;
                 switch (type) {
-                    case "Meal":
+                    case "meal":
                         response = await tagsService.getMealTags();
                         break;
-                    case "Recipe_type":
+                    case "recipe_type":
                         response = await tagsService.getRecipeTypeTags();
                         break;
-                    case "Cuisine":
+                    case "cuisine":
                         response = await tagsService.getCuisineTags();
                         break;
-                    case "Dietary":
+                    case "dietary":
                         response = await tagsService.getDietaryTags();
                         break;
                     default:
@@ -62,11 +62,11 @@ export default function TagSelector({
 
     return (
         <Controller 
-            name={`RecipeTags.${type}` as const}
+            name={`recipeTags.${type}` as const}
             control={control}
             rules={{
                 required:
-                    type === "Recipe_type"
+                    type === "recipe_type"
                     ? "Recipe type is required"
                     : false
             }}

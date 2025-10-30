@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useForm, FormProvider, type FieldPath } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { NewRecipeDTO } from "../types";
 import RecipeSummaryForm from "../components/RecipeAdd/RecipeSummaryForm";
@@ -12,34 +12,60 @@ import recipeService from "../api/recipeApi";
 import InstructionsList from "../components/RecipeAdd/InstructionsInputList";
 import IngredientsList from "../components/RecipeAdd/IngredientsInputList";
 import ReviewForm from "../components/RecipeAdd/ReviewForm";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../react-redux/store";
+import IngredientsWPanel from "../components/RecipeAdd/IngredientsWPanel";
+import { clearDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
 
 
 export function AddRecipePage() {
     const [currentStep, setCurrentStep] = useState(0);
+
     const steps = ["RecipeSummary", "RecipeTags", "Ingredients", "Instructions", "Review"]; // add notes page
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const draftRecipe = useSelector((state: RootState) => state.draftRecipe.data);
+    const [ingredientPrefill, setIngredientPrefill] = useState<string[] | null>(null);
 
     const methods = useForm<NewRecipeDTO>({
         mode: "all",
         shouldUnregister: false,
         defaultValues: {
-            RecipeSummary: {
-                Name: "",
-                Servings: null,
-                CookTime: null,
-                PrepTime: null,
-                BakeTemp: null,
-                Temp_unit: null,
+            recipeSummary: {
+                name: draftRecipe?.recipeSummary.name || "",
+                servings: draftRecipe?.recipeSummary.servings || null,
+                description: draftRecipe?.recipeSummary.description || null,
+                cookTime: draftRecipe?.recipeSummary.cookTime || null,
+                prepTime: draftRecipe?.recipeSummary.prepTime || null,
+                bakeTemp: null,
+                temp_unit: null,
             },
-            Ingredients: [],
-            Instructions: [],
-            RecipeTags: { 
-                Meal: null,
-                Recipe_type: "Main",
-                Cuisine: null,
-                Dietary: [] },
+            ingredients: [],
+            instructions: draftRecipe?.instructions || [],
+            recipeTags: { 
+                meal: draftRecipe?.recipeTags.meal || null,
+                recipe_type: draftRecipe?.recipeTags.recipe_type || "Main",
+                cuisine: draftRecipe?.recipeTags.cuisine || null,
+                dietary: draftRecipe?.recipeTags.dietary || [] },
         }
     });
+
+    useEffect(() => {
+        if (draftRecipe) {
+            const ingredientPrefillList: string[] = [];
+            draftRecipe?.ingredientsString.forEach(element => {
+                if (element.includes("\n")){
+                    const elements = element.split("\n")
+                    elements.forEach(element => {
+                        ingredientPrefillList.push(element);
+                    });
+                } else {
+                    ingredientPrefillList?.push(element)
+                }
+            });
+            setIngredientPrefill(ingredientPrefillList);
+        }
+    }, [draftRecipe]);
 
     const { formState } = methods;
     
@@ -66,6 +92,7 @@ export function AddRecipePage() {
                 console.error(err)
             }
             console.log("submit")
+            if (draftRecipe) dispatch(clearDraftRecipe());
             navigate("/confirmed")
         } 
     }
@@ -75,16 +102,16 @@ export function AddRecipePage() {
         
         switch (currentStep) {
             case 0:
-                fieldsToValidate = ["RecipeSummary.Name"];
+                fieldsToValidate = ["recipeSummary.name"];
                 break;
             case 1:
-                fieldsToValidate = ["RecipeTags.Meal", "RecipeTags.Recipe_type", "RecipeTags.Cuisine"];
+                fieldsToValidate = ["recipeTags.recipe_type"];
                 break;
             case 2:
-                fieldsToValidate = ["Ingredients"];
+                fieldsToValidate = ["ingredients"];
                 break;
             case 3:
-                fieldsToValidate = ["Instructions"];
+                fieldsToValidate = ["instructions"];
                 break;
             default:
                 return true;
@@ -102,6 +129,7 @@ export function AddRecipePage() {
         case 1:
             return <TagsForm />;
         case 2:
+            if(ingredientPrefill) return <IngredientsWPanel rawIngredients={ingredientPrefill}/>
             return <IngredientsList />;
         case 3:
             return <InstructionsList />;

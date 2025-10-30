@@ -16,51 +16,51 @@ export default function ReviewForm(){
         <Box width={1000}>
             <Typography variant="h4" color="primary" gutterBottom>Review Your Recipe</Typography>
             {/* RecipeSummary */}
-            <Typography variant="h5">Title: {values.RecipeSummary.Name} </Typography>
+            <Typography variant="h5">Title: {values.recipeSummary.name} </Typography>
 
-            <Typography variant="h6">Description: {values.RecipeSummary.Description}</Typography>
+            <Typography variant="h6">Description: {values.recipeSummary.description}</Typography>
 
-            <Typography variant="h6">Servings: {values.RecipeSummary.Servings}</Typography>
+            <Typography variant="h6">Servings: {values.recipeSummary.servings}</Typography>
 
-            <Typography variant="h6">Prep Time: {values.RecipeSummary.PrepTime}</Typography>
+            <Typography variant="h6">Prep Time: {values.recipeSummary.prepTime}</Typography>
 
-            <Typography variant="h6">Cook Time: {values.RecipeSummary.CookTime}</Typography>
+            <Typography variant="h6">Cook Time: {values.recipeSummary.cookTime}</Typography>
 
-            {values.RecipeSummary.BakeTemp !== null && (
+            {values.recipeSummary.bakeTemp !== null && (
                 <Typography variant="h6">
-                    Bake Temperature: {values.RecipeSummary.BakeTemp} °{values.RecipeSummary.Temp_unit} 
+                    Bake Temperature: {values.recipeSummary.bakeTemp} °{values.recipeSummary.temp_unit} 
                 </Typography>
             )}
 
             {/* RecipeTags */}
             <Typography variant="h5">Tags</Typography>
-            {values.RecipeTags.Meal == null && values.RecipeTags.Recipe_type == null
-                && values.RecipeTags.Cuisine == null && values.RecipeTags.Dietary?.length == 0 && (
+            {values.recipeTags.meal == null && values.recipeTags.recipe_type == null
+                && values.recipeTags.cuisine == null && values.recipeTags.dietary?.length == 0 && (
                     <Typography>No tags added</Typography>
                 )}
-            {values.RecipeTags.Meal !== null && (
+            {values.recipeTags.meal !== null && (
                 <Box>
                     <Typography variant="h6">Meal: </Typography>
-                    <Typography>{values.RecipeTags.Meal} </Typography>
+                    <Typography>{values.recipeTags.meal} </Typography>
                 </Box>
             )}
-            {values.RecipeTags.Recipe_type !== null && (
+            {values.recipeTags.recipe_type !== null && (
                 <Box>
                     <Typography variant="h6">Recipe Type: </Typography>
-                    <Typography>{values.RecipeTags.Recipe_type} </Typography>
+                    <Typography>{values.recipeTags.recipe_type} </Typography>
                 </Box>
             )}
-            {values.RecipeTags.Cuisine !== null && (
+            {values.recipeTags.cuisine !== null && (
                 <Box>
                     <Typography variant="h6">Cuisine: </Typography>
-                    <Typography>{values.RecipeTags.Cuisine} </Typography>
+                    <Typography>{values.recipeTags.cuisine} </Typography>
                 </Box>
             )}
-            {values.RecipeTags.Dietary?.length !== 0 && (
+            {values.recipeTags.dietary?.length !== 0 && (
                 <Box>
                     <Typography variant="h6">Dietary Considerations: </Typography>
                     <List>
-                        {values.RecipeTags.Dietary?.map((diet, d) => (
+                        {values.recipeTags.dietary?.map((diet, d) => (
                             <ListItem key={d}><ListItemText>{diet}</ListItemText></ListItem>
                         ))} 
                     </List>
@@ -70,11 +70,11 @@ export default function ReviewForm(){
             {/* Ingredients */}
             <Typography variant="h5">Ingredients</Typography>
             <List>
-                {Array.isArray(values.Ingredients) && values.Ingredients.length > 0 ? (
-                    values.Ingredients.map((ing, i) => (
+                {Array.isArray(values.ingredients) && values.ingredients.length > 0 ? (
+                    values.ingredients.map((ing, i) => (
                     <ListItem key={i}>
-                        <ListItemText>{ing.Quantity ?? ""} {ing.UnitName ?? ""} {ing.IngredientName ?? ""}
-                        {ing.Qualifier ? ` (${ing.Qualifier})` : ""}</ListItemText>
+                        <ListItemText>{ing.quantity ?? ""} {ing.unitName ?? ""} {ing.ingredientName ?? ""}
+                        {ing.qualifier ? ` (${ing.qualifier})` : ""}</ListItemText>
                     </ListItem>
                     ))
                 ) : (
@@ -85,9 +85,9 @@ export default function ReviewForm(){
             {/* Instructions */}
             <Typography variant="h5">Instructions</Typography>
             <List>
-                {values.Instructions?.map((ins, i) => (
+                {values.instructions?.map((ins, i) => (
                     <ListItem key={i}>
-                        <Typography>{ins.StepNumber}. {ins.InstructionText}</Typography>
+                        <Typography>{ins.stepNumber}. {ins.instructionText}</Typography>
                     </ListItem>
                 ))}
             </List>

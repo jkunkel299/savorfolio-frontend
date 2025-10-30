@@ -20,8 +20,8 @@ export default function IngredientsInput({ index }: { index: number }) {
         stringify: (option) => `${option.name} ${option.pluralName}`,
     });
 
-    const ingredientName = watch(`Ingredients.${index}.IngredientName`);
-    const ingredientId = watch(`Ingredients.${index}.IngredientId`);
+    const ingredientName = watch(`ingredients.${index}.ingredientName`);
+    const ingredientId = watch(`ingredients.${index}.ingredientId`);
 
     // Local state to store the selected option object
     const [selectedOption, setSelectedOption] = useState<IngredientOption | null>(null);
@@ -60,7 +60,7 @@ export default function IngredientsInput({ index }: { index: number }) {
 
     return (
         <Controller
-            name={`Ingredients.${index}.IngredientName`}
+            name={`ingredients.${index}.ingredientName`}
             control={control}
             rules={{required: "Ingredient is requried"}}
             render={({field}) => (
@@ -76,7 +76,7 @@ export default function IngredientsInput({ index }: { index: number }) {
                     onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
                     onChange={(_, newValue: IngredientOption | null) => {
                         field.onChange(newValue?.displayName ?? '');
-                        setValue(`Ingredients.${index}.IngredientId`, newValue ? newValue.id : 0);
+                        setValue(`ingredients.${index}.ingredientId`, newValue ? newValue.id : 0);
                         setSelectedOption(newValue);;
                     }}
                     filterOptions={filterOptions}

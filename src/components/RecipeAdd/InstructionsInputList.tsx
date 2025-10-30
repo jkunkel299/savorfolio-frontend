@@ -11,14 +11,14 @@ export default function InstructionsInputList() {
     const { register, control } = useFormContext<NewRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
         control,
-        name: "Instructions",
+        name: "instructions",
         rules: {
             validate: (value) => value.length > 0 || "You must add at least one instruction",
         },
     });
 
     useEffect(() => {
-        register("Instructions", {
+        register("instructions", {
             validate: (value) =>
             value && value.length > 0 || "You must add at least one instruction",
         });
@@ -45,8 +45,8 @@ export default function InstructionsInputList() {
 
                 <Button variant="outlined" onClick={() =>
                         append({
-                            StepNumber: fields.length + 1,
-                            InstructionText: ""
+                            stepNumber: fields.length + 1,
+                            instructionText: ""
                         })
                     }>
                     Add an Instruction

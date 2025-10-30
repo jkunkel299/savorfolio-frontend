@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useFormContext } from "react-hook-form";
 import type { IngredientEntry, NewRecipeDTO } from "../../types";
@@ -30,7 +31,7 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
             <OutlinedInput 
                 type="text"
                 placeholder="Quantity"
-                {...register(`Ingredients.${index}.Quantity` as const, 
+                {...register(`ingredients.${index}.quantity` as const, 
                     {maxLength: 10}
                 )}
                 sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 120}} 
@@ -47,15 +48,16 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
 
 
             {/* Qualifier */}
-            <OutlinedInput 
+            <TextField 
                 type="text"
+                multiline
                 placeholder="Qualifier (e.g., chopped)"
-                {...register(`Ingredients.${index}.Qualifier`, {
+                {...register(`ingredients.${index}.qualifier`, {
                     validate: (value) => {
                         // allow empty string or null
                         if (!value) return true; 
                         // validate if it's filled
-                        return value.length <= 1000 || "Qualifier must be under 1000 chars";
+                        // return value.length <= 1000 || "Qualifier must be under 1000 chars";
                     },
                 })}
                 sx={{ width: "fit-content", flex: "0 0 auto" }}
@@ -72,7 +74,7 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
                 <DeleteIcon fontSize="small" />
             </IconButton>
 
-            {errors.Ingredients?.[index] && (
+            {errors.ingredients?.[index] && (
                 <Typography>Fill out required fields. </Typography>
             )}
         </Box>
