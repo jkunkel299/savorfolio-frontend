@@ -7,7 +7,11 @@ export default function RecipeSummaryView ({
     recipeSummary
 }: Partial<FullRecipeDTO>) {
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} p={2}
+            sx={{
+                    bgcolor: "rgba(76, 167, 228, 0.4)" // Semi-transparent overlay
+                }}
+        >
             {/* recipe title */}
             <Grid size={12}>
                 <Typography variant="h3" key={recipeSummary?.id}>{recipeSummary?.name}</Typography>
