@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../react-redux/store";
 import IngredientsWPanel from "../components/RecipeAdd/IngredientsWPanel";
 import { clearDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
+import Stack from "@mui/material/Stack";
 
 
 export function AddRecipePage() {
@@ -97,6 +98,11 @@ export function AddRecipePage() {
         } 
     }
 
+    const handleCancelForm = () => {
+        if (draftRecipe) dispatch(clearDraftRecipe());
+        navigate("/add-input");
+    }
+
     const handlePageValid = async () => {
         let fieldsToValidate: FieldPath<NewRecipeDTO>[] = [];
         
@@ -157,19 +163,22 @@ export function AddRecipePage() {
                     p: 3,
                     width: '80vw'
                 }}>
-                    <Box /* onSubmit={methods.handleSubmit(handleSubmit)} */>
-                        {renderCurrentPage()}
+                    <Box>
+                        {renderCurrentPage()}                       
+                        <Stack spacing={4} direction="row" sx={{ paddingTop: 2 }}>
+                            <Button id="cancel-button" type="button" onClick={handleCancelForm} variant="outlined" color="error">Cancel</Button>
 
-                        <Box display="flex" justifyContent="flex-end" sx={{ width: '100%', paddingTop: 2 }}>
-                            {currentStep > 0 && (                        
+                            <Box display="flex" justifyContent="flex-end" sx={{ width: '100%' }}>
+                                {currentStep > 0 && (                        
                                 <Button id="back-button" type="button" onClick={handleBack} variant="outlined" >Back</Button>                        
                             )}
                             {currentStep < steps.length - 1 ? (
                                 <Button id="next-button" type="button" disabled={!formState.isValid} onClick={handleNext} variant="contained" sx={{ marginLeft: 'auto' }}>Next</Button>
                             ) : (
-                                <Button id="submit-button" type="submit" /* disabled={!formState.isValid} */ onClick={methods.handleSubmit(handleSubmitForm)} variant="contained" sx={{ marginLeft: 'auto' }}>Submit Recipe</Button>
+                                <Button id="submit-button" type="submit" onClick={methods.handleSubmit(handleSubmitForm)} variant="contained" sx={{ marginLeft: 'auto' }}>Submit Recipe</Button>
                             )}
-                        </Box>
+                            </Box>
+                        </Stack>
                     </Box>
                 </Paper>
             </Box>
