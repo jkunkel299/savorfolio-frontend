@@ -4,27 +4,33 @@ import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch, type Control, /* type FieldPath */ } from "react-hook-form";
 import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import UnitSearch from "./UnitSearch";
 import IngredientsInput from "./IngredientsInput";
+import { SectionSelect } from "./SectionSelect";
 
 interface IngredientRowProps {
     index: number;
+    control: Control<NewRecipeDTO>;
     onChange: (index: number, updated: Partial<IngredientEntry>) => void;
     onDelete: () => void;
 }
 
-export default function IngredientInputRow ({ index, onDelete }: IngredientRowProps) {
+export default function IngredientInputRow ({ index, control, onDelete }: IngredientRowProps) {
     const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
-    
+    const recipeSections = useWatch({
+        control,
+        name: "recipeSections",
+    });
+
     return (
         <Box 
             sx={{ display: "flex", 
                 gap: 2, 
                 alignItems: "center", 
                 width: "100%",
-                flexWrap: "nowrap", 
+                flexWrap: "wrap", 
             }} 
         >             
             {/* Quantity */}
@@ -56,12 +62,19 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
                     validate: (value) => {
                         // allow empty string or null
                         if (!value) return true; 
-                        // validate if it's filled
-                        // return value.length <= 1000 || "Qualifier must be under 1000 chars";
                     },
                 })}
                 sx={{ width: "fit-content", flex: "0 0 auto" }}
             />
+
+            {/* Sections (conditionally rendered) */}
+            {recipeSections && recipeSections.length > 0 && (
+                <SectionSelect
+                    control={control}
+                    {...register(`ingredients.${index}.sectionName` as const, 
+                    {required: "Section name is required"})}
+                />
+            )}
             
             {/* Delete Button */}
             <IconButton

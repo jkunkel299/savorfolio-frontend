@@ -2,13 +2,17 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext, type Control, /* type FieldPath */ } from "react-hook-form";
 import { useEffect } from "react";
 import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import IngredientInputRow from "./IngredientInputRow";
 
-export default function IngredientsInputList() {
-    const { register, control } = useFormContext<NewRecipeDTO>();
+interface IngredientsInputListProps {
+    control: Control<NewRecipeDTO>;
+}
+
+export default function IngredientsInputList({ control }: IngredientsInputListProps) {
+    const { register } = useFormContext<NewRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
         control,
         name: "ingredients",
@@ -36,6 +40,7 @@ export default function IngredientsInputList() {
                     <IngredientInputRow
                         key={entry.id}
                         index={idx}
+                        control={control}
                         onChange={handleRowChange}
                         onDelete={() => remove(idx)}
                     />
@@ -50,8 +55,9 @@ export default function IngredientsInputList() {
                             quantity: "",
                             unitId: 0,
                             unitName: "",
-                            unitPlural: "",
+                            unitNamePlural: "",
                             qualifier: null,
+                            sectionName: "",
                         })
                     }>
                     Add an Ingredient

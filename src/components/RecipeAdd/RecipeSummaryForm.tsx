@@ -19,7 +19,12 @@ const FormGrid = styled(Grid)(() => ({
   flexDirection: 'column',
 }));
 
-export default function RecipeForm() {
+interface RecipeSummaryFormProps {
+  hasSections: boolean;
+  setHasSections: (value: boolean) => void;
+}
+
+export default function RecipeForm({ hasSections, setHasSections } : RecipeSummaryFormProps) {
     const { control } = useFormContext<NewRecipeDTO>();
     const { register } = useFormContext<NewRecipeDTO>();
 
@@ -28,6 +33,11 @@ export default function RecipeForm() {
         control,
         name: "recipeSummary.bakeTemp",
     });
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value === "True";
+        setHasSections(value);
+    };
 
     useEffect(() => {
         register("recipeSummary.name",{
@@ -177,6 +187,20 @@ export default function RecipeForm() {
                     </FormControl>
                 </FormGrid>
             )}
+
+            <FormGrid size={{ xs: 12 }}>
+                <FormControl>
+                        <FormLabel id="hasSections">Does the recipe have sections?</FormLabel>
+                        <RadioGroup
+                            row
+                            value={hasSections ? "True" : "False"}
+                            onChange={handleChange}
+                        >
+                            <FormControlLabel value="True" control={<Radio />} label="Yes" />
+                            <FormControlLabel value="False" control={<Radio />} label="No" />
+                        </RadioGroup>
+                    </FormControl>
+            </FormGrid>
         </Grid>
         </>
     )

@@ -3,32 +3,28 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useEffect } from "react";
-import { useFormContext, useFieldArray, type Control } from "react-hook-form";
-import type { InstructionEntry, NewRecipeDTO } from "../../types";
-import InstructionInputRow from "./InstructionInputRow";
+import { useFormContext, useFieldArray } from "react-hook-form";
+import type { NewRecipeDTO } from "../../types";
+import RecipeSectionsRow from "./RecipeSectionsRow";
 
-interface InstructionsInputListProps {
-    control: Control<NewRecipeDTO>;
-}
-
-export default function InstructionsInputList({ control }: InstructionsInputListProps) {
-    const { register } = useFormContext<NewRecipeDTO>();
+export default function RecipeSectionsForm() {
+    const { register, control } = useFormContext<NewRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
         control,
-        name: "instructions",
+        name: "recipeSections",
         rules: {
-            validate: (value) => value.length > 0 || "You must add at least one instruction",
+            validate: (value) => value.length > 0 || "You must add at least one section",
         },
     });
-
+    
     useEffect(() => {
-        register("instructions", {
+        register("recipeSections", {
             validate: (value) =>
-            value && value.length > 0 || "You must add at least one instruction",
+            value && value.length > 0 || "You must add at least one section",
         });
     }, [register]);
 
-    const handleRowChange = (index: number, updated: Partial<InstructionEntry>) => {
+    const handleRowChange = (index: number, updated: Partial<NewRecipeDTO>) => {
         update(index, {...fields[index], ...updated});
     }
 
@@ -36,12 +32,11 @@ export default function InstructionsInputList({ control }: InstructionsInputList
         <Box >
             
             <Stack spacing={2}>
-                <Typography variant='h4' gutterBottom>Instructions List</Typography>
+                <Typography variant='h4' gutterBottom>Recipe Sections</Typography>
                 {fields.map((entry, idx) => (
-                    <InstructionInputRow
+                    <RecipeSectionsRow
                         key={entry.id}
                         // entry={entry}
-                        control={control}
                         index={idx}
                         onChange={handleRowChange}
                         onDelete={() => remove(idx)}
@@ -50,12 +45,11 @@ export default function InstructionsInputList({ control }: InstructionsInputList
 
                 <Button variant="outlined" onClick={() =>
                         append({
-                            stepNumber: fields.length + 1,
-                            instructionText: "",
+                            sortOrder: fields.length + 1,
                             sectionName: "",
                         })
                     }>
-                    Add an Instruction
+                    Add a Section
                 </Button>
             </Stack>
         </Box>

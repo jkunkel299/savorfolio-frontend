@@ -1,28 +1,35 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+
 import { useForm, FormProvider, type FieldPath } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../react-redux/store";
+
 import type { NewRecipeDTO } from "../types";
+import recipeService from "../api/recipeApi";
+import { clearDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
 import RecipeSummaryForm from "../components/RecipeAdd/RecipeSummaryForm";
 import TagsForm from "../components/RecipeAdd/TagsForm";
-import recipeService from "../api/recipeApi";
+import RecipeSectionsForm from "../components/RecipeAdd/RecipeSectionsForm";
 import InstructionsList from "../components/RecipeAdd/InstructionsInputList";
 import IngredientsList from "../components/RecipeAdd/IngredientsInputList";
 import ReviewForm from "../components/RecipeAdd/ReviewForm";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../react-redux/store";
 import IngredientsWPanel from "../components/RecipeAdd/IngredientsWPanel";
-import { clearDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
-import Stack from "@mui/material/Stack";
+
+interface Step {
+  component: React.ReactNode;
+  fields: FieldPath<NewRecipeDTO>[];
+}
 
 
 export function AddRecipePage() {
     const [currentStep, setCurrentStep] = useState(0);
-
-    const steps = ["RecipeSummary", "RecipeTags", "Ingredients", "Instructions", "Review"]; // add notes page and sections page
+    const [showSectionsPage, setShowSectionsPage] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const draftRecipe = useSelector((state: RootState) => state.draftRecipe.data);
@@ -41,6 +48,7 @@ export function AddRecipePage() {
                 bakeTemp: draftRecipe?.recipeSummary.bakeTemp || null,
                 temp_unit: draftRecipe?.recipeSummary.temp_unit || null,
             },
+            recipeSections: [],
             ingredients: [],
             instructions: draftRecipe?.instructions || [],
             recipeTags: { 
@@ -50,6 +58,46 @@ export function AddRecipePage() {
                 dietary: draftRecipe?.recipeTags.dietary || [] },
         }
     });
+    const { control } = methods;
+
+    const steps: Step[] = [
+        {
+            component: (
+                <RecipeSummaryForm 
+                    hasSections={showSectionsPage}
+                    setHasSections={setShowSectionsPage}
+                />
+            ),
+            fields: ["recipeSummary.name"] satisfies FieldPath<NewRecipeDTO>[],
+        },
+        {
+            component: <TagsForm />,
+            fields: ["recipeTags.recipe_type"] satisfies FieldPath<NewRecipeDTO>[],
+        },
+        ...(showSectionsPage 
+            ? [
+                {
+                    component: <RecipeSectionsForm />,
+                    fields: ["recipeSections"] satisfies FieldPath<NewRecipeDTO>[],
+                },
+            ] : []),
+        {
+            component: ingredientPrefill ? (
+                <IngredientsWPanel rawIngredients={ingredientPrefill} />
+            ) : (
+                <IngredientsList control={control} />
+            ),
+            fields: ["ingredients"] satisfies FieldPath<NewRecipeDTO>[],
+        },
+        {
+            component: <InstructionsList control={control} />,
+            fields: ["instructions"] satisfies FieldPath<NewRecipeDTO>[],
+        },
+        {
+            component: <ReviewForm />,
+            fields: [] satisfies FieldPath<NewRecipeDTO>[],
+        },
+    ]; // add notes page   
 
     useEffect(() => {
         if (draftRecipe) {
@@ -67,8 +115,6 @@ export function AddRecipePage() {
             setIngredientPrefill(ingredientPrefillList);
         }
     }, [draftRecipe]);
-
-    const { formState } = methods;
     
     const handleNext = async () => {
         const isValid = await handlePageValid();
@@ -105,47 +151,17 @@ export function AddRecipePage() {
 
     const handlePageValid = async () => {
         let fieldsToValidate: FieldPath<NewRecipeDTO>[] = [];
-        
-        switch (currentStep) {
-            case 0:
-                fieldsToValidate = ["recipeSummary.name"];
-                break;
-            case 1:
-                fieldsToValidate = ["recipeTags.recipe_type"];
-                break;
-            case 2:
-                fieldsToValidate = ["ingredients"];
-                break;
-            case 3:
-                fieldsToValidate = ["instructions"];
-                break;
-            default:
-                return true;
-        }
+        fieldsToValidate = steps[currentStep]?.fields;
+        if (!fieldsToValidate?.length) return true;
 
         const isValid = await methods.trigger(fieldsToValidate);
         return isValid;
     }
 
     // Lazy-load current page component
-    const renderCurrentPage = () => {
-        switch (currentStep) {
-        case 0:
-            return <RecipeSummaryForm />;
-        case 1:
-            return <TagsForm />;
-        case 2:
-            if(ingredientPrefill) return <IngredientsWPanel rawIngredients={ingredientPrefill}/>
-            return <IngredientsList />;
-        case 3:
-            return <InstructionsList />;
-        case 4:
-            return <ReviewForm />;
-        default:
-            return <Typography>Unknown Step</Typography>
-        }
-    };
+    const renderCurrentPage = () => steps[currentStep].component ?? <Typography>Unknown Step</Typography>;
 
+    const { formState } = methods;
     
     return (
         <Box 

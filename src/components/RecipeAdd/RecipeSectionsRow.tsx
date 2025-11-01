@@ -3,23 +3,17 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useFormContext, useWatch, type Control } from "react-hook-form";
-import type { InstructionEntry, NewRecipeDTO } from "../../types";
-import { SectionSelect } from "./SectionSelect";
+import { useFormContext } from "react-hook-form";
+import type { NewRecipeDTO } from "../../types";
 
-interface InstructionRowProps {
+interface ReceipeSectionRowProps {
     index: number;
-    control: Control<NewRecipeDTO>;
-    onChange: (index: number, updated: Partial<InstructionEntry>) => void;
+    onChange: (index: number, updated: Partial<NewRecipeDTO>) => void;
     onDelete: () => void;
 }
 
-export default function InstructionInputRow ({ index, control, onDelete }: InstructionRowProps) {
+export default function RecipeSectionsRow ({ index, onDelete }: ReceipeSectionRowProps) {
     const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
-    const recipeSections = useWatch({
-        control,
-        name: "recipeSections",
-    });
     
     return (
         <Box 
@@ -27,32 +21,23 @@ export default function InstructionInputRow ({ index, control, onDelete }: Instr
                 gap: 2, 
                 alignItems: "center", 
                 width: "100%",
-                // flexWrap: "wrap", 
+                flexWrap: "wrap", 
             }} 
         >  
-            {/* Show Step Number */}
+            {/* Show Section Number */}
             <Typography
-                {...register(`instructions.${index}.stepNumber`)}
+                {...register(`recipeSections.${index}.sortOrder`)}
             >{index + 1}.</Typography>
 
-            {/* Instruction Text */}
+            {/* Section Name */}
             <TextField 
                 type="text"
                 multiline
-                placeholder="Instruction text"
-                {...register(`instructions.${index}.instructionText` as const, 
-                    {required: "Instruction text is required"})}
+                placeholder="Section Name"
+                {...register(`recipeSections.${index}.sectionName` as const, 
+                    {required: "Section Name is required"})}
                 sx={{ width:"90%", maxWidth: 1000}} 
             />
-
-            {/* Sections (conditionally rendered) */}
-            {recipeSections && recipeSections.length > 0 && (
-                <SectionSelect
-                    control={control}
-                    {...register(`instructions.${index}.sectionName` as const, 
-                    {required: "Section name is required"})}
-                />
-            )}
 
             {/* Delete Button */}
             <IconButton

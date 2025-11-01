@@ -6,11 +6,11 @@ import { parseQuantity } from '../../utils/parseQuantity';
 
 interface IngredientViewRowProps {
     ingredientName: string;
-    ingPluralName: string | null;
+    ingPluralName?: string | null;
     quantity: string;
     unitName: string;
-    unitPluralName: string;
-    qualifier?: string | null
+    unitPluralName?: string | null;
+    qualifier?: string | null;
 }
 
 export default function IngredientViewRow ({
