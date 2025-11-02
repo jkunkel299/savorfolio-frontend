@@ -42,6 +42,16 @@ export default function IngredientViewRow ({
         </>
     );
 
+    const contentWithoutQuantity = (
+        <>
+            <span>{ingredientName} </span>
+            <span>{unitName} </span>
+            {qualifier && (
+                <span> ({qualifier})</span>
+            )}
+        </>
+    )
+
     return (
         <FormGroup>
             <FormControlLabel control={
@@ -50,7 +60,24 @@ export default function IngredientViewRow ({
                     onChange={handleChange}
                 />
             } 
-            label={checked ? <s>{content}</s> : content}
+            label={ checked ? (
+                <s>
+                    {quantity ? (
+                        content
+                    ) : (
+                        contentWithoutQuantity
+                    )}
+                </s>
+                ) : (
+                <>
+                    {quantity ? (
+                        content
+                    ) : (
+                        contentWithoutQuantity
+                    )}
+                </>
+                )
+            }
             />
         </FormGroup>
     )

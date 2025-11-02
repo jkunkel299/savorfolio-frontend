@@ -9,7 +9,7 @@ export default function RecipeSummaryView ({
     return (
         <Grid container spacing={2} p={2}
             sx={{
-                    bgcolor: "rgba(76, 167, 228, 0.4)" // Semi-transparent overlay
+                    bgcolor: "rgba(172, 68, 34, 0.55)" // Semi-transparent overlay
                 }}
         >
             {/* recipe title */}
