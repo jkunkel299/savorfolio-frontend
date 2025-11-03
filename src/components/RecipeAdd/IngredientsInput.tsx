@@ -80,7 +80,7 @@ export default function IngredientsInput({ index }: { index: number }) {
                         setSelectedOption(newValue);;
                     }}
                     filterOptions={filterOptions}
-                    sx={{ minWidth:300 }}
+                    sx={{ minWidth: 300, width: "fit-content", flex: "0 0 auto" }}
                     renderInput={(params) => (
                         <TextField
                             {...params}

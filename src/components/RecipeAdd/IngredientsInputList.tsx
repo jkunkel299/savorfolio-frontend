@@ -8,7 +8,7 @@ import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import IngredientInputRow from "./IngredientInputRow";
 
 interface IngredientsInputListProps {
-    control: Control<NewRecipeDTO>;
+    control?: Control<NewRecipeDTO>;
 }
 
 export default function IngredientsInputList({ control }: IngredientsInputListProps) {
@@ -35,6 +35,7 @@ export default function IngredientsInputList({ control }: IngredientsInputListPr
     return (
         <Box >
             <Typography variant='h4' gutterBottom>Ingredients List</Typography>
+            <Typography gutterBottom>Enter the ingredients in the recipe. Start with the quantity, then search for the unit, then search for the ingredient name, then add any descriptors or qualifiers (e.g., chopped finely, shredded, diced, etc.)</Typography>
             <Stack spacing={2}>
                 {fields.map((entry, idx) => (
                     <IngredientInputRow

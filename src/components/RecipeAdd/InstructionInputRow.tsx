@@ -23,11 +23,11 @@ export default function InstructionInputRow ({ index, control, onDelete }: Instr
     
     return (
         <Box 
-            sx={{ display: "flex", 
+            sx={{ 
+                display: "flex", 
                 gap: 2, 
-                alignItems: "center", 
+                alignItems: "flex-start", 
                 width: "100%",
-                // flexWrap: "wrap", 
             }} 
         >  
             {/* Show Step Number */}
@@ -36,21 +36,20 @@ export default function InstructionInputRow ({ index, control, onDelete }: Instr
             >{index + 1}.</Typography>
 
             {/* Instruction Text */}
-            <TextField 
-                type="text"
-                multiline
-                placeholder="Instruction text"
-                {...register(`instructions.${index}.instructionText` as const, 
-                    {required: "Instruction text is required"})}
-                sx={{ width:"90%", maxWidth: 1000}} 
-            />
+                <TextField 
+                    type="text"
+                    multiline
+                    placeholder="Instruction text"
+                    {...register(`instructions.${index}.instructionText` as const, 
+                        {required: "Instruction text is required"})}
+                    sx={{ minWidth: "50vw"}} 
+                />
 
             {/* Sections (conditionally rendered) */}
             {recipeSections && recipeSections.length > 0 && (
                 <SectionSelect
                     control={control}
-                    {...register(`instructions.${index}.sectionName` as const, 
-                    {required: "Section name is required"})}
+                    name={`instructions.${index}.sectionName`}
                 />
             )}
 
@@ -59,8 +58,9 @@ export default function InstructionInputRow ({ index, control, onDelete }: Instr
                 aria-label="delete"
                 type="button"
                 onClick={onDelete}
-                color="error"
+                color="primary"
                 size="small"
+                sx={{ flexShrink: 0 }}
             >
                 <DeleteIcon fontSize="small" />
             </IconButton>

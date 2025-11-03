@@ -10,7 +10,8 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
+// import CircularProgress from "@mui/material/CircularProgress";
+import Loading from "../components/Loading";
 
 export function ChooseInputPage() {
     const [recipeUrl, setRecipeUrl] = useState("");
@@ -68,20 +69,7 @@ export function ChooseInputPage() {
                 </Grid>
                 <Grid size={{ xs: 8 }} justifyContent="center">
                     {loading && (
-                        <Stack
-                        position="absolute"
-                        top={0}
-                        left={0}
-                        right={0}
-                        bottom={0}
-                        alignItems="center"
-                        justifyContent="center"
-                        bgcolor="rgba(255, 255, 255, 0.7)" // Semi-transparent overlay
-                        zIndex={1}
-                        >
-                        <CircularProgress />
-                        <Typography variant="h6" mt={2}>Loading data...</Typography>
-                        </Stack>
+                        <Loading />
                     )}
                     <Stack spacing={3}>
                     <TextField

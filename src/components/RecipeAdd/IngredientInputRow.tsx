@@ -12,7 +12,7 @@ import { SectionSelect } from "./SectionSelect";
 
 interface IngredientRowProps {
     index: number;
-    control: Control<NewRecipeDTO>;
+    control?: Control<NewRecipeDTO>;
     onChange: (index: number, updated: Partial<IngredientEntry>) => void;
     onDelete: () => void;
 }
@@ -32,7 +32,15 @@ export default function IngredientInputRow ({ index, control, onDelete }: Ingred
                 width: "100%",
                 flexWrap: "wrap", 
             }} 
-        >             
+        > 
+            {/* Sections (conditionally rendered) */}
+            {recipeSections && recipeSections.length > 0 && (
+                <SectionSelect
+                    control={control}
+                    {...register(`ingredients.${index}.sectionName` as const, 
+                    {required: "Section name is required"})}
+                />
+            )}            
             {/* Quantity */}
             <OutlinedInput 
                 type="text"
@@ -40,11 +48,11 @@ export default function IngredientInputRow ({ index, control, onDelete }: Ingred
                 {...register(`ingredients.${index}.quantity` as const, 
                     {maxLength: 10}
                 )}
-                sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 120}} 
+                sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 100}} 
             />
 
             {/* Unit */}
-            <Box sx={{ width: "fit-content", flex: "0 0 180px"}}> 
+            <Box sx={{ width: "fit-content", flex: "0 0 auto"}}> 
                 <UnitSearch index={index} />
             
             </Box>
@@ -57,7 +65,7 @@ export default function IngredientInputRow ({ index, control, onDelete }: Ingred
             <TextField 
                 type="text"
                 multiline
-                placeholder="Qualifier (e.g., chopped)"
+                placeholder="Qualifier"
                 {...register(`ingredients.${index}.qualifier`, {
                     validate: (value) => {
                         // allow empty string or null
@@ -66,22 +74,13 @@ export default function IngredientInputRow ({ index, control, onDelete }: Ingred
                 })}
                 sx={{ width: "fit-content", flex: "0 0 auto" }}
             />
-
-            {/* Sections (conditionally rendered) */}
-            {recipeSections && recipeSections.length > 0 && (
-                <SectionSelect
-                    control={control}
-                    {...register(`ingredients.${index}.sectionName` as const, 
-                    {required: "Section name is required"})}
-                />
-            )}
             
             {/* Delete Button */}
             <IconButton
                 aria-label="delete"
                 type="button"
                 onClick={onDelete}
-                color="error"
+                color="primary"
                 size="small"
             >
                 <DeleteIcon fontSize="small" />

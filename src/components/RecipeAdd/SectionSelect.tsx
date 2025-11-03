@@ -3,7 +3,7 @@ import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import type { NewRecipeDTO, RecipeSection } from "../../types";
 
 interface SectionSelectProps {
-    control: Control<NewRecipeDTO>;
+    control?: Control<NewRecipeDTO>;
     name: FieldPath<NewRecipeDTO>;
     label?: string;
 }
@@ -11,7 +11,6 @@ interface SectionSelectProps {
 export function SectionSelect({
   control,
   name,
-//   recipeSectionsField,
   label = "Section",
 }: SectionSelectProps) {
   // Watch the parent sections array
@@ -27,11 +26,24 @@ export function SectionSelect({
             name={name}
             control={control}
             render={({ field }) => (
-            <Select {...field} label={label}>
-                {sections && sections.map((section: RecipeSection, index: number) => (
-                <MenuItem key={index} value={section.sectionName}>
-                    {section.sectionName}
+            <Select 
+                {...field}
+                label={label}
+                displayEmpty
+                value={field.value ?? ""}
+                sx={{ minWidth: 300, width: "fit-content", flex: "0 0 auto" }}
+            >
+                {/* --- Blank Option --- */}
+                <MenuItem value="">
+                <br/>
                 </MenuItem>
+
+                {/* --- Section Options --- */}
+                {Array.isArray(sections) &&
+                sections.map((section: RecipeSection, index: number) => (
+                    <MenuItem key={index} value={section.sectionName}>
+                    {section.sectionName}
+                    </MenuItem>
                 ))}
             </Select>
             )}

@@ -20,6 +20,7 @@ import InstructionsList from "../components/RecipeAdd/InstructionsInputList";
 import IngredientsList from "../components/RecipeAdd/IngredientsInputList";
 import ReviewForm from "../components/RecipeAdd/ReviewForm";
 import IngredientsWPanel from "../components/RecipeAdd/IngredientsWPanel";
+import Loading from "../components/Loading";
 
 interface Step {
   component: React.ReactNode;
@@ -30,6 +31,7 @@ interface Step {
 export function AddRecipePage() {
     const [currentStep, setCurrentStep] = useState(0);
     const [showSectionsPage, setShowSectionsPage] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const draftRecipe = useSelector((state: RootState) => state.draftRecipe.data);
@@ -94,7 +96,7 @@ export function AddRecipePage() {
             fields: ["instructions"] satisfies FieldPath<NewRecipeDTO>[],
         },
         {
-            component: <ReviewForm />,
+            component: loading ? (<Loading />):(<ReviewForm />),
             fields: [] satisfies FieldPath<NewRecipeDTO>[],
         },
     ]; // add notes page   
@@ -132,6 +134,8 @@ export function AddRecipePage() {
         if (isValid && currentStep == steps.length-1) {
             const sendData = JSON.stringify(data);
             try {
+                // set page to loading
+                setLoading(true);
                 const response = await recipeService.postRecipeManual(sendData);
                 const savedRecipe = response.data;
                 console.log("Recipe saved: ", savedRecipe)
@@ -142,6 +146,8 @@ export function AddRecipePage() {
             if (draftRecipe) dispatch(clearDraftRecipe());
             navigate("/confirmed")
         } 
+
+        setTimeout(() => { setLoading(false); }, 2000);
     }
 
     const handleCancelForm = () => {
