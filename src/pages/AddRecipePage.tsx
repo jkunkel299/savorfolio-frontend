@@ -27,7 +27,6 @@ interface Step {
   fields: FieldPath<NewRecipeDTO>[];
 }
 
-
 export function AddRecipePage() {
     const [currentStep, setCurrentStep] = useState(0);
     const [showSectionsPage, setShowSectionsPage] = useState(false);
@@ -60,7 +59,6 @@ export function AddRecipePage() {
                 dietary: draftRecipe?.recipeTags.dietary || [] },
         }
     });
-    const { control } = methods;
 
     const steps: Step[] = [
         {
@@ -87,12 +85,12 @@ export function AddRecipePage() {
             component: ingredientPrefill ? (
                 <IngredientsWPanel rawIngredients={ingredientPrefill} />
             ) : (
-                <IngredientsList control={control} />
+                <IngredientsList />
             ),
             fields: ["ingredients"] satisfies FieldPath<NewRecipeDTO>[],
         },
         {
-            component: <InstructionsList control={control} />,
+            component: <InstructionsList />,
             fields: ["instructions"] satisfies FieldPath<NewRecipeDTO>[],
         },
         {

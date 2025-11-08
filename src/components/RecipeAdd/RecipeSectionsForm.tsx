@@ -2,13 +2,12 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useEffect } from "react";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import type { NewRecipeDTO } from "../../types";
 import RecipeSectionsRow from "./RecipeSectionsRow";
 
 export default function RecipeSectionsForm() {
-    const { register, control } = useFormContext<NewRecipeDTO>();
+    const { control } = useFormContext<NewRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
         control,
         name: "recipeSections",
@@ -16,13 +15,6 @@ export default function RecipeSectionsForm() {
             validate: (value) => value.length > 0 || "You must add at least one section",
         },
     });
-    
-    useEffect(() => {
-        register("recipeSections", {
-            validate: (value) =>
-            value && value.length > 0 || "You must add at least one section",
-        });
-    }, [register]);
 
     const handleRowChange = (index: number, updated: Partial<NewRecipeDTO>) => {
         update(index, {...fields[index], ...updated});

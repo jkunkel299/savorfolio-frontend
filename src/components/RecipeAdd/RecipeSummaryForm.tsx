@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles';
 
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
 import type { NewRecipeDTO } from '../../types';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 
 const FormGrid = styled(Grid)(() => ({
@@ -39,12 +39,6 @@ export default function RecipeForm({ hasSections, setHasSections } : RecipeSumma
         setHasSections(value);
     };
 
-    useEffect(() => {
-        register("recipeSummary.name",{
-            validate: (value) => value !== null || "The recipe must have a title",
-        });
-    }, [register]);
-
     return (
         <>
         <Typography variant='h4' gutterBottom>The Basics</Typography>
@@ -65,9 +59,9 @@ export default function RecipeForm({ hasSections, setHasSections } : RecipeSumma
                             {...field}
                         />
                         {fieldState.error && (
-                            <span style={{ color: "red", fontSize: "0.8em" }}>
+                            <Typography style={{ color: "red", fontSize: "0.8em" }}>
                                 {fieldState.error.message}
-                            </span>
+                            </Typography>
                         )}
                     </>}
                 />

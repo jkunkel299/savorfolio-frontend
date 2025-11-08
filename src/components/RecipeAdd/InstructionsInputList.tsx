@@ -2,31 +2,18 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useEffect } from "react";
-import { useFormContext, useFieldArray, type Control } from "react-hook-form";
-import type { InstructionEntry, NewRecipeDTO } from "../../types";
+import { useFieldArray } from "react-hook-form";
+import type { InstructionEntry } from "../../types";
 import InstructionInputRow from "./InstructionInputRow";
 
-interface InstructionsInputListProps {
-    control: Control<NewRecipeDTO>;
-}
 
-export default function InstructionsInputList({ control }: InstructionsInputListProps) {
-    const { register } = useFormContext<NewRecipeDTO>();
+export default function InstructionsInputList() {
     const { fields, append, remove, update } = useFieldArray({
-        control,
         name: "instructions",
         rules: {
             validate: (value) => value.length > 0 || "You must add at least one instruction",
         },
     });
-
-    useEffect(() => {
-        register("instructions", {
-            validate: (value) =>
-            value && value.length > 0 || "You must add at least one instruction",
-        });
-    }, [register]);
 
     const handleRowChange = (index: number, updated: Partial<InstructionEntry>) => {
         update(index, {...fields[index], ...updated});
@@ -40,8 +27,6 @@ export default function InstructionsInputList({ control }: InstructionsInputList
                 {fields.map((entry, idx) => (
                     <InstructionInputRow
                         key={entry.id}
-                        // entry={entry}
-                        control={control}
                         index={idx}
                         onChange={handleRowChange}
                         onDelete={() => remove(idx)}

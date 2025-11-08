@@ -3,21 +3,20 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useFormContext, useWatch, type Control } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import type { InstructionEntry, NewRecipeDTO } from "../../types";
 import { SectionSelect } from "./SectionSelect";
 
 interface InstructionRowProps {
     index: number;
-    control: Control<NewRecipeDTO>;
     onChange: (index: number, updated: Partial<InstructionEntry>) => void;
     onDelete: () => void;
 }
 
-export default function InstructionInputRow ({ index, control, onDelete }: InstructionRowProps) {
+export default function InstructionInputRow ({ index, onDelete }: InstructionRowProps) {
     const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
     const recipeSections = useWatch({
-        control,
+        // control,
         name: "recipeSections",
     });
     
@@ -48,7 +47,7 @@ export default function InstructionInputRow ({ index, control, onDelete }: Instr
             {/* Sections (conditionally rendered) */}
             {recipeSections && recipeSections.length > 0 && (
                 <SectionSelect
-                    control={control}
+                    // control={control}
                     name={`instructions.${index}.sectionName`}
                 />
             )}

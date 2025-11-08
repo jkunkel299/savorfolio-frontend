@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useFormContext, useWatch, type Control, /* type FieldPath */ } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import UnitSearch from "./UnitSearch";
 import IngredientsInput from "./IngredientsInput";
@@ -12,15 +12,13 @@ import { SectionSelect } from "./SectionSelect";
 
 interface IngredientRowProps {
     index: number;
-    control?: Control<NewRecipeDTO>;
     onChange: (index: number, updated: Partial<IngredientEntry>) => void;
     onDelete: () => void;
 }
 
-export default function IngredientInputRow ({ index, control, onDelete }: IngredientRowProps) {
+export default function IngredientInputRow ({ index, onDelete }: IngredientRowProps) {
     const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
     const recipeSections = useWatch({
-        control,
         name: "recipeSections",
     });
 
@@ -36,7 +34,6 @@ export default function IngredientInputRow ({ index, control, onDelete }: Ingred
             {/* Sections (conditionally rendered) */}
             {recipeSections && recipeSections.length > 0 && (
                 <SectionSelect
-                    control={control}
                     {...register(`ingredients.${index}.sectionName` as const, 
                     {required: "Section name is required"})}
                 />
