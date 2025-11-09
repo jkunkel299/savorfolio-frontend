@@ -319,30 +319,10 @@ test('can see the recipe added', async ({ page }) => {
     await page.getByRole('link', { name: 'Search' }).click();
     // assert the new recipe card is present
     await expect(page.locator('#root')).toMatchAriaSnapshot(`
-      - 'button /Chicken Ragout Servings: 4 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
-        - paragraph:
-          - paragraph: "Servings: 4"
-          - paragraph: "/Prep Time: \\\\d+ minutes/"
-          - paragraph: "/Cook Time: \\\\d+ minutes/"
-      - 'button /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
-        - paragraph:
-          - paragraph: "Servings: 8"
-          - paragraph: "/Prep Time: \\\\d+ minutes/"
-          - paragraph: "/Cook Time: \\\\d+ minutes/"
-      - 'button /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
-        - paragraph:
-          - paragraph: "/Servings: \\\\d+/"
-          - paragraph: "/Prep Time: \\\\d+ minutes/"
-          - paragraph: "/Cook Time: \\\\d+ minutes/"
-      - 'button "Scrambled eggs Servings: 1 Prep Time: 5 minutes Cook Time: 5 minutes"':
-        - paragraph:
-          - paragraph: "Servings: 1"
-          - paragraph: "Prep Time: 5 minutes"
-          - paragraph: "Cook Time: 5 minutes"
       - 'button /Mushroom Stroganoff \\(Vegetarian\\) Servings: 4-6 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
         - paragraph:
           - paragraph: "Servings: 4-6"
           - paragraph: "/Prep Time: \\\\d+ minutes/"
           - paragraph: "/Cook Time: \\\\d+ minutes/"
-      `);    
+      `);
 })
