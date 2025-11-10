@@ -2,20 +2,21 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useFieldArray } from "react-hook-form";
-import type { InstructionEntry } from "../../types";
-import InstructionInputRow from "./InstructionInputRow";
+import { useFormContext, useFieldArray } from "react-hook-form";
+import type { NewRecipeDTO } from "../../types";
+import RecipeSectionsRow from "./RecipeSectionsRow";
 
-
-export default function InstructionsInputList() {
+export default function RecipeSectionsForm() {
+    const { control } = useFormContext<NewRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
-        name: "instructions",
+        control,
+        name: "recipeSections",
         rules: {
-            validate: (value) => value.length > 0 || "You must add at least one instruction",
+            validate: (value) => value.length > 0 || "You must add at least one section",
         },
     });
 
-    const handleRowChange = (index: number, updated: Partial<InstructionEntry>) => {
+    const handleRowChange = (index: number, updated: Partial<NewRecipeDTO>) => {
         update(index, {...fields[index], ...updated});
     }
 
@@ -23,10 +24,11 @@ export default function InstructionsInputList() {
         <Box >
             
             <Stack spacing={2}>
-                <Typography variant='h4' gutterBottom>Instructions List</Typography>
+                <Typography variant='h4' gutterBottom>Recipe Sections</Typography>
                 {fields.map((entry, idx) => (
-                    <InstructionInputRow
+                    <RecipeSectionsRow
                         key={entry.id}
+                        // entry={entry}
                         index={idx}
                         onChange={handleRowChange}
                         onDelete={() => remove(idx)}
@@ -35,12 +37,11 @@ export default function InstructionsInputList() {
 
                 <Button variant="outlined" onClick={() =>
                         append({
-                            stepNumber: fields.length + 1,
-                            instructionText: "",
+                            sortOrder: fields.length + 1,
                             sectionName: "",
                         })
                     }>
-                    Add an Instruction
+                    Add a Section
                 </Button>
             </Stack>
         </Box>

@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom';
 interface RecipeCardProps {
     recipeId: number;
     recipeTitle: string;
-    servings: number | null;
-    cookTime: string | null;
-    prepTime: string | null; 
+    servings: number | null | undefined;
+    cookTime: string | null | undefined;
+    prepTime: string | null | undefined; 
 }
 
 export default function RecipeCard({

@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import RecipeSummaryView from "../components/RecipeView/RecipeSummaryView";
 import IngredientViewList from "../components/RecipeView/IngredientViewList";
 import InstructionViewList from "../components/RecipeView/InstructionViewList";
+import RecipeSectionView from "../components/RecipeView/RecipeSectionView";
 import TagsView from "../components/RecipeView/TagsView";
 import type { FullRecipeDTO } from "../types";
 import recipeService from "../api/recipeApi";
@@ -44,6 +45,8 @@ export function ViewRecipePage() {
     if (loading) return <Typography>Loading recipe...</Typography>
     if (error) return <Typography>Error</Typography>; // fix this later
 
+    const hasSections = recipeData?.recipeSections?.length ?? 0 > 0;
+
     return (
         <Box 
             sx={{
@@ -54,6 +57,7 @@ export function ViewRecipePage() {
             }}
         >
             <Stack>
+                {/* Back button */}
                 <Box sx={{ justifyContent:'flex-start' }}>
                     <IconButton
                         onClick={() => {navigate(-1);}}
@@ -63,6 +67,7 @@ export function ViewRecipePage() {
                     </IconButton>
                 </Box>
                 
+                {/* Recipe content */}
                 <Paper elevation={3} sx={{ 
                     p: 3, 
                     width: '80vw'
@@ -70,11 +75,20 @@ export function ViewRecipePage() {
                     <Stack spacing={2}>
                         <RecipeSummaryView recipeSummary={recipeData!.recipeSummary}/>
 
-                        <Typography variant="h4">Ingredients</Typography>
-                        <IngredientViewList ingredients={recipeData!.ingredients} />
+                        {hasSections ? (
+                            <RecipeSectionView
+                                recipeSections={recipeData!.recipeSections}
+                                ingredients={recipeData!.ingredients}
+                                instructions={recipeData!.instructions}
+                            />
+                        ) : (
+                        <>
+                            <Typography variant="h4">Ingredients</Typography>
+                            <IngredientViewList ingredients={recipeData!.ingredients} />
 
-                        <Typography variant="h4">Instructions</Typography>
-                        <InstructionViewList instructions={recipeData!.instructions} />
+                            <Typography variant="h4">Instructions</Typography>
+                            <InstructionViewList instructions={recipeData!.instructions} />
+                        </>)}
 
                         <Divider />
                         <Typography variant="h4">Recipe Tags</Typography>

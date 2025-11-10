@@ -5,12 +5,12 @@ import FormLabel from '@mui/material/FormLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
 import type { NewRecipeDTO } from '../../types';
-import { useEffect } from 'react';
 // import { useEffect } from 'react';
 
 
@@ -19,47 +19,25 @@ const FormGrid = styled(Grid)(() => ({
   flexDirection: 'column',
 }));
 
-export default function RecipeForm(/* { onValidityChange }: { onValidityChange: (valid: boolean) => void} */) {
+interface RecipeSummaryFormProps {
+  hasSections: boolean;
+  setHasSections: (value: boolean) => void;
+}
+
+export default function RecipeForm({ hasSections, setHasSections } : RecipeSummaryFormProps) {
     const { control } = useFormContext<NewRecipeDTO>();
     const { register } = useFormContext<NewRecipeDTO>();
-
-    // watch Name
-    // const recipeName = useWatch({
-    //     control,
-    //     name: "RecipeSummary.Name", 
-    // })
 
     // watch BakeTemp
     const bakeTemp = useWatch({
         control,
-        name: "RecipeSummary.BakeTemp",
+        name: "recipeSummary.bakeTemp",
     });
 
-    // watch Temp_unit
-    // let tempUnit = useWatch({
-    //     control,
-    //     name: "RecipeSummary.Temp_unit",
-    // });
-
-    // useEffect(() => {
-    //     if (recipeName !== null){
-    //         let valid = false;
-    //         if (bakeTemp == null && tempUnit !== null){
-    //             tempUnit = null;
-    //         // } else if (bakeTemp !== null && tempUnit == null) {
-    //         //     valid = false;
-    //         } else {
-    //             valid = true;
-    //         }
-    //         onValidityChange?.(valid);
-    //     }
-    // }, [recipeName, bakeTemp, tempUnit, onValidityChange]);
-
-    useEffect(() => {
-        register("RecipeSummary.Name",{
-            validate: (value) => value !== null || "The recipe must have a title",
-        });
-    }, [register]);
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value === "True";
+        setHasSections(value);
+    };
 
     return (
         <>
@@ -70,23 +48,40 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
             <FormGrid size={{ xs: 12 }}>
                 <FormLabel htmlFor="recipe-title" required>Recipe Title</FormLabel>
                 <Controller 
-                    {...register("RecipeSummary.Name", { required: "Recipe title is required" })}
-                    // name="RecipeSummary.Name"
+                    {...register("recipeSummary.name", { required: "Recipe title is required" })}
                     control={control}
-                    // rules={{ required: "Recipe title is required" }}
                     render={({ field, fieldState }) => <>
                         <OutlinedInput
                             id="recipe-title"
                             type="text"
-                            placeholder="Grandma's Chocolate Chip Cookies"
+                            placeholder="The recipe's title"
                             size="small"
                             {...field}
                         />
                         {fieldState.error && (
-                            <span style={{ color: "red", fontSize: "0.8em" }}>
+                            <Typography style={{ color: "red", fontSize: "0.8em" }}>
                                 {fieldState.error.message}
-                            </span>
+                            </Typography>
                         )}
+                    </>}
+                />
+            </FormGrid>
+
+            {/* Recipe Description */}
+            <FormGrid size={{ xs: 12 }}>
+                <FormLabel htmlFor="recipe-description" required>Recipe Description</FormLabel>
+                <Controller 
+                    name="recipeSummary.description"
+                    control={control}
+                    render={({ field }) => <>
+                        <TextField
+                            id="recipe-title"
+                            type="text"
+                            multiline
+                            placeholder="Add a description here"
+                            size="small"
+                            {...field}
+                        />
                     </>}
                 />
             </FormGrid>
@@ -95,7 +90,7 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
             <FormGrid size={{ xs: 12 }}>
                 <FormLabel htmlFor="servings" required>Servings</FormLabel>
                 <Controller 
-                    name="RecipeSummary.Servings"
+                    name="recipeSummary.servings"
                     control={control}
                     render={({ field }) => <>
                         <OutlinedInput
@@ -113,7 +108,7 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
             <FormGrid size={{ xs: 6 }}>
                 <FormLabel htmlFor="prep-time">Prep Time</FormLabel>
                 <Controller 
-                    name="RecipeSummary.PrepTime"
+                    name="recipeSummary.prepTime"
                     control={control}
                     render={({ field }) => <>
                         <OutlinedInput
@@ -134,7 +129,7 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
             <FormGrid size={{ xs: 6 }}>
                 <FormLabel htmlFor="cook-time">Cook Time</FormLabel>
                 <Controller 
-                    name="RecipeSummary.CookTime"
+                    name="recipeSummary.cookTime"
                     control={control}
                     render={({ field }) => <>
                         <OutlinedInput
@@ -155,7 +150,7 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
             <FormGrid size={{ xs: 6 }}>
                 <FormLabel htmlFor="bakeTemp">Bake Temperature</FormLabel>
                 <Controller
-                    name="RecipeSummary.BakeTemp"
+                    name="recipeSummary.bakeTemp"
                     control={control}
                     render={({ field }) => 
                         <OutlinedInput
@@ -176,7 +171,7 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
                     <FormControl>
                         <FormLabel id="temp-unit">Unit</FormLabel>
                         <Controller 
-                            name="RecipeSummary.Temp_unit"
+                            name="recipeSummary.temp_unit"
                             control={control}
                             render={({field}) => <RadioGroup row {...field}>
                                 <FormControlLabel value="F" control={<Radio />} label="F" />
@@ -186,6 +181,20 @@ export default function RecipeForm(/* { onValidityChange }: { onValidityChange: 
                     </FormControl>
                 </FormGrid>
             )}
+
+            <FormGrid size={{ xs: 12 }}>
+                <FormControl>
+                        <FormLabel id="hasSections">Does the recipe have sections?</FormLabel>
+                        <RadioGroup
+                            row
+                            value={hasSections ? "True" : "False"}
+                            onChange={handleChange}
+                        >
+                            <FormControlLabel value="True" control={<Radio />} label="Yes" />
+                            <FormControlLabel value="False" control={<Radio />} label="No" />
+                        </RadioGroup>
+                    </FormControl>
+            </FormGrid>
         </Grid>
         </>
     )

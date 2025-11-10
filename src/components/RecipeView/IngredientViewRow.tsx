@@ -2,18 +2,23 @@ import Checkbox from '@mui/material/Checkbox';
 import { FormControlLabel } from "@mui/material";
 import FormGroup from "@mui/material/FormGroup";
 import { useState } from "react";
+import { parseQuantity } from '../../utils/parseQuantity';
 
 interface IngredientViewRowProps {
     ingredientName: string;
+    ingPluralName?: string | null;
     quantity: string;
     unitName: string;
-    qualifier?: string | null
+    unitPluralName?: string | null;
+    qualifier?: string | null;
 }
 
 export default function IngredientViewRow ({
     ingredientName,
+    ingPluralName,
     quantity,
     unitName,
+    unitPluralName,
     qualifier,
 }: IngredientViewRowProps) {
     const [checked, setChecked] = useState(false);
@@ -21,17 +26,21 @@ export default function IngredientViewRow ({
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
     };
+
+    const qtyNum = parseQuantity(quantity);
+
+    const displayUnit = qtyNum > 1 && unitPluralName ? unitPluralName : unitName;
+
+    const displayIngredient = qtyNum > 1 && ingPluralName ? ingPluralName : ingredientName;
     
-    const contentWithQuantity = (
+    const content = (
         <>
-            <span>{quantity} </span>
-            <span>{unitName} </span>
-            <span>{ingredientName}</span>
-            { qualifier && (
-                <span> ({qualifier})</span>
-            )}
+            {quantity && <span>{quantity} </span>}
+            {displayUnit && <span>{displayUnit} </span>}
+            <span>{displayIngredient}</span>
+            {qualifier && <span> ({qualifier})</span>}
         </>
-    )
+    );
 
     const contentWithoutQuantity = (
         <>
@@ -54,21 +63,22 @@ export default function IngredientViewRow ({
             label={ checked ? (
                 <s>
                     {quantity ? (
-                        contentWithQuantity
+                        content
                     ) : (
                         contentWithoutQuantity
                     )}
                 </s>
-            ) : (
+                ) : (
                 <>
                     {quantity ? (
-                        contentWithQuantity
+                        content
                     ) : (
                         contentWithoutQuantity
                     )}
                 </>
-            )
-            }/>
+                )
+            }
+            />
         </FormGroup>
     )
 }

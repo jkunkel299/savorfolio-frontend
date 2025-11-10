@@ -11,10 +11,10 @@ import RecipeList from "../components/RecipeSearch/RecipeList";
 export default function RecipeSearchPage() {
     const dispatch = useDispatch();
     const includeIngredients = useSelector(
-        (state: RootState) => state.recipeFiltersReducer.includeIngredients
+        (state: RootState) => state.recipeFilters.includeIngredients
     );
     const excludeIngredients = useSelector(
-        (state: RootState) => state.recipeFiltersReducer.excludeIngredients
+        (state: RootState) => state.recipeFilters.excludeIngredients
     );
     
     const includeIngredientsIds = includeIngredients.map(ing => ing.id);

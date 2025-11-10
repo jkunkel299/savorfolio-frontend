@@ -51,6 +51,12 @@ function RecipeList({
                     />
                 </div>
             ))}
+            
+            {recipeData.length == 0 && (
+                <Typography>
+                    No recipes found. Try other filters!
+                </Typography>
+            )}
         </div>
     );
 }

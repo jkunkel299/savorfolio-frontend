@@ -2,10 +2,13 @@ import Box from "@mui/material/Box";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { useFormContext } from "react-hook-form";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useFormContext, useWatch } from "react-hook-form";
 import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import UnitSearch from "./UnitSearch";
 import IngredientsInput from "./IngredientsInput";
+import { SectionSelect } from "./SectionSelect";
 
 interface IngredientRowProps {
     index: number;
@@ -15,28 +18,38 @@ interface IngredientRowProps {
 
 export default function IngredientInputRow ({ index, onDelete }: IngredientRowProps) {
     const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
-    
+    const recipeSections = useWatch({
+        name: "recipeSections",
+    });
+
     return (
         <Box 
             sx={{ display: "flex", 
                 gap: 2, 
                 alignItems: "center", 
                 width: "100%",
-                flexWrap: "nowrap", 
+                flexWrap: "wrap", 
             }} 
-        >             
+        > 
+            {/* Sections (conditionally rendered) */}
+            {recipeSections && recipeSections.length > 0 && (
+                <SectionSelect
+                    {...register(`ingredients.${index}.sectionName` as const, 
+                    {required: "Section name is required"})}
+                />
+            )}            
             {/* Quantity */}
             <OutlinedInput 
                 type="text"
                 placeholder="Quantity"
-                {...register(`Ingredients.${index}.Quantity` as const, 
+                {...register(`ingredients.${index}.quantity` as const, 
                     {maxLength: 10}
                 )}
-                sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 120}} 
+                sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 100}} 
             />
 
             {/* Unit */}
-            <Box sx={{ width: "fit-content", flex: "0 0 180px"}}> 
+            <Box sx={{ width: "fit-content", flex: "0 0 auto"}}> 
                 <UnitSearch index={index} />
             
             </Box>
@@ -46,15 +59,14 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
 
 
             {/* Qualifier */}
-            <OutlinedInput 
+            <TextField 
                 type="text"
-                placeholder="Qualifier (e.g., chopped)"
-                {...register(`Ingredients.${index}.Qualifier`, {
+                multiline
+                placeholder="Qualifier"
+                {...register(`ingredients.${index}.qualifier`, {
                     validate: (value) => {
                         // allow empty string or null
                         if (!value) return true; 
-                        // validate if it's filled
-                        return value.length <= 1000 || "Qualifier must be under 1000 chars";
                     },
                 })}
                 sx={{ width: "fit-content", flex: "0 0 auto" }}
@@ -65,14 +77,14 @@ export default function IngredientInputRow ({ index, onDelete }: IngredientRowPr
                 aria-label="delete"
                 type="button"
                 onClick={onDelete}
-                color="error"
+                color="primary"
                 size="small"
             >
                 <DeleteIcon fontSize="small" />
             </IconButton>
 
-            {errors.Ingredients?.[index] && (
-                <p>Fill out required fields. </p>
+            {errors.ingredients?.[index] && (
+                <Typography>Fill out required fields. </Typography>
             )}
         </Box>
     )

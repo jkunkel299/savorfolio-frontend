@@ -8,8 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:unit": "vitest run",
-    "test:e2e": "npx playwright test"
+    "test": "playwright test"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -18,7 +17,7 @@
     "@mui/material": "^7.3.2",
     "@reduxjs/toolkit": "^2.9.0",
     "axios": "^1.12.2",
-    "dotenv": "^17.2.2",
+    "dotenv": "^16.4.5",
     "node": "^20.19.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

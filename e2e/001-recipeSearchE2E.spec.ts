@@ -7,9 +7,34 @@ test.beforeEach(async ({ page }) => {
 
 test('page shows all recipes', async ({ page }) => {
     // assert the search filters are visible
-    await expect(page.locator('div').filter({ hasText: 'FiltersSearch for Ingredients' }).nth(3)).toBeVisible();
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+        - heading "Filters" [level=6]
+        - button "Reset Filters"
+        - paragraph: Search for Ingredients to Include
+        - combobox "Ingredients"
+        - button "Open"
+        - paragraph: Search for Ingredients to Exclude
+        - combobox "Ingredients"
+        - button "Open"
+    `);
     // assert the initial recipes are visible - also tests recipeSearch for all recipes
-    await expect(page.locator('div').filter({ hasText: 'Chicken RagoutServings: 4Prep Time: 10 minutesCook Time: 20 minutesFall Spice' }).nth(3)).toBeVisible();
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - 'button /Chicken Ragout Servings: 4 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 4"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      - 'button /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 8"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      - 'button /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "/Servings: \\\\d+/"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      `);
 });
 
 test('include recipes filter', async ({ page }) => {
@@ -23,7 +48,14 @@ test('include recipes filter', async ({ page }) => {
     // select 'chicken' as the ingredient to include
     await page.getByRole('option', { name: 'chicken', exact: true }).click();
     // assert that the expected recipe card is Chicken Ragout
-    await expect(page.locator('#root')).toContainText('Chicken RagoutServings: 4Prep Time: 10 minutesCook Time: 20 minutes');
+
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - 'button /Chicken Ragout Servings: 4 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 4"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      `);
 });
 
 test('exclude recipes filter', async ({ page }) => {
@@ -36,8 +68,19 @@ test('exclude recipes filter', async ({ page }) => {
     await excludeInput.fill('white');
     // select 'white wine' as the ingredient to exclude
     await page.getByRole('option', { name: 'white wine' }).click();
-    // assert that the expected recipe card is Fall Spice Chocolate Chip Cookies
-    await expect(page.locator('#root')).toContainText('Fall Spice Chocolate Chip CookiesServings: 8Prep Time: 15 minutesCook Time: 10 minutes');
+    // assert that the expected recipe cards are Fall Spice Chocolate Chip Cookies and Maple Glazed Apple Blondies
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - 'button /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 8"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      - 'button /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "/Servings: \\\\d+/"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      `);
 });
 
 test('recipe search, include, exclude ingredients', async ({ page }) => {
@@ -46,9 +89,34 @@ test('recipe search, include, exclude ingredients', async ({ page }) => {
     const excludeInput = page.locator('#exclude-ingredients');
 
     // assert the search filters are visible
-    await expect(page.locator('div').filter({ hasText: 'FiltersSearch for Ingredients' }).nth(3)).toBeVisible();
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - heading "Filters" [level=6]
+      - button "Reset Filters"
+      - paragraph: Search for Ingredients to Include
+      - combobox "Ingredients"
+      - button "Open"
+      - paragraph: Search for Ingredients to Exclude
+      - combobox "Ingredients"
+      - button "Open"
+      `);
     // assert the initial recipes are visible - also tests recipeSearch for all recipes
-    await expect(page.locator('div').filter({ hasText: 'Chicken RagoutServings: 4Prep Time: 10 minutesCook Time: 20 minutesFall Spice' }).nth(3)).toBeVisible();
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - 'button /Chicken Ragout Servings: 4 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 4"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      - 'button /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 8"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      - 'button /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "/Servings: \\\\d+/"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      `);
     // interact with the include ingredient filter
     await includeInput.click();
     // search term 'chi' offers multiple ingredients from the ingredientSearch API
@@ -56,25 +124,58 @@ test('recipe search, include, exclude ingredients', async ({ page }) => {
     // select 'chicken' as the ingredient to include
     await page.getByRole('option', { name: 'chicken', exact: true }).click();
     // assert that the expected recipe card is Chicken Ragout
-    await expect(page.locator('#root')).toContainText('Chicken RagoutServings: 4Prep Time: 10 minutesCook Time: 20 minutes');
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - 'button /Chicken Ragout Servings: 4 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 4"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      `);
     // interact with the exclude ingredient filter
     await excludeInput.click();
     // search term 'white' offers multiple ingredients from the ingredientSearch API
     await excludeInput.fill('white');
     // select 'white wine' as the ingredient to exclude
     await page.getByRole('option', { name: 'white wine' }).click();
-    // assert that the page no longer contains any recipe data - i.e., no recipes exist that both include chicken and exclude white wine
-    await expect(page.locator('html')).toContainText('SavorfolioSearchAdd RecipeFiltersReset FiltersSearch for Ingredients to IncludechickenSearch for Ingredients to Excludewhite wine');
+    // assert that the text “No recipes found. Try other filters!” is visible - i.e., no recipes exist that both include chicken and exclude white wine
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`- paragraph: No recipes found. Try other filters!`);
     // focus on the includeInput autocomplete component
     await includeInput.focus();
     // click the 'clear' button to remove the filter to include chicken
     await page.getByTestId('include-clear').click();await page.getByRole('link', { name: 'Search' }).click();
-    // assert that the expected recipe card is Fall Spice Chocolate Chip Cookies
-    await expect(page.locator('#root')).toContainText('Fall Spice Chocolate Chip CookiesServings: 8Prep Time: 15 minutesCook Time: 10 minutes');
+    // assert that the expected recipe cards are Fall Spice Chocolate Chip Cookies and Maple Glazed Apple Blondies
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - 'button /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 8"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      - 'button /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "/Servings: \\\\d+/"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      `);
     // focus on the excludeInput autocomplete component
     await excludeInput.focus();
     // click the 'clear' button to remove the filter to exclude white wine
     await page.getByTestId('exclude-clear').click();
     // assert all recipes are visible
-    await expect(page.locator('#root')).toContainText('Chicken RagoutServings: 4Prep Time: 10 minutesCook Time: 20 minutesFall Spice Chocolate Chip CookiesServings: 8Prep Time: 15 minutesCook Time: 10 minutes');
+    await expect(page.locator('#root')).toMatchAriaSnapshot(`
+      - 'button /Chicken Ragout Servings: 4 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 4"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      - 'button /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "Servings: 8"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      - 'button /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
+        - paragraph:
+          - paragraph: "/Servings: \\\\d+/"
+          - paragraph: "/Prep Time: \\\\d+ minutes/"
+          - paragraph: "/Cook Time: \\\\d+ minutes/"
+      `);
 });

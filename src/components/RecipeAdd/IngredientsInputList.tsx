@@ -2,35 +2,30 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import { useEffect } from "react";
-import type { IngredientEntry, NewRecipeDTO } from "../../types";
+import { useFieldArray } from "react-hook-form";
+import type { IngredientEntry } from "../../types";
 import IngredientInputRow from "./IngredientInputRow";
 
 export default function IngredientsInputList() {
-    const { register, control } = useFormContext<NewRecipeDTO>();
     const { fields, append, remove, update } = useFieldArray({
-        control,
-        name: "Ingredients",
+        name: "ingredients",
         rules: {
             validate: (value) => value.length > 0 || "You must add at least one ingredient",
         },
     });
-
-    useEffect(() => {
-        register("Ingredients", {
-            validate: (value) =>
-            value && value.length > 0 || "You must add at least one ingredient",
-        });
-    }, [register]);
 
     const handleRowChange = (index: number, updated: Partial<IngredientEntry>) => {
         update(index, {...fields[index], ...updated});
     }
 
     return (
-        <Box width="100%">
+        <Box >
             <Typography variant='h4' gutterBottom>Ingredients List</Typography>
+            <Typography gutterBottom>
+                Enter the ingredients in the recipe. Start with the quantity, then search for the unit, 
+                then search for the ingredient name, then add any descriptors or qualifiers 
+                (e.g., chopped finely, shredded, diced, etc.)
+                </Typography>
             <Stack spacing={2}>
                 {fields.map((entry, idx) => (
                     <IngredientInputRow
@@ -43,13 +38,16 @@ export default function IngredientsInputList() {
 
                 <Button variant="outlined" onClick={() =>
                         append({
-                        IngredientOrder: fields.length + 1,
-                        IngredientId: 0,
-                        IngredientName: "",
-                        Quantity: "",
-                        UnitId: 0,
-                        UnitName: "",
-                        Qualifier: null,
+                            ingredientOrder: fields.length + 1,
+                            ingredientId: 0,
+                            ingredientName: "",
+                            ingNamePlural: "",
+                            quantity: "",
+                            unitId: 0,
+                            unitName: "",
+                            unitNamePlural: "",
+                            qualifier: null,
+                            sectionName: "",
                         })
                     }>
                     Add an Ingredient

@@ -13,7 +13,7 @@ export default defineConfig({
     outputDir: path.join(os.tmpdir(), 'playwright-output'), // system temp folder
     /* Run tests in files in parallel */
     fullyParallel: true,
-    /* Fail the build on CI if you accidentally left test.only in the source code. */
+    /* Fail the build on CI if test.only is in the source code. */
     forbidOnly: !!process.env.CI,
     /* Retry on CI only */
     retries: process.env.CI ? 2 : 0,
@@ -55,18 +55,17 @@ export default defineConfig({
             url: 'http://localhost:5188/health', // backend URL
             name: 'Backend',
             reuseExistingServer: false,
-            // timeout: 120 * 1000,
             cwd: '../savorfolio-backend/src', // explicitly set working directory for backend
-              env: {
+            env: {
                 ASPNETCORE_ENVIRONMENT: 'Test', // triggers .env.test load in backend
                 NODE_ENV: "test",
-              },
+            },
         },
         {
             command: 'npm run dev', // Command to start frontend
             url: 'http://localhost:5173/', // frontend URL
             name: 'Frontend',
-            reuseExistingServer: true,
+            reuseExistingServer: false,
         },
     ],
 });

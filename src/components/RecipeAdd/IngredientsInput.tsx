@@ -1,28 +1,46 @@
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useFetchIngredients } from "../../utils/useFetchIngredients";
 import type { NewRecipeDTO, IngredientVariantDTO } from "../../types";
 
+export type IngredientOption = IngredientVariantDTO & {
+    displayName: string;
+    isPlural?: boolean;
+};
+
 export default function IngredientsInput({ index }: { index: number }) {
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const { options, loading } = useFetchIngredients(inputValue);
+    const { options: rawIngredients, loading } = useFetchIngredients(inputValue);
     const { control, setValue, watch } = useFormContext<NewRecipeDTO>();
 
-    const filterOptions = createFilterOptions<IngredientVariantDTO>({
-        stringify: (option) => `${option.name}`,
+    const filterOptions = createFilterOptions<IngredientOption>({
+        stringify: (option) => `${option.name} ${option.pluralName}`,
     });
 
-    const ingredientName = watch(`Ingredients.${index}.IngredientName`);
-    const ingredientId = watch(`Ingredients.${index}.IngredientId`);
+    const ingredientName = watch(`ingredients.${index}.ingredientName`);
+    const ingredientId = watch(`ingredients.${index}.ingredientId`);
 
     // Local state to store the selected option object
-    const [selectedOption, setSelectedOption] = useState<IngredientVariantDTO | null>(null);
+    const [selectedOption, setSelectedOption] = useState<IngredientOption | null>(null);
+
+    const options = useMemo<IngredientOption[]>(() => {
+        if (!rawIngredients) return [];
+        return rawIngredients.flatMap((i) => {
+            const base: IngredientOption = {
+                ...i, displayName: i.name, isPlural: false,
+            };
+            const plural: IngredientOption | null = i.pluralName ? {
+                ...i, displayName: i.pluralName, isPlural: true,
+            } : null;
+            return plural ? [base, plural] : [base];
+        });        
+    }, [rawIngredients]);
 
     useEffect(() => {
-        const found = options.find(opt => opt.id === ingredientId) ?? null;
+        const found = options.find(opt => opt.id === ingredientId && opt.displayName === ingredientName) ?? null;
         if (found) {
             setSelectedOption(found);
         } else if (ingredientId || ingredientName) {
@@ -31,7 +49,9 @@ export default function IngredientsInput({ index }: { index: number }) {
                 id: ingredientId ?? 0,
                 name: ingredientName ?? '',
                 typeId: 0,
-                ingredientCategory:''
+                ingredientCategory:'',
+                pluralName:'',
+                displayName: ingredientName ?? '',
         });
         } else {
             setSelectedOption(null);
@@ -40,7 +60,7 @@ export default function IngredientsInput({ index }: { index: number }) {
 
     return (
         <Controller
-            name={`Ingredients.${index}.IngredientName`}
+            name={`ingredients.${index}.ingredientName`}
             control={control}
             rules={{required: "Ingredient is requried"}}
             render={({field}) => (
@@ -52,14 +72,15 @@ export default function IngredientsInput({ index }: { index: number }) {
                     onClose={() => setOpen(false)}
                     options={options}
                     loading={loading}
-                    getOptionLabel={(option) => option.name}
+                    getOptionLabel={(option) => option.displayName}
                     onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
-                    onChange={(_, newValue) => {
-                        field.onChange(newValue?.name);
-                        setValue(`Ingredients.${index}.IngredientId`, newValue ? newValue.id : 0);
+                    onChange={(_, newValue: IngredientOption | null) => {
+                        field.onChange(newValue?.displayName ?? '');
+                        setValue(`ingredients.${index}.ingredientId`, newValue ? newValue.id : 0);
+                        setSelectedOption(newValue);;
                     }}
                     filterOptions={filterOptions}
-                    sx={{ minWidth:300 }}
+                    sx={{ minWidth: 300, width: "fit-content", flex: "0 0 auto" }}
                     renderInput={(params) => (
                         <TextField
                             {...params}
