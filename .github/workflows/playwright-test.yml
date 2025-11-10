@@ -28,11 +28,7 @@ jobs:
      - name: Install Playwright browsers
        run: npx playwright install --with-deps
 
-     - name: Disable dotenvx in CI
-       run: npm pkg set dotenv_config_disable=true
-
      - name: Run Playwright tests
        run: npx playwright test
        env:
          ConnectionStrings__DATABASE_CONNECTION: ${{ secrets.ConnectionStrings__DATABASE_CONNECTION }}
-         DOTENV_KEY: ""
