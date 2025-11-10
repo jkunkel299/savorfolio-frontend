@@ -33,3 +33,4 @@ jobs:
        env:
          ConnectionStrings__DATABASE_CONNECTION: ${{ secrets.ConnectionStrings__DATABASE_CONNECTION }}
          DOTENV_KEY: ""
+         DOTENV_DISABLE_RUN: "true"
