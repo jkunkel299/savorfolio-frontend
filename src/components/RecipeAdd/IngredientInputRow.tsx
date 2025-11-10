@@ -11,81 +11,87 @@ import IngredientsInput from "./IngredientsInput";
 import { SectionSelect } from "./SectionSelect";
 
 interface IngredientRowProps {
-    index: number;
-    onChange: (index: number, updated: Partial<IngredientEntry>) => void;
-    onDelete: () => void;
+  index: number;
+  onChange: (index: number, updated: Partial<IngredientEntry>) => void;
+  onDelete: () => void;
 }
 
-export default function IngredientInputRow ({ index, onDelete }: IngredientRowProps) {
-    const { register, formState: { errors } } = useFormContext<NewRecipeDTO>();
-    const recipeSections = useWatch({
-        name: "recipeSections",
-    });
+export default function IngredientInputRow({
+  index,
+  onDelete,
+}: IngredientRowProps) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<NewRecipeDTO>();
+  const recipeSections = useWatch({
+    name: "recipeSections",
+  });
 
-    return (
-        <Box 
-            sx={{ display: "flex", 
-                gap: 2, 
-                alignItems: "center", 
-                width: "100%",
-                flexWrap: "wrap", 
-            }} 
-        > 
-            {/* Sections (conditionally rendered) */}
-            {recipeSections && recipeSections.length > 0 && (
-                <SectionSelect
-                    {...register(`ingredients.${index}.sectionName` as const, 
-                    {required: "Section name is required"})}
-                />
-            )}            
-            {/* Quantity */}
-            <OutlinedInput 
-                type="text"
-                placeholder="Quantity"
-                {...register(`ingredients.${index}.quantity` as const, 
-                    {maxLength: 10}
-                )}
-                sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 100}} 
-            />
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        gap: 2,
+        alignItems: "center",
+        width: "100%",
+        flexWrap: "wrap",
+      }}
+    >
+      {/* Sections (conditionally rendered) */}
+      {recipeSections && recipeSections.length > 0 && (
+        <SectionSelect
+          {...register(`ingredients.${index}.sectionName` as const, {
+            required: "Section name is required",
+          })}
+        />
+      )}
+      {/* Quantity */}
+      <OutlinedInput
+        type="text"
+        placeholder="Quantity"
+        {...register(`ingredients.${index}.quantity` as const, {
+          maxLength: 10,
+        })}
+        sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 100 }}
+      />
 
-            {/* Unit */}
-            <Box sx={{ width: "fit-content", flex: "0 0 auto"}}> 
-                <UnitSearch index={index} />
-            
-            </Box>
-            
-            {/* Ingredient Search */}
-            <IngredientsInput index={index}/>
+      {/* Unit */}
+      <Box sx={{ width: "fit-content", flex: "0 0 auto" }}>
+        <UnitSearch index={index} />
+      </Box>
 
+      {/* Ingredient Search */}
+      <IngredientsInput index={index} />
 
-            {/* Qualifier */}
-            <TextField 
-                type="text"
-                multiline
-                placeholder="Qualifier"
-                {...register(`ingredients.${index}.qualifier`, {
-                    validate: (value) => {
-                        // allow empty string or null
-                        if (!value) return true; 
-                    },
-                })}
-                sx={{ width: "fit-content", flex: "0 0 auto" }}
-            />
-            
-            {/* Delete Button */}
-            <IconButton
-                aria-label="delete"
-                type="button"
-                onClick={onDelete}
-                color="primary"
-                size="small"
-            >
-                <DeleteIcon fontSize="small" />
-            </IconButton>
+      {/* Qualifier */}
+      <TextField
+        type="text"
+        multiline
+        placeholder="Qualifier"
+        {...register(`ingredients.${index}.qualifier`, {
+          validate: (value) => {
+            // allow empty string or null
+            if (!value) return true;
+          },
+        })}
+        sx={{ width: "fit-content", flex: "0 0 auto" }}
+      />
 
-            {errors.ingredients?.[index] && (
-                <Typography>Fill out required fields. </Typography>
-            )}
-        </Box>
-    )
+      {/* Delete Button */}
+      <IconButton
+        aria-label="delete"
+        type="button"
+        onClick={onDelete}
+        color="primary"
+        size="small"
+      >
+        <DeleteIcon fontSize="small" />
+      </IconButton>
+
+      {errors.ingredients?.[index] && (
+        <Typography>Fill out required fields. </Typography>
+      )}
+    </Box>
+  );
 }

@@ -8,16 +8,58 @@ import { ViewRecipePage } from "../pages/ViewRecipePage";
 import { ChooseInputPage } from "../pages/ChooseInputPage";
 
 const AppRouter: React.FC = () => (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout><HomePage /></Layout>} />
-        <Route path="/search" element={<Layout><RecipeSearchPage /></Layout>} />
-        <Route path="/add-input" element={<Layout><ChooseInputPage /></Layout>} />
-        <Route path="/add" element={<Layout><AddRecipePage /></Layout>} />
-        <Route path="/confirmed" element={<Layout><RecipeConfirmedPage /></Layout>} />
-        <Route path="/view" element={<Layout><ViewRecipePage /></Layout>} />
-      </Routes>
-    </Router>
+  <Router>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Layout>
+            <HomePage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/search"
+        element={
+          <Layout>
+            <RecipeSearchPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/add-input"
+        element={
+          <Layout>
+            <ChooseInputPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/add"
+        element={
+          <Layout>
+            <AddRecipePage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/confirmed"
+        element={
+          <Layout>
+            <RecipeConfirmedPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/view"
+        element={
+          <Layout>
+            <ViewRecipePage />
+          </Layout>
+        }
+      />
+    </Routes>
+  </Router>
 );
 
 export default AppRouter;

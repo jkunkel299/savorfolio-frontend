@@ -14,30 +14,30 @@ interface SidebarFiltersProps {
   onExcludeIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;
 }
 
-export default function SidebarFilters({ 
+export default function SidebarFilters({
   includeIngredients,
   excludeIngredients,
   onIncludeIngredientsChange,
-  onExcludeIngredientsChange
+  onExcludeIngredientsChange,
 }: SidebarFiltersProps) {
   const dispatch = useDispatch();
 
   return (
     <Box sx={{ p: 2 }}>
       <Typography variant="h6">Filters</Typography>
-      <Button 
+      <Button
         variant="text"
         size="small"
         onClick={() => dispatch(resetFilters())}
       >
         Reset Filters
       </Button>
-      
+
       <Typography variant="body2" color="text.secondary">
         Search for Ingredients to Include
       </Typography>
-      <div style={{padding: "5px"}}>
-        <IngredientIncludeFilter 
+      <div style={{ padding: "5px" }}>
+        <IngredientIncludeFilter
           value={includeIngredients}
           onIngredientsChange={onIncludeIngredientsChange}
         />
@@ -46,8 +46,8 @@ export default function SidebarFilters({
       <Typography variant="body2" color="text.secondary">
         Search for Ingredients to Exclude
       </Typography>
-      <div style={{padding: "5px"}}>
-        <IngredientExcludeFilter 
+      <div style={{ padding: "5px" }}>
+        <IngredientExcludeFilter
           value={excludeIngredients}
           onIngredientsChange={onExcludeIngredientsChange}
         />

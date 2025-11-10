@@ -9,56 +9,54 @@ interface RecipeListProps {
   excludeIngredientIds: number[];
 }
 
-function RecipeList({ 
-    includeIngredientIds = [],
-    excludeIngredientIds = [], 
+function RecipeList({
+  includeIngredientIds = [],
+  excludeIngredientIds = [],
 }: RecipeListProps) {
-    const [recipeData, setRecipeData] = useState<Recipe[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null | unknown >(null);
+  const [recipeData, setRecipeData] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null | unknown>(null);
 
-    /* Get all recipes */
-    useEffect(() => {
-        const fetchRecipes = async () => {
-            setLoading(true);
-            try {
-                const response = await recipeService.getRecipeSearch(
-                    includeIngredientIds,
-                    excludeIngredientIds
-                );
-                setRecipeData(response.data);
-            } catch (err: unknown) {
-                setError(err || "Error fetching Recipes"); // fix this later
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchRecipes();
-    }, [includeIngredientIds, excludeIngredientIds]); 
-    if (loading) return <Typography>Loading recipes...</Typography>;
-    if (error) return <Typography>Error</Typography>; // fix this later
+  /* Get all recipes */
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      setLoading(true);
+      try {
+        const response = await recipeService.getRecipeSearch(
+          includeIngredientIds,
+          excludeIngredientIds
+        );
+        setRecipeData(response.data);
+      } catch (err: unknown) {
+        setError(err || "Error fetching Recipes"); // fix this later
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRecipes();
+  }, [includeIngredientIds, excludeIngredientIds]);
+  if (loading) return <Typography>Loading recipes...</Typography>;
+  if (error) return <Typography>Error</Typography>; // fix this later
 
-    return (
-        <div style={{ display: "flex", flexWrap: "wrap", padding: "10px" }}>
-            {recipeData.map((recipe) => (
-                <div style={{ padding: "10px"}}>
-                    <RecipeCard 
-                        recipeId = {recipe.id}
-                        recipeTitle = {recipe.name}
-                        servings = {recipe.servings}
-                        cookTime = {recipe.cookTime}
-                        prepTime = {recipe.prepTime}
-                    />
-                </div>
-            ))}
-            
-            {recipeData.length == 0 && (
-                <Typography>
-                    No recipes found. Try other filters!
-                </Typography>
-            )}
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", padding: "10px" }}>
+      {recipeData.map((recipe) => (
+        <div style={{ padding: "10px" }}>
+          <RecipeCard
+            recipeId={recipe.id}
+            recipeTitle={recipe.name}
+            servings={recipe.servings}
+            cookTime={recipe.cookTime}
+            prepTime={recipe.prepTime}
+          />
         </div>
-    );
+      ))}
+
+      {recipeData.length == 0 && (
+        <Typography>No recipes found. Try other filters!</Typography>
+      )}
+    </div>
+  );
 }
 
 export default RecipeList;
