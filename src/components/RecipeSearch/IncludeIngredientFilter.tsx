@@ -3,16 +3,16 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import type { IngredientVariantDTO } from "../../types";
 import { useFetchIngredients } from "../../hooks/useFetchIngredients";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../react-redux/store";
+import { setIncludeIngredients } from "../../react-redux/slices/recipeFiltersSlice";
 
-interface IngredientIncludeFilterProps {
-  value: IngredientVariantDTO[];
-  onIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;
-}
+export default function IngredientIncludeFilter() {
+  const dispatch = useDispatch();
+  const includeIngredients = useSelector(
+    (state: RootState) => state.recipeFilters.includeIngredients
+  );
 
-export default function IngredientIncludeFilter({
-  onIngredientsChange,
-  value,
-}: IngredientIncludeFilterProps) {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -35,12 +35,12 @@ export default function IngredientIncludeFilter({
       onClose={() => setOpen(false)}
       options={options}
       loading={loading}
-      value={value}
+      value={includeIngredients}
       getOptionLabel={(option) => option.name}
       onInputChange={(_event, newInputValue) => setInputValue(newInputValue)}
       filterSelectedOptions
       onChange={(_event, newValue: IngredientVariantDTO[]) => {
-        onIngredientsChange(newValue);
+        dispatch(setIncludeIngredients(newValue));
       }}
       renderInput={(params) => (
         <TextField {...params} placeholder="Ingredients" />

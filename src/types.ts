@@ -135,3 +135,12 @@ export interface DraftRecipeDTO {
   instructions: BaseInstruction[];
   recipeTags: RecipeTags;
 }
+
+export interface RecipeFilterDTO {
+  includeIngredientsIds?: number[];
+  excludeIngredientsIds?: number[];
+  Recipe_typeString?: string;
+  MealString?: string;
+  CuisineString?: string;
+  Dietary?: string[];
+}

@@ -5,21 +5,9 @@ import { resetFilters } from "../../react-redux/slices/recipeFiltersSlice";
 import { useDispatch } from "react-redux";
 import IngredientIncludeFilter from "./IncludeIngredientFilter";
 import IngredientExcludeFilter from "./ExcludeIngredientFilter";
-import type { IngredientVariantDTO } from "../../types";
+import TagFilter from "./TagFilter";
 
-interface SidebarFiltersProps {
-  includeIngredients: IngredientVariantDTO[];
-  excludeIngredients: IngredientVariantDTO[];
-  onIncludeIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;
-  onExcludeIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;
-}
-
-export default function SidebarFilters({
-  includeIngredients,
-  excludeIngredients,
-  onIncludeIngredientsChange,
-  onExcludeIngredientsChange,
-}: SidebarFiltersProps) {
+export default function SidebarFilters(){
   const dispatch = useDispatch();
 
   return (
@@ -37,20 +25,24 @@ export default function SidebarFilters({
         Search for Ingredients to Include
       </Typography>
       <div style={{ padding: "5px" }}>
-        <IngredientIncludeFilter
-          value={includeIngredients}
-          onIngredientsChange={onIncludeIngredientsChange}
-        />
+        <IngredientIncludeFilter />
       </div>
 
       <Typography variant="body2" color="text.secondary">
         Search for Ingredients to Exclude
       </Typography>
       <div style={{ padding: "5px" }}>
-        <IngredientExcludeFilter
-          value={excludeIngredients}
-          onIngredientsChange={onExcludeIngredientsChange}
-        />
+        <IngredientExcludeFilter />
+      </div>
+
+      <Typography variant="body2">
+        Select Categories to Include
+      </Typography>
+      <div style={{ padding: "5px" }}>
+        <TagFilter type="recipe_type" label="Recipe Type"/>
+        <TagFilter type="meal" label="Meal"/>
+        <TagFilter type="cuisine" label="Cuisine"/>
+        <TagFilter type="dietary" label="Dietary Considerations"/>
       </div>
     </Box>
   );

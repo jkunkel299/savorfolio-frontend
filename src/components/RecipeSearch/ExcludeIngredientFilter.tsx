@@ -3,16 +3,15 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import type { IngredientVariantDTO } from "../../types";
 import { useFetchIngredients } from "../../hooks/useFetchIngredients";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../react-redux/store";
+import { setExcludeIngredients } from "../../react-redux/slices/recipeFiltersSlice";
 
-interface IngredientExcludeFilterProps {
-  value: IngredientVariantDTO[];
-  onIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;
-}
-
-export default function IngredientExcludeFilter({
-  onIngredientsChange,
-  value,
-}: IngredientExcludeFilterProps) {
+export default function IngredientExcludeFilter() {
+  const dispatch = useDispatch();
+  const excludeIngredients = useSelector(
+    (state: RootState) => state.recipeFilters.excludeIngredients
+  );
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -35,12 +34,12 @@ export default function IngredientExcludeFilter({
       onClose={() => setOpen(false)}
       options={options}
       loading={loading}
-      value={value}
+      value={excludeIngredients}
       getOptionLabel={(option) => option.name}
       onInputChange={(_event, newInputValue) => setInputValue(newInputValue)}
       filterSelectedOptions
       onChange={(_event, newValue: IngredientVariantDTO[]) => {
-        onIngredientsChange(newValue);
+        dispatch(setExcludeIngredients(newValue));
       }}
       renderInput={(params) => (
         <TextField {...params} placeholder="Ingredients" />
