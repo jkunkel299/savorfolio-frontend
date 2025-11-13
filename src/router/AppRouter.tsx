@@ -6,6 +6,8 @@ import HomePage from "../pages/HomePage";
 import RecipeConfirmedPage from "../pages/RecipeConfirmedPage";
 import { ViewRecipePage } from "../pages/ViewRecipePage";
 import { ChooseInputPage } from "../pages/ChooseInputPage";
+import LoginPage from "../pages/LoginPage";
+import { PrivateRoute } from "./PrivateRoute";
 
 const AppRouter: React.FC = () => (
   <Router>
@@ -29,25 +31,31 @@ const AppRouter: React.FC = () => (
       <Route
         path="/add-input"
         element={
-          <Layout>
-            <ChooseInputPage />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <ChooseInputPage />
+            </Layout>
+          </PrivateRoute>
         }
       />
       <Route
         path="/add"
         element={
-          <Layout>
-            <AddRecipePage />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <AddRecipePage />
+            </Layout>
+          </PrivateRoute>
         }
       />
       <Route
         path="/confirmed"
         element={
-          <Layout>
-            <RecipeConfirmedPage />
-          </Layout>
+          <PrivateRoute>
+            <Layout>
+              <RecipeConfirmedPage />
+            </Layout>
+          </PrivateRoute>
         }
       />
       <Route
@@ -55,6 +63,14 @@ const AppRouter: React.FC = () => (
         element={
           <Layout>
             <ViewRecipePage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/auth/login"
+        element={
+          <Layout>
+            <LoginPage />
           </Layout>
         }
       />

@@ -81,6 +81,23 @@ export interface UnitsDTO {
   pluralName: string;
 }
 
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+}
+
+export interface AuthReponse {
+  token: string;
+  user: User;
+}
+
+export interface UserLoginDTO {
+  username: string;
+  email: string;
+  password: string;
+}
+
 export type RecipeSection = BaseSection;
 
 // --------------------
@@ -120,6 +137,7 @@ export interface NewRecipeDTO {
 }
 
 export interface FullRecipeDTO {
+  userId: number;
   recipeId: number;
   recipeSummary: BaseSummary & { id?: number };
   recipeSections?: BaseSection[];
@@ -129,6 +147,7 @@ export interface FullRecipeDTO {
 }
 
 export interface DraftRecipeDTO {
+  userId: number;
   recipeSummary: BaseSummary;
   recipeSections?: BaseSection[];
   ingredientsString: string[];

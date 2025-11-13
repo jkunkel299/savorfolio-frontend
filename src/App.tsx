@@ -1,8 +1,12 @@
 import { GlobalStyles, ThemeProvider } from "@mui/material";
 import theme from "./themes/theme";
 import AppRouter from "./router/AppRouter";
+import { hydrateFromLocalStorage } from "./react-redux/slices/authSlice";
+import { store } from "./react-redux/store";
 
 const App: React.FC = () => {
+  store.dispatch(hydrateFromLocalStorage());
+
   return (
     <>
       <GlobalStyles
