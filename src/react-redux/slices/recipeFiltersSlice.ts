@@ -5,6 +5,8 @@ interface RecipeFiltersState {
   includeIngredients: IngredientVariantDTO[];
   excludeIngredients: IngredientVariantDTO[];
   tags: Record<SelectorType, string[]>;
+  recipeName: string;
+  userId: number | null;
 }
 
 const initialState: RecipeFiltersState = {
@@ -15,7 +17,9 @@ const initialState: RecipeFiltersState = {
     meal: [],
     cuisine: [],
     dietary: []
-  }
+  },
+  recipeName: "",
+  userId: null,
 };
 
 interface SetTagsPayload {
@@ -43,13 +47,25 @@ const recipeFiltersSlice = createSlice({
       const { type, tags } = action.payload;
       state.tags[type] = tags;
     },
+    setRecipeName(
+      state,
+      action: PayloadAction<string>
+    ){
+      state.recipeName = action.payload;
+    },
+    setUserId(
+      state,
+      action: PayloadAction<number | null>
+    ) {
+      state.userId = action.payload;
+    },
     resetFilters() {
       return initialState;
     },
   },
 });
 
-export const { setIncludeIngredients, setExcludeIngredients, setTags, resetFilters } =
+export const { setIncludeIngredients, setExcludeIngredients, setTags, setRecipeName, setUserId, resetFilters } =
   recipeFiltersSlice.actions;
 
 export default recipeFiltersSlice.reducer;

@@ -12,7 +12,9 @@ export default function RecipeSearchPage() {
   const excludeIngredients = useSelector(
     (state: RootState) => state.recipeFilters.excludeIngredients
   );
-  const tags = useSelector((state: RootState) => state.recipeFilters.tags)
+  const tags = useSelector((state: RootState) => state.recipeFilters.tags);
+  const recipeName = useSelector((state: RootState) => state.recipeFilters.recipeName);
+  const userId = useSelector((state: RootState) => state.recipeFilters.userId);
 
   const includeIngredientsIds = includeIngredients.map((ing) => ing.id);
   const excludeIngredientsIds = excludeIngredients.map((ing) => ing.id);
@@ -49,6 +51,8 @@ export default function RecipeSearchPage() {
           includeIngredientIds={includeIngredientsIds}
           excludeIngredientIds={excludeIngredientsIds}
           tags={tags}
+          recipeName={recipeName}
+          userId={userId}
         />
       </Box>
     </Box>

@@ -14,6 +14,8 @@ const recipeService = {
       mealString: Filter.MealString,
       cuisineString: Filter.CuisineString,
       dietary: Filter.Dietary,
+      recipeName: Filter.RecipeName,
+      userId: Filter.UserId,
     }),
   // add a new recipe
   postRecipeManual: (newRecipe: string) =>

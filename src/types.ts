@@ -89,7 +89,6 @@ export interface User {
 
 export interface AuthReponse {
   token: string;
-  user: User;
 }
 
 export interface UserLoginDTO {
@@ -162,4 +161,6 @@ export interface RecipeFilterDTO {
   MealString?: string;
   CuisineString?: string;
   Dietary?: string[];
+  UserId?: number;
+  RecipeName?: string;
 }

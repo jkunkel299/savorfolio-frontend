@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { useNavigate } from "react-router-dom";
+import Box from "@mui/material/Box";
 
 interface RecipeCardProps {
   recipeId: number;
@@ -47,11 +48,11 @@ export default function RecipeCard({
           <Typography gutterBottom variant="h5" component="div">
             {recipeTitle}
           </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            {servings && <p>Servings: {servings}</p>}
-            {prepTime && <p>Prep Time: {prepTime}</p>}
-            {cookTime && <p>Cook Time: {cookTime}</p>}
-          </Typography>
+          <Box sx={{variant: "body2", color: "text.secondary" }}>
+            {servings && <Typography>Servings: {servings}</Typography>}
+            {prepTime && <Typography>Prep Time: {prepTime}</Typography>}
+            {cookTime && <Typography>Cook Time: {cookTime}</Typography>}
+          </Box>
         </CardContent>
       </CardActionArea>
     </Card>

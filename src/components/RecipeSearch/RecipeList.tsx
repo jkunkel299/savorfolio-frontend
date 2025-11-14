@@ -5,7 +5,7 @@ import recipeService from "../../api/recipeApi";
 import type { Recipe, RecipeFilterDTO } from "../../types";
 
 interface RecipeListProps {
-  includeIngredientIds: number[]; // | undefined
+  includeIngredientIds: number[]; 
   excludeIngredientIds: number[];
   tags: {
     recipe_type: string[];
@@ -13,18 +13,22 @@ interface RecipeListProps {
     cuisine: string[];
     dietary: string[];
   };
+  recipeName: string;
+  userId: number | null;
 }
 
 export default function RecipeList({
   includeIngredientIds = [],
   excludeIngredientIds = [],
   tags,
+  recipeName,
+  userId,
 }: RecipeListProps) {
   const [recipeData, setRecipeData] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null | unknown>(null);
 
-  /* Get all recipes */
+  /* Get recipes */
   useEffect(() => {
     let isActive = true; // mount flag inside effect to prevent stale state updates
 
@@ -35,6 +39,8 @@ export default function RecipeList({
       MealString: tags.meal[0],
       CuisineString: tags.cuisine[0],
       Dietary: tags.dietary,
+      RecipeName: recipeName,
+      UserId: userId!,
     };
 
     const fetchRecipes = async () => {
@@ -70,6 +76,8 @@ export default function RecipeList({
     tags.meal,
     tags.cuisine,
     tags.dietary,
+    recipeName,
+    userId,
   ]);
   if (loading) return <Typography>Loading recipes...</Typography>;
   if (error) return <Typography>Error loading recipes.</Typography>; // fix this later

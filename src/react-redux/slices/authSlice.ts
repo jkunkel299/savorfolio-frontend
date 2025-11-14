@@ -6,12 +6,22 @@ import {
 import type { AuthReponse, User, UserLoginDTO } from "../../types";
 import axiosClient, { setAuthToken } from "../../api/axiosClient";
 import type { AppDispatch } from "../store";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthState {
   user: User | null;
   token: string | null;
   loading: boolean;
   error: string | null;
+}
+
+interface DecodedToken {
+  id: string;
+  username: string;
+  email: string;
+  exp: number;
+  iss?: string;
+  aud?: string;
 }
 
 const initialState: AuthState = {
@@ -39,11 +49,11 @@ export const loginUser = createAsyncThunk<
   { dispatch: AppDispatch }
 >("auth/loginUser", async (credentials: UserLoginDTO, { rejectWithValue }) => {
   try {
-    const response = axiosClient.post<AuthReponse>(
+    const response = await axiosClient.post<AuthReponse>(
       "api/auth/login",
       credentials
     );
-    return (await response).data;
+    return response.data;
   } catch {
     return rejectWithValue("Login failed");
   }
@@ -61,9 +71,21 @@ const authSlice = createSlice({
   reducers: {
     hydrateFromLocalStorage(state) {
       const token = localStorage.getItem("token");
+
       if (token) {
         state.token = token;
-        setAuthToken(token);
+
+        try {
+          const decoded = jwtDecode<DecodedToken>(token);
+          state.user = {
+            id: +decoded.id,
+            username: decoded.username,
+            email: decoded.email,
+          };
+        } catch {
+          console.error("Invalid token in storage");
+          localStorage.removeItem("token");
+        }
       }
     },
   },
@@ -79,7 +101,12 @@ const authSlice = createSlice({
         (state, action: PayloadAction<AuthReponse>) => {
           const token = action.payload.token;
           state.loading = false;
-          state.user = action.payload.user;
+          const decoded = jwtDecode<DecodedToken>(token);
+          state.user = {
+            id: +decoded.id,
+            username: decoded.username,
+            email: decoded.email,
+          };
           state.token = token;
 
           localStorage.setItem("token", token);
