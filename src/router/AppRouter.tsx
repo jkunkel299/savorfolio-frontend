@@ -8,6 +8,7 @@ import { ViewRecipePage } from "../pages/ViewRecipePage";
 import { ChooseInputPage } from "../pages/ChooseInputPage";
 import LoginPage from "../pages/LoginPage";
 import { PrivateRoute } from "./PrivateRoute";
+import RegisterPage from "../pages/RegisterPage";
 
 const AppRouter: React.FC = () => (
   <Router>
@@ -71,6 +72,14 @@ const AppRouter: React.FC = () => (
         element={
           <Layout>
             <LoginPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/auth/register"
+        element={
+          <Layout>
+            <RegisterPage />
           </Layout>
         }
       />

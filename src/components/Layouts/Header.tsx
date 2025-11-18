@@ -1,25 +1,24 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import HomeIcon from "@mui/icons-material/Home";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { colors } from "../../themes/colors";
-import { useAppDispatch, useAppSelector } from "../../react-redux/hooks";
-import type { RootState } from "../../react-redux/store";
-import { logoutUser } from "../../react-redux/slices/authSlice";
-import { Login, Logout } from "@mui/icons-material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import { useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import Drawer from "@mui/material/Drawer";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import NavList from "./NavList";
 
 export default function Header() {
-  const token = useAppSelector((state: RootState) => state.auth.token);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await dispatch(logoutUser()).unwrap();
-    navigate("/");
-  };
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const toggleMobileSidebar = () => setMobileOpen((prev) => !prev);
 
   return (
     <AppBar position="fixed" sx={{ width: "100%", left: 0 }}>
@@ -35,36 +34,39 @@ export default function Header() {
         >
           Savorfolio
         </Typography>
-        <Button color="inherit" component={Link} to="/search">
-          <Typography color={colors.textPrimary}>Search</Typography>
-        </Button>
-        {token ? (
-          <>
-            <Button color="inherit" component={Link} to="/add-input">
-              <Typography color={colors.textPrimary}>Add Recipe</Typography>
-            </Button>
-            <Button color="inherit" onClick={handleLogout}>
-              <Typography
-                color={colors.textPrimary}
-                sx={{ display: "flex", alignItems: "center", gap: 1 }}
-              >
-                Log Out
-                <Logout />
-              </Typography>
-            </Button>
-          </>
+        {isDesktop ? (
+          // Desktop Navigation (Buttons)
+          <NavList />
         ) : (
-          <Button color="inherit" component={Link} to="/auth/login">
-            <Typography
-              color={colors.textPrimary}
-              sx={{ display: "flex", alignItems: "center", gap: 1 }}
-            >
-              Log In
-              <Login />
-            </Typography>
-          </Button>
+          // Mobile Navigation (Hamburger Icon)
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleMobileSidebar}
+            sx={{ display: { xs: "block", sm: "none" } }} // Ensure icon shows only on mobile
+          >
+            <MenuIcon color="secondary" />
+          </IconButton>
         )}
       </Toolbar>
+
+      {/* Drawer component for mobile menu */}
+      <Drawer
+        anchor="right" // Drawer slides in from the right
+        open={mobileOpen}
+        onClose={toggleMobileSidebar}
+      >
+        <Box
+          sx={{ width: 250 }}
+          role="presentation"
+          onClick={toggleMobileSidebar}
+          onKeyDown={toggleMobileSidebar}
+        >
+          <Stack>
+            <NavList />
+          </Stack>
+        </Box>
+      </Drawer>
     </AppBar>
   );
 }

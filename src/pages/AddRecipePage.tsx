@@ -21,6 +21,7 @@ import IngredientsList from "../components/RecipeAdd/IngredientsInputList";
 import ReviewForm from "../components/RecipeAdd/ReviewForm";
 import IngredientsWPanel from "../components/RecipeAdd/IngredientsWPanel";
 import Loading from "../components/Loading";
+import { useAppSelector } from "../react-redux/hooks";
 
 interface Step {
   component: React.ReactNode;
@@ -37,11 +38,13 @@ export function AddRecipePage() {
   const [ingredientPrefill, setIngredientPrefill] = useState<string[] | null>(
     null
   );
+  const user = useAppSelector((state: RootState) => state.auth.user);
 
   const methods = useForm<NewRecipeDTO>({
     mode: "all",
     shouldUnregister: false,
     defaultValues: {
+      userId: user?.id,
       recipeSummary: {
         name: draftRecipe?.recipeSummary.name || "",
         servings: draftRecipe?.recipeSummary.servings || null,
@@ -179,7 +182,6 @@ export function AddRecipePage() {
       sx={{
         display: "flex",
         justifyContent: "center", // Centers horizontally
-        minHeight: "100vh", // Ensures the container takes full viewport height
         width: "100%", // Ensures the container takes full viewport width
       }}
     >

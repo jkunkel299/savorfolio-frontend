@@ -1,17 +1,17 @@
-import { useState } from "react";
 import type { RootState } from "../react-redux/store";
 import { loginUser } from "../react-redux/slices/authSlice";
 import type { UserLoginDTO } from "../types";
 import { useAppDispatch, useAppSelector } from "../react-redux/hooks";
 import FormGroup from "@mui/material/FormGroup";
 import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { colors } from "../themes/colors";
+import { useState } from "react";
+import OutlinedInput from "@mui/material/OutlinedInput";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,7 +24,6 @@ export default function LoginPage() {
     e.preventDefault();
 
     const userLogin: UserLoginDTO = {
-      username: username,
       email: email,
       password: password,
     };
@@ -44,50 +43,48 @@ export default function LoginPage() {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      minHeight="100vh"
       width="100%"
       flexDirection="column"
       sx={{ gap: 2 }}
     >
-      <Typography variant="h4" textAlign="center" gutterBottom>
-        Log In
-      </Typography>
-      {/* username */}
-      <FormGroup>
-        <Typography>Username</Typography>
-        <OutlinedInput
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </FormGroup>
+      <Box display="flex" flexDirection="column" gap={3}>
+        <Typography variant="h4" textAlign="center" gutterBottom>
+          Log In
+        </Typography>
 
-      {/* email */}
-      <FormGroup>
-        <Typography>Email</Typography>
-        <OutlinedInput
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </FormGroup>
+        {/* email */}
+        <FormGroup>
+          <Typography>Email</Typography>
+          <OutlinedInput
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </FormGroup>
 
-      {/* password */}
-      <FormGroup>
-        <Typography>Password</Typography>
-        <OutlinedInput
-          placeholder="Password"
-          value={password}
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </FormGroup>
+        {/* password */}
+        <FormGroup>
+          <Typography>Password</Typography>
+          <OutlinedInput
+            placeholder="Password"
+            value={password}
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </FormGroup>
 
-      <Button type="submit" disabled={loading} variant="contained">
-        {loading ? "Logging in..." : "Log In"}
-      </Button>
+        <Button type="submit" disabled={loading} variant="contained">
+          {loading ? "Logging in..." : "Log In"}
+        </Button>
 
-      {error && <Typography>{error}</Typography>}
+        {error && <Typography>{error}</Typography>}
+
+        <Button color="inherit" component={Link} to="/auth/register">
+          <Typography color={colors.textPrimary}>
+            New user? Register here!
+          </Typography>
+        </Button>
+      </Box>
     </Box>
   );
 }

@@ -30,11 +30,11 @@ export default function RecipeCard({
     <Card
       sx={{
         width: {
-          xs: 100, // width 100px for extra small screens and up
+          xs: "100%", // width 100px for extra small screens and up
           sm: 200, // width 200px for small screens and up
           md: 300, // width 300px for medium screens and up
         },
-        padding: "5px",
+        padding: 1,
       }}
     >
       <CardActionArea onClick={handleClick}>

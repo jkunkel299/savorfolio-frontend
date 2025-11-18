@@ -38,7 +38,7 @@ axiosClient.interceptors.response.use(
       // remove invalid token
       localStorage.removeItem("token");
       // redirect to login page
-      window.location.href = "/login";
+      window.location.href = "/auth/login";
     }
 
     return Promise.reject(error);

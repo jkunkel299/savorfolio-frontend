@@ -83,7 +83,7 @@ export interface UnitsDTO {
 
 export interface User {
   id: number;
-  username: string;
+  // username: string;
   email: string;
 }
 
@@ -92,7 +92,7 @@ export interface AuthReponse {
 }
 
 export interface UserLoginDTO {
-  username: string;
+  // username: string;
   email: string;
   password: string;
 }
@@ -128,6 +128,7 @@ export type SelectorType = "meal" | "recipe_type" | "cuisine" | "dietary";
 // --------------------
 
 export interface NewRecipeDTO {
+  userId: number;
   recipeSummary: BaseSummary;
   recipeSections?: BaseSection[];
   ingredients: BaseIngredient[];
@@ -146,7 +147,6 @@ export interface FullRecipeDTO {
 }
 
 export interface DraftRecipeDTO {
-  userId: number;
   recipeSummary: BaseSummary;
   recipeSections?: BaseSection[];
   ingredientsString: string[];

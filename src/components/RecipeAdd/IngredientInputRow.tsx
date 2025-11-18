@@ -34,7 +34,7 @@ export default function IngredientInputRow({
         display: "flex",
         gap: 2,
         alignItems: "center",
-        width: "100%",
+        // width: "100%",
         flexWrap: "wrap",
       }}
     >
@@ -53,13 +53,14 @@ export default function IngredientInputRow({
         {...register(`ingredients.${index}.quantity` as const, {
           maxLength: 10,
         })}
-        sx={{ width: "fit-content", flex: "0 0 auto", maxWidth: 100 }}
+        // sx={{ width: "fit-content", maxWidth: "10%" }}
+        sx={{
+          width: { xs: "100%", md: "fit-content" },
+          maxWidth: { md: "10%" },
+        }}
       />
-
       {/* Unit */}
-      <Box sx={{ width: "fit-content", flex: "0 0 auto" }}>
-        <UnitSearch index={index} />
-      </Box>
+      <UnitSearch index={index} />
 
       {/* Ingredient Search */}
       <IngredientsInput index={index} />
@@ -75,7 +76,12 @@ export default function IngredientInputRow({
             if (!value) return true;
           },
         })}
-        sx={{ width: "fit-content", flex: "0 0 auto" }}
+        // sx={{ minWidth: "10vw", width: "fit-content", flex: 1 }}
+        sx={{
+          width: { xs: "100%", md: "auto" },
+          minWidth: { md: "10vw" },
+          flex: { xs: "1 1 100%", md: 1 },
+        }}
       />
 
       {/* Delete Button */}
@@ -85,6 +91,11 @@ export default function IngredientInputRow({
         onClick={onDelete}
         color="primary"
         size="small"
+        sx={{
+          width: { xs: "100%", md: "auto" },
+          display: "flex",
+          justifyContent: { xs: "flex-end", md: "center" },
+        }}
       >
         <DeleteIcon fontSize="small" />
       </IconButton>

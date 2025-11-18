@@ -58,7 +58,7 @@ export function ChooseInputPage() {
     <Box
       display="flex"
       justifyContent="center"
-      sx={{ width: "100%", paddingTop: "20%", paddingBottom: "20%" }}
+      sx={{ padding: "20%" }}
       flexDirection="row"
     >
       <Paper
@@ -75,7 +75,7 @@ export function ChooseInputPage() {
           justifyContent="center"
           alignContent="center"
         >
-          <Grid size={{ xs: 4 }} alignContent="center">
+          <Grid size={{ xs: 12, sm: 4, md: 4 }} alignContent="center">
             <Button
               id="navigate-add-recipe"
               variant="contained"
@@ -84,7 +84,7 @@ export function ChooseInputPage() {
               Add Recipe Manually →
             </Button>
           </Grid>
-          <Grid size={{ xs: 8 }} justifyContent="center">
+          <Grid size={{ xs: 12, sm: 8, md: 8 }} justifyContent="center">
             {loading && <Loading />}
             <Stack spacing={3}>
               <TextField

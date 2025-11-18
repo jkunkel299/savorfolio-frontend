@@ -7,7 +7,6 @@ export default function HomePage() {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      minHeight="100vh"
       width="100%"
       flexDirection="column"
       textAlign="center"

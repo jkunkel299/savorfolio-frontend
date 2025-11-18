@@ -72,7 +72,6 @@ export default function UnitSearch({ index }: { index: number }) {
     <Controller
       name={`ingredients.${index}.unitName`}
       control={control}
-      // rules={{required: "Unit is requried"}}
       render={({ field }) => (
         <Autocomplete
           id="units-selection"
@@ -90,7 +89,12 @@ export default function UnitSearch({ index }: { index: number }) {
             setSelectedOption(newValue);
           }}
           filterOptions={filterOptions}
-          sx={{ minWidth: 200 }}
+          // sx={{ flex: 1, minWidth: "25%", width: "fit-content" }}
+          sx={{
+            width: { xs: "100%", md: "fit-content" },
+            minWidth: { md: "25%" },
+            flex: { xs: "1 1 100%", md: 1 },
+          }}
           renderInput={(params) => (
             <TextField
               {...params}

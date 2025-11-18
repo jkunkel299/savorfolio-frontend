@@ -52,7 +52,7 @@ export default function RecipeSectionsRow({
         aria-label="delete"
         type="button"
         onClick={onDelete}
-        color="error"
+        color="primary"
         size="small"
       >
         <DeleteIcon fontSize="small" />

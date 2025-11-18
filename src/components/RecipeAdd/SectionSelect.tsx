@@ -2,7 +2,7 @@ import {
   Controller,
   useFormContext,
   useWatch,
-  /* type Control, */ type FieldPath,
+  type FieldPath,
 } from "react-hook-form";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import type { NewRecipeDTO, RecipeSection } from "../../types";
@@ -21,7 +21,7 @@ export function SectionSelect({ name, label = "Section" }: SectionSelectProps) {
   });
 
   return (
-    <FormControl fullWidth>
+    <FormControl>
       <InputLabel>{label}</InputLabel>
       <Controller
         name={name}
@@ -32,7 +32,16 @@ export function SectionSelect({ name, label = "Section" }: SectionSelectProps) {
             label={label}
             displayEmpty
             value={field.value ?? ""}
-            sx={{ minWidth: 300, width: "fit-content", flex: "0 0 auto" }}
+            // sx={{
+            //   flex: 1,
+            //   minWidth: "10vw",
+            //   width: "fit-content",
+            //   textOverflow: "ellipsis",
+            // }}
+            sx={{
+              width: { xs: "100%", md: "auto" },
+              minWidth: { md: "10vw" },
+            }}
           >
             {/* --- Blank Option --- */}
             <MenuItem value="">

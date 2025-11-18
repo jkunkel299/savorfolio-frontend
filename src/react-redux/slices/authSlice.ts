@@ -17,7 +17,7 @@ interface AuthState {
 
 interface DecodedToken {
   id: string;
-  username: string;
+  // username: string;
   email: string;
   exp: number;
   iss?: string;
@@ -32,14 +32,21 @@ const initialState: AuthState = {
 };
 
 // Thunks
-export const registerUser = createAsyncThunk(
-  "auth/register",
-  async (credentials: {
-    username: string;
-    email: string;
-    password: string;
-  }) => {
-    await axiosClient.post("api/auth/register", credentials);
+export const registerUser = createAsyncThunk<
+  AuthReponse,
+  UserLoginDTO,
+  { dispatch: AppDispatch }
+>("auth/register",
+  async (credentials: UserLoginDTO, { rejectWithValue }) => {
+    try {
+      const response = await axiosClient.post<AuthReponse>(
+        "api/auth/register",
+        credentials
+      );
+      return response.data;
+    } catch {
+      return rejectWithValue("Registration failed");
+    }
   }
 );
 
@@ -58,6 +65,19 @@ export const loginUser = createAsyncThunk<
     return rejectWithValue("Login failed");
   }
 });
+
+// export const loginUser = createAsyncThunk<
+//   AuthReponse,
+//   UserLoginDTO,
+//   { dispatch: AppDispatch }
+// >("auth/loginUser", async (credentials: UserLoginDTO, { rejectWithValue }) => {
+//   try {
+//     const response = await userService.postLoginUser(credentials);
+//     return response.data;
+//   } catch {
+//     return rejectWithValue("Login failed");
+//   }
+// });
 
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
   localStorage.removeItem("token");
@@ -79,7 +99,7 @@ const authSlice = createSlice({
           const decoded = jwtDecode<DecodedToken>(token);
           state.user = {
             id: +decoded.id,
-            username: decoded.username,
+            // username: decoded.username,
             email: decoded.email,
           };
         } catch {
@@ -104,7 +124,7 @@ const authSlice = createSlice({
           const decoded = jwtDecode<DecodedToken>(token);
           state.user = {
             id: +decoded.id,
-            username: decoded.username,
+            // username: decoded.username,
             email: decoded.email,
           };
           state.token = token;

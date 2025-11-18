@@ -51,9 +51,9 @@ export function ViewRecipePage() {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center", // Centers horizontally
-        minHeight: "100vh", // Ensures the container takes full viewport height
-        width: "100%", // Ensures the container takes full viewport width
+        justifyContent: "center",
+        width: "100%",
+        maxHeight: "100vh",
       }}
     >
       <Stack>
@@ -75,6 +75,8 @@ export function ViewRecipePage() {
           sx={{
             p: 3,
             width: "80vw",
+            maxHeight: "90vh", 
+            overflowY: "auto",
           }}
         >
           <Stack spacing={2}>
