@@ -30,7 +30,6 @@ export default function RecipeSectionsForm() {
         {fields.map((entry, idx) => (
           <RecipeSectionsRow
             key={entry.id}
-            // entry={entry}
             index={idx}
             onChange={handleRowChange}
             onDelete={() => remove(idx)}

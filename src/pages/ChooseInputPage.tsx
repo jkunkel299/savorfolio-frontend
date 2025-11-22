@@ -1,19 +1,18 @@
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import recipeService from "../api/recipeApi";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-// import CircularProgress from "@mui/material/CircularProgress";
+import recipeService from "../api/recipeApi";
 import Loading from "../components/Loading";
 
-export function ChooseInputPage() {
+export default function ChooseInputPage() {
   const [recipeUrl, setRecipeUrl] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,7 +45,9 @@ export function ChooseInputPage() {
       navigate("/add");
     } catch (err) {
       console.error(err);
-      setErrorMessage("Failed to get recipe. Please try again.");
+      setTimeout(() => {
+        setErrorMessage("Failed to get recipe. Please try again.");
+      }, 2000);
     }
 
     setTimeout(() => {

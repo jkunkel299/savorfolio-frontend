@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import type {
   RecipeSection,
   IngredientEntry,
@@ -6,7 +7,6 @@ import type {
   BaseIngredient,
   BaseInstruction,
 } from "../../types";
-import { Typography } from "@mui/material";
 import IngredientViewList from "./IngredientViewList";
 import InstructionViewList from "./InstructionViewList";
 

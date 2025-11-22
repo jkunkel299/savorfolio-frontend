@@ -1,11 +1,11 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import type { IngredientVariantDTO } from "../../types";
-import { useFetchIngredients } from "../../hooks/useFetchIngredients";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../react-redux/store";
 import { setIncludeIngredients } from "../../react-redux/slices/recipeFiltersSlice";
+import type { IngredientVariantDTO } from "../../types";
+import { useFetchIngredients } from "../../hooks/useFetchIngredients";
 
 export default function IngredientIncludeFilter() {
   const dispatch = useDispatch();

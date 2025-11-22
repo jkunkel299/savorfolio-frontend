@@ -94,11 +94,6 @@ export default function IngredientsInput({ index }: { index: number }) {
             setSelectedOption(newValue);
           }}
           filterOptions={filterOptions}
-          // sx={{
-          //   flex: 1,
-          //   minWidth: "30%",
-          //   width: "fit-content",
-          // }}
           sx={{
             width: { xs: "100%", md: "fit-content" },
             minWidth: { md: "30%" },

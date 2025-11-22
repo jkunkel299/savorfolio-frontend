@@ -1,10 +1,13 @@
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import {
   Controller,
   useFormContext,
   useWatch,
   type FieldPath,
 } from "react-hook-form";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import type { NewRecipeDTO, RecipeSection } from "../../types";
 
 interface SectionSelectProps {
@@ -32,12 +35,6 @@ export function SectionSelect({ name, label = "Section" }: SectionSelectProps) {
             label={label}
             displayEmpty
             value={field.value ?? ""}
-            // sx={{
-            //   flex: 1,
-            //   minWidth: "10vw",
-            //   width: "fit-content",
-            //   textOverflow: "ellipsis",
-            // }}
             sx={{
               width: { xs: "100%", md: "auto" },
               minWidth: { md: "10vw" },

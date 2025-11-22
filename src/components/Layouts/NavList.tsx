@@ -1,22 +1,26 @@
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { Login, Logout } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
-import { colors } from "../../themes/colors";
+import { useDispatch } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../react-redux/hooks";
 import type { RootState } from "../../react-redux/store";
 import { logoutUser } from "../../react-redux/slices/authSlice";
-import { Login, Logout } from "@mui/icons-material";
+import { resetFilters } from "../../react-redux/slices/recipeFiltersSlice";
+import { colors } from "../../themes/colors";
 
 export default function NavList() {
   const token = useAppSelector((state: RootState) => state.auth.token);
-  const dispatch = useAppDispatch();
+  const appDispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await dispatch(logoutUser()).unwrap();
+    await appDispatch(logoutUser()).unwrap();
+    dispatch(resetFilters())
     navigate("/");
   };
-  
+
   return (
     <>
       <Button color="inherit" component={Link} to="/search">

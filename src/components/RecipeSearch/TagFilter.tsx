@@ -1,17 +1,17 @@
-import Typography from "@mui/material/Typography";
-import { useFetchTags } from "../../hooks/useFetchTags";
-import type { SelectorType } from "../../types";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../react-redux/store";
 import { setTags } from "../../react-redux/slices/recipeFiltersSlice";
-import FormLabel from "@mui/material/FormLabel";
-import RadioGroup from "@mui/material/RadioGroup";
-import Radio from "@mui/material/Radio";
-import { useState } from "react";
-import Button from "@mui/material/Button";
+import { useFetchTags } from "../../hooks/useFetchTags";
+import type { SelectorType } from "../../types";
 
 interface TagFilterProps {
   type: SelectorType;

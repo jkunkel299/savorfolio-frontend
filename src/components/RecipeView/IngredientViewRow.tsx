@@ -1,5 +1,5 @@
 import Checkbox from "@mui/material/Checkbox";
-import { FormControlLabel } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import { useState } from "react";
 import { parseQuantity } from "../../utils/parseQuantity";

@@ -8,11 +8,12 @@ import { useForm, FormProvider, type FieldPath } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../react-redux/store";
 
+import type { RootState } from "../react-redux/store";
+import { useAppSelector } from "../react-redux/hooks";
+import { clearDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
 import type { NewRecipeDTO } from "../types";
 import recipeService from "../api/recipeApi";
-import { clearDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
 import RecipeSummaryForm from "../components/RecipeAdd/RecipeSummaryForm";
 import TagsForm from "../components/RecipeAdd/TagsForm";
 import RecipeSectionsForm from "../components/RecipeAdd/RecipeSectionsForm";
@@ -21,14 +22,13 @@ import IngredientsList from "../components/RecipeAdd/IngredientsInputList";
 import ReviewForm from "../components/RecipeAdd/ReviewForm";
 import IngredientsWPanel from "../components/RecipeAdd/IngredientsWPanel";
 import Loading from "../components/Loading";
-import { useAppSelector } from "../react-redux/hooks";
 
 interface Step {
   component: React.ReactNode;
   fields: FieldPath<NewRecipeDTO>[];
 }
 
-export function AddRecipePage() {
+export default function AddRecipePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showSectionsPage, setShowSectionsPage] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -183,6 +183,7 @@ export function AddRecipePage() {
         display: "flex",
         justifyContent: "center", // Centers horizontally
         width: "100%", // Ensures the container takes full viewport width
+        p: 2,
       }}
     >
       <FormProvider {...methods}>

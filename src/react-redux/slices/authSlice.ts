@@ -17,7 +17,6 @@ interface AuthState {
 
 interface DecodedToken {
   id: string;
-  // username: string;
   email: string;
   exp: number;
   iss?: string;
@@ -66,19 +65,6 @@ export const loginUser = createAsyncThunk<
   }
 });
 
-// export const loginUser = createAsyncThunk<
-//   AuthReponse,
-//   UserLoginDTO,
-//   { dispatch: AppDispatch }
-// >("auth/loginUser", async (credentials: UserLoginDTO, { rejectWithValue }) => {
-//   try {
-//     const response = await userService.postLoginUser(credentials);
-//     return response.data;
-//   } catch {
-//     return rejectWithValue("Login failed");
-//   }
-// });
-
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
   localStorage.removeItem("token");
   setAuthToken(null);
@@ -99,7 +85,6 @@ const authSlice = createSlice({
           const decoded = jwtDecode<DecodedToken>(token);
           state.user = {
             id: +decoded.id,
-            // username: decoded.username,
             email: decoded.email,
           };
         } catch {
@@ -124,7 +109,6 @@ const authSlice = createSlice({
           const decoded = jwtDecode<DecodedToken>(token);
           state.user = {
             id: +decoded.id,
-            // username: decoded.username,
             email: decoded.email,
           };
           state.token = token;

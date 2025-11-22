@@ -1,6 +1,6 @@
+import OutlinedInput from "@mui/material/OutlinedInput";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../react-redux/store";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import { setRecipeName } from "../../react-redux/slices/recipeFiltersSlice";
 
 export default function RecipeNameFilter() {

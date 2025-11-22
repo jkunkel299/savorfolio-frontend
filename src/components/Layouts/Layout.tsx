@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import Header from "./Header";
 import Box from "@mui/material/Box";
+import Header from "./Header";
 import Toolbar from "@mui/material/Toolbar";
 
 interface LayoutProps {

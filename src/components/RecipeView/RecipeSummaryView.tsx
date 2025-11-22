@@ -1,13 +1,12 @@
-import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import type { FullRecipeDTO } from "../../types";
 
 export default function RecipeSummaryView({
   recipeSummary,
 }: Partial<FullRecipeDTO>) {
   return (
-    
     <Grid
       container
       spacing={2}
@@ -16,7 +15,6 @@ export default function RecipeSummaryView({
         bgcolor: "rgba(172, 68, 34, 0.55)", // Semi-transparent overlay
       }}
     >
-
       {/* recipe title */}
       <Grid size={12}>
         <Typography variant="h3" key={recipeSummary?.id}>

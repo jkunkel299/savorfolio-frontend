@@ -1,15 +1,15 @@
-import type { RootState } from "../react-redux/store";
-import { loginUser } from "../react-redux/slices/authSlice";
-import type { UserLoginDTO } from "../types";
-import { useAppDispatch, useAppSelector } from "../react-redux/hooks";
-import FormGroup from "@mui/material/FormGroup";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { Link, useNavigate } from "react-router-dom";
-import { colors } from "../themes/colors";
-import { useState } from "react";
+import FormGroup from "@mui/material/FormGroup";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import type { RootState } from "../react-redux/store";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../react-redux/slices/authSlice";
+import { useAppDispatch, useAppSelector } from "../react-redux/hooks";
+import { colors } from "../themes/colors";
+import type { UserLoginDTO } from "../types";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

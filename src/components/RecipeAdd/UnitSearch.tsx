@@ -89,7 +89,6 @@ export default function UnitSearch({ index }: { index: number }) {
             setSelectedOption(newValue);
           }}
           filterOptions={filterOptions}
-          // sx={{ flex: 1, minWidth: "25%", width: "fit-content" }}
           sx={{
             width: { xs: "100%", md: "fit-content" },
             minWidth: { md: "25%" },

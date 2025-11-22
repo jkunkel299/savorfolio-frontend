@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Fab from "@mui/material/Fab";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../react-redux/store";
 import SidebarFilters from "../components/RecipeSearch/SidebarFilters";
 import RecipeList from "../components/RecipeSearch/RecipeList";
-import { useState } from "react";
-import Drawer from "@mui/material/Drawer";
-import Fab from "@mui/material/Fab";
 
 export default function RecipeSearchPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -27,7 +27,16 @@ export default function RecipeSearchPage() {
   const excludeIngredientsIds = excludeIngredients.map((ing) => ing.id);
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+    <Box
+      sx={{
+        display: "flex",
+        overflow: "hidden",
+        height: {
+          xs: "calc(100vh - 56px)", // mobile
+          sm: "calc(100vh - 64px)", // desktop
+        },
+      }}
+    >
       {/* Sidebar */}
       <Box
         sx={{

@@ -34,7 +34,6 @@ export default function IngredientInputRow({
         display: "flex",
         gap: 2,
         alignItems: "center",
-        // width: "100%",
         flexWrap: "wrap",
       }}
     >
@@ -53,7 +52,6 @@ export default function IngredientInputRow({
         {...register(`ingredients.${index}.quantity` as const, {
           maxLength: 10,
         })}
-        // sx={{ width: "fit-content", maxWidth: "10%" }}
         sx={{
           width: { xs: "100%", md: "fit-content" },
           maxWidth: { md: "10%" },
@@ -76,7 +74,6 @@ export default function IngredientInputRow({
             if (!value) return true;
           },
         })}
-        // sx={{ minWidth: "10vw", width: "fit-content", flex: 1 }}
         sx={{
           width: { xs: "100%", md: "auto" },
           minWidth: { md: "10vw" },

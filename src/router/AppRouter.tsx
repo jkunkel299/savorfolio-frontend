@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { PrivateRoute } from "./PrivateRoute";
 import Layout from "../components/Layouts/Layout";
 import RecipeSearchPage from "../pages/RecipeSearchPage";
-import { AddRecipePage } from "../pages/AddRecipePage";
+import AddRecipePage from "../pages/AddRecipePage";
 import HomePage from "../pages/HomePage";
 import RecipeConfirmedPage from "../pages/RecipeConfirmedPage";
-import { ViewRecipePage } from "../pages/ViewRecipePage";
-import { ChooseInputPage } from "../pages/ChooseInputPage";
+import ViewRecipePage from "../pages/ViewRecipePage";
+import ChooseInputPage from "../pages/ChooseInputPage";
 import LoginPage from "../pages/LoginPage";
-import { PrivateRoute } from "./PrivateRoute";
 import RegisterPage from "../pages/RegisterPage";
 
 const AppRouter: React.FC = () => (

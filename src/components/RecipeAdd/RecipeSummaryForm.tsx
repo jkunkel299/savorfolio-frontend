@@ -1,17 +1,15 @@
-import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
+import Grid from "@mui/material/Grid";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-
 import { useFormContext, Controller, useWatch } from "react-hook-form";
 import type { NewRecipeDTO } from "../../types";
-// import { useEffect } from 'react';
 
 const FormGrid = styled(Grid)(() => ({
   display: "flex",

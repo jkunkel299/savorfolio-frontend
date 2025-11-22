@@ -15,7 +15,7 @@ import TagsView from "../components/RecipeView/TagsView";
 import type { FullRecipeDTO } from "../types";
 import recipeService from "../api/recipeApi";
 
-export function ViewRecipePage() {
+export default function ViewRecipePage() {
   const [recipeData, setRecipeData] = useState<FullRecipeDTO>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null | unknown>(null);
@@ -53,7 +53,10 @@ export function ViewRecipePage() {
         display: "flex",
         justifyContent: "center",
         width: "100%",
-        maxHeight: "100vh",
+        height: {
+          xs: "calc(100vh - 56px)", // mobile
+          sm: "calc(100vh - 64px)", // desktop
+        },
       }}
     >
       <Stack>

@@ -34,7 +34,6 @@ export default function InstructionInputRow({
           display: "flex",
           gap: 2,
           alignItems: "flex-start",
-          // width: "100%",
           flexWrap: "wrap"
         }}
       >
@@ -51,13 +50,12 @@ export default function InstructionInputRow({
           {...register(`instructions.${index}.instructionText` as const, {
             required: "Instruction text is required",
           })}
-          sx={{ /* minWidth: "50vw", */ flex: 1 }}
+          sx={{ flex: 1 }}
         />
 
         {/* Sections (conditionally rendered) */}
         {recipeSections && recipeSections.length > 0 && (
           <SectionSelect
-            // control={control}
             name={`instructions.${index}.sectionName`}
           />
         )}

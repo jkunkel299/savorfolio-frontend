@@ -1,14 +1,14 @@
-import { /* loginUser, */ registerUser } from "../react-redux/slices/authSlice";
-import { useAppDispatch, useAppSelector } from "../react-redux/hooks";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormGroup from "@mui/material/FormGroup";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "../react-redux/store";
+import { registerUser } from "../react-redux/slices/authSlice";
+import { useAppDispatch, useAppSelector } from "../react-redux/hooks";
 import type { UserLoginDTO } from "../types";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import FormGroup from "@mui/material/FormGroup";
-import Button from "@mui/material/Button";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { useState } from "react";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
