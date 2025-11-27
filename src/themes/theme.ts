@@ -1,5 +1,5 @@
-import { createTheme } from '@mui/material/styles';
-import { colors } from './colors';
+import { createTheme } from "@mui/material/styles";
+import { colors } from "./colors";
 
 const theme = createTheme({
   typography: {
@@ -71,16 +71,16 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: colors.primaryAccent,   // a warm reddish-brown accent
+      main: colors.primaryAccent, // a warm reddish-brown accent
       light: colors.primaryAccentLight,
       dark: colors.primaryAccentDark,
-      contrastText: '#ffffff',
+      contrastText: "#ffffff",
     },
     secondary: {
-      main: colors.textPrimary,   // muted dark brown/grey
-      light: '#8A736C',
-      dark: '#4A3C38',
-      contrastText: '#ffffff',
+      main: colors.textPrimary, // muted dark brown/grey
+      light: "#8A736C",
+      dark: "#4A3C38",
+      contrastText: "#ffffff",
     },
     background: {
       default: colors.warmBackground, // very light warm-off-white

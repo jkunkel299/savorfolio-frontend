@@ -1,57 +1,77 @@
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { resetFilters } from "../../react-redux/slices/recipeFiltersSlice";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import { useDispatch } from "react-redux";
+import { resetFilters } from "../../react-redux/slices/recipeFiltersSlice";
+import { useAppSelector } from "../../react-redux/hooks";
+import type { RootState } from "../../react-redux/store";
 import IngredientIncludeFilter from "./IncludeIngredientFilter";
 import IngredientExcludeFilter from "./ExcludeIngredientFilter";
-import type { IngredientVariantDTO } from "../../types";
+import TagFilter from "./TagFilter";
+import UserIdFilter from "./UserIdFilter";
+import RecipeNameFilter from "./RecipeNameFilter";
 
-interface SidebarFiltersProps {
-  includeIngredients: IngredientVariantDTO[];
-  excludeIngredients: IngredientVariantDTO[];
-  onIncludeIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;
-  onExcludeIngredientsChange: (ingredients: IngredientVariantDTO[]) => void;
-}
 
-export default function SidebarFilters({ 
-  includeIngredients,
-  excludeIngredients,
-  onIncludeIngredientsChange,
-  onExcludeIngredientsChange
-}: SidebarFiltersProps) {
+export default function SidebarFilters() {
   const dispatch = useDispatch();
+  const user = useAppSelector((state: RootState) => state.auth.user);
 
   return (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h6">Filters</Typography>
-      <Button 
+    <Stack spacing={1}>
+      <Typography variant="h4">Filters</Typography>
+      <Button
         variant="text"
-        size="small"
         onClick={() => dispatch(resetFilters())}
       >
         Reset Filters
       </Button>
-      
-      <Typography variant="body2" color="text.secondary">
-        Search for Ingredients to Include
-      </Typography>
-      <div style={{padding: "5px"}}>
-        <IngredientIncludeFilter 
-          value={includeIngredients}
-          onIngredientsChange={onIncludeIngredientsChange}
-        />
-      </div>
 
-      <Typography variant="body2" color="text.secondary">
-        Search for Ingredients to Exclude
-      </Typography>
-      <div style={{padding: "5px"}}>
-        <IngredientExcludeFilter 
-          value={excludeIngredients}
-          onIngredientsChange={onExcludeIngredientsChange}
-        />
-      </div>
-    </Box>
+      {/* switch to include only the logged-in user's recipes, rendered conditionally */}
+      {user && (
+        <Box style={{ padding: "5px" }}>
+          <UserIdFilter />
+        </Box>
+      )}
+
+      {/* Search for recipe by name */}
+      <Box style={{ padding: "5px" }}>
+        <Typography variant="body2" color="text.secondary">
+          Search by Recipe Name
+        </Typography>
+        
+        <RecipeNameFilter />
+      </Box>
+
+      {/* Include Ingredients */}
+      <Box style={{ padding: "5px" }}>
+        <Typography variant="body2" color="text.secondary">
+          Search for Ingredients to Include
+        </Typography>
+
+        <IngredientIncludeFilter />
+      </Box>
+
+      {/* Exclude Ingredients */}
+      <Box style={{ padding: "5px" }}>
+        <Typography variant="body2" color="text.secondary">
+          Search for Ingredients to Exclude
+        </Typography>
+
+        <IngredientExcludeFilter />
+      </Box>
+
+      {/* Category Filtering */}
+      <Box style={{ padding: "5px" }}>
+        <Typography variant="body2" color="text.secondary">
+          Select Categories to Include
+        </Typography>
+
+        <TagFilter type="recipe_type" label="Recipe Type" />
+        <TagFilter type="meal" label="Meal" />
+        <TagFilter type="cuisine" label="Cuisine" />
+        <TagFilter type="dietary" label="Dietary Considerations" />
+      </Box>
+    </Stack>
   );
 }
