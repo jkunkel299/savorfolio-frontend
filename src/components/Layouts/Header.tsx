@@ -23,7 +23,7 @@ export default function Header() {
 
   return (
     <AppBar position="fixed" sx={{ width: "100%", left: 0 }}>
-      <Toolbar disableGutters>
+      <Toolbar>
         <IconButton color="secondary" component={Link} to="/">
           <HomeIcon />
         </IconButton>
