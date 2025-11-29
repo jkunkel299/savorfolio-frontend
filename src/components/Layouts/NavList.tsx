@@ -10,7 +10,7 @@ import { resetFilters } from "../../react-redux/slices/recipeFiltersSlice";
 import { colors } from "../../themes/colors";
 
 export default function NavList() {
-  const token = useAppSelector((state: RootState) => state.auth.token);
+  const user = useAppSelector((state: RootState) => state.auth.user);
   const appDispatch = useAppDispatch();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function NavList() {
       <Button color="inherit" component={Link} to="/search">
         <Typography color={colors.textPrimary} gap={1}>Search</Typography>
       </Button>
-      {token ? (
+      {user ? (
         <>
           <Button color="inherit" component={Link} to="/add-input">
             <Typography color={colors.textPrimary} gap={1}>Add Recipe</Typography>

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState } from "../react-redux/store";
-// import { useAppSelector } from "../react-redux/hooks";
+import { useAppSelector } from "../react-redux/hooks";
 import { clearDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
 import type { NewRecipeDTO } from "../types";
 import recipeService from "../api/recipeApi";
@@ -22,6 +22,7 @@ import IngredientsList from "../components/RecipeAdd/IngredientsInputList";
 import ReviewForm from "../components/RecipeAdd/ReviewForm";
 import IngredientsWPanel from "../components/RecipeAdd/IngredientsWPanel";
 import Loading from "../components/Loading";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 interface Step {
   component: React.ReactNode;
@@ -38,15 +39,17 @@ export default function AddRecipePage() {
   const [ingredientPrefill, setIngredientPrefill] = useState<string[] | null>(
     null
   );
-  // const user = useAppSelector((state: RootState) => state.auth.user);
-  const userId = 12;
+  const user = useAppSelector((state: RootState) => state.auth.user);
+  // const userId = 12;
+
+  useDocumentTitle("Add Recipe");
 
   const methods = useForm<NewRecipeDTO>({
     mode: "all",
     shouldUnregister: false,
     defaultValues: {
-      // userId: user?.id,
-      userId: userId,
+      userId: user?.id,
+      // userId: userId,
       recipeSummary: {
         name: draftRecipe?.recipeSummary.name || "",
         servings: draftRecipe?.recipeSummary.servings || null,

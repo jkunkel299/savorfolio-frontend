@@ -9,12 +9,15 @@ import type { RootState } from "../react-redux/store";
 import { registerUser } from "../react-redux/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../react-redux/hooks";
 import type { UserLoginDTO } from "../types";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useDocumentTitle("Register");
 
   const { loading, error } = useAppSelector((state: RootState) => state.auth);
 

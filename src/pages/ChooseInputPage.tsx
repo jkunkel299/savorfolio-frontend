@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { setDraftRecipe } from "../react-redux/slices/draftRecipeSlice";
 import recipeService from "../api/recipeApi";
 import Loading from "../components/Loading";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 export default function ChooseInputPage() {
   const [recipeUrl, setRecipeUrl] = useState("");
@@ -18,6 +19,8 @@ export default function ChooseInputPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useDocumentTitle("Add Recipe");
 
   const isValidUrl = (input: string) => {
     try {

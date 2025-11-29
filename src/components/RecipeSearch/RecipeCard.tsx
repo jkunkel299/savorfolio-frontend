@@ -3,8 +3,9 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 // import CardMedia from '@mui/material/CardMedia';
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
+import { Link, /* useNavigate */ } from "react-router-dom";
 import Box from "@mui/material/Box";
+import { slugify } from "../../utils/slugify";
 
 interface RecipeCardProps {
   recipeId: number;
@@ -21,11 +22,8 @@ export default function RecipeCard({
   cookTime,
   prepTime,
 }: RecipeCardProps) {
-  const navigate = useNavigate();
+  const url = `/view/${recipeId}/${slugify(recipeTitle)}`;
 
-  const handleClick = () => {
-    navigate(`/view?recipeId=${recipeId}`);
-  };
   return (
     <Card
       sx={{
@@ -37,7 +35,7 @@ export default function RecipeCard({
         padding: 1,
       }}
     >
-      <CardActionArea onClick={handleClick}>
+      <CardActionArea component={Link} to={url}>
         {/* <CardMedia
             component="img"
             height="140"
@@ -48,7 +46,7 @@ export default function RecipeCard({
           <Typography gutterBottom variant="h5" component="div">
             {recipeTitle}
           </Typography>
-          <Box sx={{variant: "body2", color: "text.secondary" }}>
+          <Box sx={{ variant: "body2", color: "text.secondary" }}>
             {servings && <Typography>Servings: {servings}</Typography>}
             {prepTime && <Typography>Prep Time: {prepTime}</Typography>}
             {cookTime && <Typography>Cook Time: {cookTime}</Typography>}

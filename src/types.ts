@@ -83,16 +83,10 @@ export interface UnitsDTO {
 
 export interface User {
   id: number;
-  // username: string;
   email: string;
 }
 
-export interface AuthReponse {
-  token: string;
-}
-
 export interface UserLoginDTO {
-  // username: string;
   email: string;
   password: string;
 }

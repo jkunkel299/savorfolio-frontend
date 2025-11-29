@@ -60,7 +60,7 @@ const AppRouter: React.FC = () => (
         }
       />
       <Route
-        path="/view"
+        path="/view/:id/:slug"
         element={
           <Layout>
             <ViewRecipePage />

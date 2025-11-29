@@ -10,6 +10,7 @@ import { loginUser } from "../react-redux/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../react-redux/hooks";
 import { colors } from "../themes/colors";
 import type { UserLoginDTO } from "../types";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,8 @@ export default function LoginPage() {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useDocumentTitle("Log In");
 
   const { loading, error } = useAppSelector((state: RootState) => state.auth);
 
