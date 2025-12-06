@@ -292,7 +292,10 @@ test("recipe search, include, exclude ingredients", async ({ page }) => {
 });
 
 test("recipe search, category filtering", async ({ page }) => {
+  /* Filter by recipe type = Main */
+  // select the recipe type filter "Main"
   await page.getByRole("radio", { name: "Main" }).check();
+  // assert the filtered recipe list only contains Chicken Ragout
   await expect(page.locator("#root")).toMatchAriaSnapshot(`
     - paragraph: "Found 1 recipe:"
     - 'link /Chicken Ragout Servings: 4 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
@@ -301,8 +304,13 @@ test("recipe search, category filtering", async ({ page }) => {
       - paragraph: "/Prep Time: \\\\d+ minutes/"
       - paragraph: "/Cook Time: \\\\d+ minutes/"
     `);
+  // click the "Reset Filters" button
   await page.getByRole("button", { name: "Reset Filters" }).click();
+
+  /* Filter by recipe type = Dessert */
+  // select the recipe type filter "Dessert"
   await page.getByRole("radio", { name: "Dessert" }).check();
+  // assert the filtered recipe list contains Fall Spice Chocolate Chip Cookies and Maple Glazed Apple Blondies
   await expect(page.locator("#root")).toMatchAriaSnapshot(`
     - paragraph: "Found 2 recipes:"
     - 'link /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
@@ -316,8 +324,13 @@ test("recipe search, category filtering", async ({ page }) => {
       - paragraph: "/Prep Time: \\\\d+ minutes/"
       - paragraph: "/Cook Time: \\\\d+ minutes/"
     `);
+  // click the "Reset Filters button"
   await page.getByRole("button", { name: "Reset Filters" }).click();
+
+  /* Filter by meal = Dinner */
+  // select the meal type filter "Dinner"
   await page.getByRole("radio", { name: "Dinner" }).check();
+  // assert the filtered recipe list only contains Chicken Ragout
   await expect(page.locator("#root")).toMatchAriaSnapshot(`
     - paragraph: "Found 1 recipe:"
     - 'link /Chicken Ragout Servings: 4 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
@@ -326,17 +339,23 @@ test("recipe search, category filtering", async ({ page }) => {
       - paragraph: "/Prep Time: \\\\d+ minutes/"
       - paragraph: "/Cook Time: \\\\d+ minutes/"
     `);
+  // select the meal type filter "Any"
   await page
     .getByRole("radiogroup")
     .filter({ hasText: "AnyBreakfastLunchDinner" })
     .getByLabel("Any")
     .check();
+
+  /* Filter by cuisine = American */
+  // click the "Show More" button in the Cuisine filters section
   await page
     .locator("div")
     .filter({ hasText: /^CuisineAnyItalianMexicanChineseShow more$/ })
     .getByRole("button")
     .click();
+  // select the cuisine type "American"
   await page.getByRole("radio", { name: "American" }).check();
+  // assert the filtered recipe list only contains Maple Glazed Apple Blondies
   await expect(page.locator("#root")).toMatchAriaSnapshot(`
     - paragraph: "Found 1 recipe:"
     - 'link /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
@@ -345,8 +364,13 @@ test("recipe search, category filtering", async ({ page }) => {
       - paragraph: "/Prep Time: \\\\d+ minutes/"
       - paragraph: "/Cook Time: \\\\d+ minutes/"
     `);
+  // click the "Reset Filters" button
   await page.getByRole("button", { name: "Reset Filters" }).click();
+
+  /* Filter by dietary = Nut-Free */
+  // hide the expanded cuisine list
   await page.getByRole("button", { name: "Hide" }).click();
+  // click the "Show More" button in the Dietary Considerations filters section
   await page
     .locator("div")
     .filter({
@@ -354,7 +378,9 @@ test("recipe search, category filtering", async ({ page }) => {
     })
     .getByRole("button")
     .click();
+  // select the dietary restriction type "Nut-Free"
   await page.getByRole("radio", { name: "Nut-Free" }).check();
+  // assert the filtered recipe list contains Fall Spice Chocolate Chip Cookies and Maple Glazed Apple Blondies
   await expect(page.locator("#root")).toMatchAriaSnapshot(`
     - paragraph: "Found 2 recipes:"
     - 'link /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
@@ -368,25 +394,33 @@ test("recipe search, category filtering", async ({ page }) => {
       - paragraph: "/Prep Time: \\\\d+ minutes/"
       - paragraph: "/Cook Time: \\\\d+ minutes/"
     `);
+  // click the "Reset Filters" button
   await page.getByRole("button", { name: "Reset Filters" }).click();
 });
 
 test("recipe search, multiple filters", async ({ page }) => {
+  /* Filter by include ingredients = brown sugar and Cuisine = American */
+  // select the textbox for "Include Ingredients"
   await page
     .getByTestId("include-ingredients")
     .getByRole("combobox", { name: "Ingredients" })
     .click();
+  // enter "brown sugar" as the search term
   await page
     .getByTestId("include-ingredients")
     .getByRole("combobox", { name: "Ingredients" })
     .fill("brown sugar");
+  // select "brown sugar"
   await page.getByRole("option", { name: "brown sugar", exact: true }).click();
+  // click the "Show More" button in the Cuisine filters section
   await page
     .locator("div")
     .filter({ hasText: /^CuisineAnyItalianMexicanChineseShow more$/ })
     .getByRole("button")
     .click();
+  // select the radio button for "American"
   await page.getByRole("radio", { name: "American" }).check();
+  // assert the filtered recipes list only contains Maple Glazed Apple Blondies
   await expect(page.locator("#root")).toMatchAriaSnapshot(`
     - paragraph: "Found 1 recipe:"
     - 'link /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
@@ -395,19 +429,27 @@ test("recipe search, multiple filters", async ({ page }) => {
       - paragraph: "/Prep Time: \\\\d+ minutes/"
       - paragraph: "/Cook Time: \\\\d+ minutes/"
     `);
+  // click the "Reset Filters button"
   await page.getByRole("button", { name: "Reset Filters" }).click();
+
+  /* Filter by include ingredients = semi-sweet chocolate chips and recipe type = Dessert */
+  // click the textbox for include ingredients
   await page
     .getByTestId("include-ingredients")
     .getByRole("combobox", { name: "Ingredients" })
     .click();
+  // enter the search term "chocolate chips"
   await page
     .getByTestId("include-ingredients")
     .getByRole("combobox", { name: "Ingredients" })
     .fill("chocolate chips");
+  // select the dropdown option for semi-sweet chocolate chips
   await page
     .getByRole("option", { name: "semi-sweet chocolate chips" })
     .click();
+  // select the radio button for recipe type = dessert
   await page.getByRole("radio", { name: "Dessert" }).check();
+  // assert the filtered recipes list only contains Fall Spice Chocolate Chip Cookies
   await expect(page.locator("#root")).toMatchAriaSnapshot(`
     - paragraph: "Found 1 recipe:"
     - 'link /Fall Spice Chocolate Chip Cookies Servings: 8 Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
@@ -416,27 +458,37 @@ test("recipe search, multiple filters", async ({ page }) => {
       - paragraph: "/Prep Time: \\\\d+ minutes/"
       - paragraph: "/Cook Time: \\\\d+ minutes/"
     `);
+  // click the "Reset Filters" button
   await page.getByRole("button", { name: "Reset Filters" }).click();
+
+  /* Filter by include ingredients = brown sugar and exclude ingredients = semi-sweet chocolate chips */
+  // click the textbox for include ingredients
   await page
     .getByTestId("include-ingredients")
     .getByRole("combobox", { name: "Ingredients" })
     .click();
+  // enter the search term "brown sugar"
   await page
     .getByTestId("include-ingredients")
     .getByRole("combobox", { name: "Ingredients" })
     .fill("brown sugar");
+  // select the dropdown option for brown sugar
   await page.getByRole("option", { name: "brown sugar", exact: true }).click();
+  // click the textbox for exclude ingredients
   await page
     .getByTestId("exclude-ingredients")
     .getByRole("combobox", { name: "Ingredients" })
     .click();
+  // enter the search term "chocolate ch"
   await page
     .getByTestId("exclude-ingredients")
     .getByRole("combobox", { name: "Ingredients" })
     .fill("chocolate ch");
+  // select the dropdown option for semi-sweet chocolate chips
   await page
     .getByRole("option", { name: "semi-sweet chocolate chips" })
     .click();
+  // assert the filtered recipes list only contains Maple Glazed Apple Blondies
   await expect(page.locator("#root")).toMatchAriaSnapshot(`
     - paragraph: "Found 1 recipe:"
     - 'link /Maple Glazed Apple Blondies Servings: \\d+ Prep Time: \\d+ minutes Cook Time: \\d+ minutes/':
@@ -445,5 +497,6 @@ test("recipe search, multiple filters", async ({ page }) => {
       - paragraph: "/Prep Time: \\\\d+ minutes/"
       - paragraph: "/Cook Time: \\\\d+ minutes/"
     `);
+  // click the "Reset Filters" button
   await page.getByRole("button", { name: "Reset Filters" }).click();
 });
