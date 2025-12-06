@@ -6,7 +6,7 @@ import type { User, UserLoginDTO } from "../../types";
 import axiosClient from "../../api/axiosClient";
 import type { AppDispatch } from "../store";
 
-interface AuthState {
+export type AuthState = {
   user: User | null;
   loading: boolean;
   error: string | null;

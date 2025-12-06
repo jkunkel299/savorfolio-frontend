@@ -54,7 +54,7 @@ export default defineConfig({
             command: 'dotnet run --project savorfolio-backend.csproj', // Command to start backend
             url: 'http://localhost:5188/health', // backend URL
             name: 'Backend',
-            reuseExistingServer: false,
+            reuseExistingServer: true,
             cwd: '../savorfolio-backend/src', // explicitly set working directory for backend
             env: {
                 ASPNETCORE_ENVIRONMENT: 'Test', // triggers .env.test load in backend
@@ -65,7 +65,7 @@ export default defineConfig({
             command: 'npm run dev', // Command to start frontend
             url: 'http://localhost:5173/', // frontend URL
             name: 'Frontend',
-            reuseExistingServer: false,
+            reuseExistingServer: true,
         },
     ],
 });

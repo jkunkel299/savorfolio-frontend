@@ -96,7 +96,6 @@ export default function ChooseInputPage() {
                 placeholder="Add a URL here"
                 multiline
                 name="url"
-                // sx={{ width:"100%", maxWidth: 600}}
                 value={recipeUrl}
                 onChange={(e) => setRecipeUrl(e.target.value)}
                 error={!!errorMessage}

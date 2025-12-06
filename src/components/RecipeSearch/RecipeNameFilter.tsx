@@ -15,12 +15,10 @@ export default function RecipeNameFilter() {
   };
 
   return (
-    <>
-      <OutlinedInput
-        value={recipeName}
-        onChange={handleChange}
-        placeholder="Recipe Title"
-      />
-    </>
+    <OutlinedInput
+      value={recipeName}
+      onChange={handleChange}
+      placeholder="Recipe Title"
+    />
   );
 }

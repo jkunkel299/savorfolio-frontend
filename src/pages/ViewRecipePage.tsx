@@ -21,10 +21,7 @@ export default function ViewRecipePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null | unknown>(null);
 
-  // const location = useLocation();
   const { id } = useParams();
-  // const queryParams = new URLSearchParams(location.search);
-  // const recipeId = Number(queryParams.get("recipeId"));
   const recipeId = Number(id);
 
   const navigate = useNavigate();
@@ -46,12 +43,8 @@ export default function ViewRecipePage() {
     fetchRecipeById(recipeId);
   }, [recipeId]);
   useDocumentTitle(
-  loading
-    ? "Loading..."
-    : error
-    ? "Error"
-    : recipeData?.recipeSummary?.name
-);
+    loading ? "Loading..." : error ? "Error" : recipeData?.recipeSummary?.name
+  );
   if (loading) return <Typography>Loading recipe...</Typography>;
   if (error) return <Typography>Error</Typography>; // fix this later
 
@@ -88,7 +81,7 @@ export default function ViewRecipePage() {
           sx={{
             p: 3,
             width: "80vw",
-            maxHeight: "90vh", 
+            maxHeight: "90vh",
             overflowY: "auto",
           }}
         >
