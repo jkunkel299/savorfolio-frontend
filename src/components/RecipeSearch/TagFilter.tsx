@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -49,7 +50,8 @@ export default function TagFilter({ type, label, multiple }: TagFilterProps) {
 
   return (
     <FormGroup>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel sx={{ variant:"body2" }}>{label}</FormLabel>
+      <Box sx={{ ml: 1.5 }}>
       {multiple ? (
         // Multi-select (Checkbox)
         visibleOptions.map((tag) => (
@@ -97,6 +99,7 @@ export default function TagFilter({ type, label, multiple }: TagFilterProps) {
           {showAll ? "Hide" : "Show more"}
         </Button>
       )}
+      </Box>
     </FormGroup>
   );
 }
