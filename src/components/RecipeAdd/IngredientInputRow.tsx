@@ -9,6 +9,7 @@ import type { IngredientEntry, NewRecipeDTO } from "../../types";
 import UnitSearch from "./UnitSearch";
 import IngredientsInput from "./IngredientsInput";
 import { SectionSelect } from "./SectionSelect";
+import Stack from "@mui/material/Stack";
 
 interface IngredientRowProps {
   index: number;
@@ -36,14 +37,22 @@ export default function IngredientInputRow({
         alignItems: "center",
         flexWrap: "wrap",
       }}
+      width="100%"
     >
       {/* Sections (conditionally rendered) */}
       {recipeSections && recipeSections.length > 0 && (
-        <SectionSelect
-          {...register(`ingredients.${index}.sectionName` as const, {
-            required: "Section name is required",
-          })}
-        />
+        <Box
+          sx={{
+            width: { xs: "100%" },
+            flexBasis: { xs: "100%" },
+          }}
+        >
+          <SectionSelect
+            {...register(`ingredients.${index}.sectionName` as const, {
+              required: "Section name is required",
+            })}
+          />
+        </Box>
       )}
       {/* Quantity */}
       <OutlinedInput
@@ -64,38 +73,44 @@ export default function IngredientInputRow({
       <IngredientsInput index={index} />
 
       {/* Qualifier */}
-      <TextField
-        type="text"
-        multiline
-        placeholder="Qualifier"
-        {...register(`ingredients.${index}.qualifier`, {
-          validate: (value) => {
-            // allow empty string or null
-            if (!value) return true;
-          },
-        })}
-        sx={{
-          width: { xs: "100%", md: "auto" },
-          minWidth: { md: "10vw" },
-          flex: { xs: "1 1 100%", md: 1 },
-        }}
-      />
-
-      {/* Delete Button */}
-      <IconButton
-        aria-label="delete"
-        type="button"
-        onClick={onDelete}
-        color="primary"
-        size="small"
-        sx={{
-          width: { xs: "100%", md: "auto" },
-          display: "flex",
-          justifyContent: { xs: "flex-end", md: "center" },
-        }}
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{ width: { xs: "100%", md: "fit-content" } }}
       >
-        <DeleteIcon fontSize="small" />
-      </IconButton>
+        <TextField
+          type="text"
+          multiline
+          placeholder="Qualifier"
+          {...register(`ingredients.${index}.qualifier`, {
+            validate: (value) => {
+              // allow empty string or null
+              if (!value) return true;
+            },
+          })}
+          sx={{
+            width: { xs: "100%", md: "auto" },
+            minWidth: { md: "10vw" },
+            flex: { xs: "1 1 100%", md: 1 },
+          }}
+        />
+
+        {/* Delete Button */}
+        <IconButton
+          aria-label="delete"
+          type="button"
+          onClick={onDelete}
+          color="primary"
+          size="small"
+          sx={{
+            width: { xs: "auto" },
+            display: "flex",
+            justifyContent: { xs: "flex-end", md: "center" },
+          }}
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
+      </Stack>
 
       {errors.ingredients?.[index] && (
         <Typography>Fill out required fields. </Typography>

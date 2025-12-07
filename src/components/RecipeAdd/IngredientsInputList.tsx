@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useFieldArray } from "react-hook-form";
 import type { IngredientEntry } from "../../types";
 import IngredientInputRow from "./IngredientInputRow";
+import { Divider } from "@mui/material";
 
 export default function IngredientsInputList() {
   const { fields, append, remove, update } = useFieldArray({
@@ -34,12 +35,15 @@ export default function IngredientsInputList() {
       </Typography>
       <Stack spacing={2}>
         {fields.map((entry, idx) => (
-          <IngredientInputRow
-            key={entry.id}
-            index={idx}
-            onChange={handleRowChange}
-            onDelete={() => remove(idx)}
-          />
+          <>
+            <IngredientInputRow
+              key={entry.id}
+              index={idx}
+              onChange={handleRowChange}
+              onDelete={() => remove(idx)}
+            />
+            <Divider />
+          </>
         ))}
 
         <Button

@@ -32,28 +32,34 @@ export default function RecipeSummaryView({
       <Grid size={1} />
 
       {/* servings */}
-      <Grid size={{ xs: 12, sm: 3 }}>
-        <Stack>
-          <Typography fontWeight="bold">Servings:</Typography>
-          <Typography>{recipeSummary?.servings}</Typography>
-        </Stack>
-      </Grid>
+      {recipeSummary?.servings && (
+        <Grid size={{ xs: 12, sm: 3 }}>
+          <Stack>
+            <Typography fontWeight="bold">Servings:</Typography>
+            <Typography>{recipeSummary?.servings}</Typography>
+          </Stack>
+        </Grid>
+      )}
 
       {/* Prep time */}
-      <Grid size={{ xs: 12, sm: 3 }}>
-        <Stack>
-          <Typography fontWeight="bold">Prep Time:</Typography>
-          <Typography>{recipeSummary?.prepTime}</Typography>
-        </Stack>
-      </Grid>
+      {recipeSummary?.prepTime && (
+        <Grid size={{ xs: 12, sm: 3 }}>
+          <Stack>
+            <Typography fontWeight="bold">Prep Time:</Typography>
+            <Typography>{recipeSummary?.prepTime}</Typography>
+          </Stack>
+        </Grid>
+      )}
 
       {/* Cook time */}
-      <Grid size={{ xs: 12, sm: 3 }}>
-        <Stack>
-          <Typography fontWeight="bold">Cook Time:</Typography>
-          <Typography>{recipeSummary?.cookTime}</Typography>
-        </Stack>
-      </Grid>
+      {recipeSummary?.cookTime && (
+        <Grid size={{ xs: 12, sm: 3 }}>
+          <Stack>
+            <Typography fontWeight="bold">Cook Time:</Typography>
+            <Typography>{recipeSummary?.cookTime}</Typography>
+          </Stack>
+        </Grid>
+      )}
 
       {/* Bake temp, displayed only if not null */}
 

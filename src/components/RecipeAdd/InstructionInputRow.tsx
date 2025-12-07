@@ -32,9 +32,22 @@ export default function InstructionInputRow({
       <Box
         sx={{
           display: "flex",
+          paddingInlineStart: 2,
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+        }}
+      >
+        {/* Sections (conditionally rendered) */}
+        {recipeSections && recipeSections.length > 0 && (
+          <SectionSelect name={`instructions.${index}.sectionName`} />
+        )}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
           gap: 2,
           alignItems: "flex-start",
-          flexWrap: "wrap"
+          flexWrap: "wrap",
         }}
       >
         {/* Show Step Number */}
@@ -52,13 +65,6 @@ export default function InstructionInputRow({
           })}
           sx={{ flex: 1 }}
         />
-
-        {/* Sections (conditionally rendered) */}
-        {recipeSections && recipeSections.length > 0 && (
-          <SectionSelect
-            name={`instructions.${index}.sectionName`}
-          />
-        )}
 
         {/* Delete Button */}
         <IconButton

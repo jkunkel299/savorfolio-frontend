@@ -36,8 +36,8 @@ export function SectionSelect({ name, label = "Section" }: SectionSelectProps) {
             displayEmpty
             value={field.value ?? ""}
             sx={{
-              width: { xs: "100%", md: "auto" },
-              minWidth: { md: "10vw" },
+              width: "60vw",
+              flex: { xs: "1 1 100%", md: 1 },
             }}
           >
             {/* --- Blank Option --- */}
