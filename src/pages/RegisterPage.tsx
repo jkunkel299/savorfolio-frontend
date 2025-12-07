@@ -5,26 +5,35 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "../react-redux/store";
 import { registerUser } from "../react-redux/slices/authSlice";
+import { clearError } from "../react-redux/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "../react-redux/hooks";
 import type { UserLoginDTO } from "../types";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import { useDispatch } from "react-redux";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useAppDispatch();
+  const appDispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useDocumentTitle("Register");
 
   const { loading, error } = useAppSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -38,7 +47,7 @@ export default function RegisterPage() {
       password: password,
     };
     try {
-      await dispatch(registerUser(userLogin)).unwrap();
+      await appDispatch(registerUser(userLogin)).unwrap();
       console.log("Registration successful");
       navigate("/auth/login");
     } catch (err: unknown) {
