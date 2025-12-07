@@ -6,8 +6,10 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../react-redux/store";
 import SidebarFilters from "../components/RecipeSearch/SidebarFilters";
 import RecipeList from "../components/RecipeSearch/RecipeList";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 export default function RecipeSearchPage() {
+  useDocumentTitle("Search");
   const [mobileOpen, setMobileOpen] = useState(false);
   const toggleMobileSidebar = () => setMobileOpen((prev) => !prev);
 

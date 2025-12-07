@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import { PrivateRoute } from "./PrivateRoute";
+import { PrivateRoute } from "./PrivateRoute";
 import Layout from "../components/Layouts/Layout";
 import RecipeSearchPage from "../pages/RecipeSearchPage";
 import AddRecipePage from "../pages/AddRecipePage";
@@ -7,8 +7,8 @@ import HomePage from "../pages/HomePage";
 import RecipeConfirmedPage from "../pages/RecipeConfirmedPage";
 import ViewRecipePage from "../pages/ViewRecipePage";
 import ChooseInputPage from "../pages/ChooseInputPage";
-// import LoginPage from "../pages/LoginPage";
-// import RegisterPage from "../pages/RegisterPage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 
 const AppRouter: React.FC = () => (
   <Router>
@@ -32,57 +32,57 @@ const AppRouter: React.FC = () => (
       <Route
         path="/add-input"
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <Layout>
               <ChooseInputPage />
             </Layout>
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
       <Route
         path="/add"
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <Layout>
               <AddRecipePage />
             </Layout>
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
       <Route
         path="/confirmed"
         element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <Layout>
               <RecipeConfirmedPage />
             </Layout>
-          // </PrivateRoute>
+          </PrivateRoute>
         }
       />
       <Route
-        path="/view"
+        path="/view/:id/:slug"
         element={
           <Layout>
             <ViewRecipePage />
           </Layout>
         }
       />
-      {/* <Route
+      <Route
         path="/auth/login"
         element={
           <Layout>
             <LoginPage />
           </Layout>
         }
-      /> */}
-      {/* <Route
+      />
+      <Route
         path="/auth/register"
         element={
           <Layout>
             <RegisterPage />
           </Layout>
         }
-      /> */}
+      />
     </Routes>
   </Router>
 );

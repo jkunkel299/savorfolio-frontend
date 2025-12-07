@@ -4,18 +4,18 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useDispatch } from "react-redux";
 import { resetFilters } from "../../react-redux/slices/recipeFiltersSlice";
-// import { useAppSelector } from "../../react-redux/hooks";
-// import type { RootState } from "../../react-redux/store";
+import { useAppSelector } from "../../react-redux/hooks";
+import type { RootState } from "../../react-redux/store";
 import IngredientIncludeFilter from "./IncludeIngredientFilter";
 import IngredientExcludeFilter from "./ExcludeIngredientFilter";
 import TagFilter from "./TagFilter";
-// import UserIdFilter from "./UserIdFilter";
+import UserIdFilter from "./UserIdFilter";
 import RecipeNameFilter from "./RecipeNameFilter";
 
 
 export default function SidebarFilters() {
   const dispatch = useDispatch();
-  // const user = useAppSelector((state: RootState) => state.auth.user);
+  const user = useAppSelector((state: RootState) => state.auth.user);
 
   return (
     <Stack spacing={1}>
@@ -28,11 +28,11 @@ export default function SidebarFilters() {
       </Button>
 
       {/* switch to include only the logged-in user's recipes, rendered conditionally */}
-      {/* {user && (
+      {user && (
         <Box style={{ padding: "5px" }}>
           <UserIdFilter />
         </Box>
-      )} */}
+      )}
 
       {/* Search for recipe by name */}
       <Box style={{ padding: "5px" }}>

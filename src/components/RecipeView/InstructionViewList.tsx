@@ -9,6 +9,7 @@ export default function InstructionViewList({
     <Stack spacing={0.5}>
       {instructions!.map((ins) => (
         <InstructionViewRow
+          key={ins.stepNumber}
           stepNumber={ins.stepNumber}
           instructionText={ins.instructionText}
         />

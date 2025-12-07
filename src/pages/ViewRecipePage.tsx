@@ -6,7 +6,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { ArrowBack } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { /* useLocation, */ useNavigate, useParams } from "react-router-dom";
 import RecipeSummaryView from "../components/RecipeView/RecipeSummaryView";
 import IngredientViewList from "../components/RecipeView/IngredientViewList";
 import InstructionViewList from "../components/RecipeView/InstructionViewList";
@@ -14,15 +14,15 @@ import RecipeSectionView from "../components/RecipeView/RecipeSectionView";
 import TagsView from "../components/RecipeView/TagsView";
 import type { FullRecipeDTO } from "../types";
 import recipeService from "../api/recipeApi";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 export default function ViewRecipePage() {
   const [recipeData, setRecipeData] = useState<FullRecipeDTO>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null | unknown>(null);
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const recipeId = Number(queryParams.get("recipeId"));
+  const { id } = useParams();
+  const recipeId = Number(id);
 
   const navigate = useNavigate();
 
@@ -42,6 +42,9 @@ export default function ViewRecipePage() {
     };
     fetchRecipeById(recipeId);
   }, [recipeId]);
+  useDocumentTitle(
+    loading ? "Loading..." : error ? "Error" : recipeData?.recipeSummary?.name
+  );
   if (loading) return <Typography>Loading recipe...</Typography>;
   if (error) return <Typography>Error</Typography>; // fix this later
 
@@ -78,7 +81,7 @@ export default function ViewRecipePage() {
           sx={{
             p: 3,
             width: "80vw",
-            maxHeight: "90vh", 
+            maxHeight: "90vh",
             overflowY: "auto",
           }}
         >

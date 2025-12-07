@@ -1,135 +1,110 @@
-// import {
-//   createAsyncThunk,
-//   createSlice,
-//   type PayloadAction,
-// } from "@reduxjs/toolkit";
-// import type { AuthReponse, User, UserLoginDTO } from "../../types";
-// import axiosClient, { setAuthToken } from "../../api/axiosClient";
-// import type { AppDispatch } from "../store";
-// import { jwtDecode } from "jwt-decode";
+import {
+  createAsyncThunk,
+  createSlice,
+} from "@reduxjs/toolkit";
+import type { User, UserLoginDTO } from "../../types";
+import axiosClient from "../../api/axiosClient";
+import type { AppDispatch } from "../store";
 
-// interface AuthState {
-//   user: User | null;
-//   token: string | null;
-//   loading: boolean;
-//   error: string | null;
-// }
+export type AuthState = {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+}
 
-// interface DecodedToken {
-//   id: string;
-//   email: string;
-//   exp: number;
-//   iss?: string;
-//   aud?: string;
-// }
+const initialState: AuthState = {
+  user: null,
+  loading: false,
+  error: null,
+};
 
-// const initialState: AuthState = {
-//   user: null,
-//   token: localStorage.getItem("token"),
-//   loading: false,
-//   error: null,
-// };
+// Thunks
+export const registerUser = createAsyncThunk<
+  User,
+  UserLoginDTO,
+  { dispatch: AppDispatch }
+>("auth/register", async (credentials: UserLoginDTO, { rejectWithValue }) => {
+  try {
+    const response = await axiosClient.post("api/auth/register", credentials);
+    return response.data;
+  } catch {
+    return rejectWithValue("Registration failed");
+  }
+});
 
-// // Thunks
-// export const registerUser = createAsyncThunk<
-//   AuthReponse,
-//   UserLoginDTO,
-//   { dispatch: AppDispatch }
-// >("auth/register",
-//   async (credentials: UserLoginDTO, { rejectWithValue }) => {
-//     try {
-//       const response = await axiosClient.post<AuthReponse>(
-//         "api/auth/register",
-//         credentials
-//       );
-//       return response.data;
-//     } catch {
-//       return rejectWithValue("Registration failed");
-//     }
-//   }
-// );
+export const loginUser = createAsyncThunk<
+  User,
+  UserLoginDTO,
+  { dispatch: AppDispatch }
+>("auth/loginUser", async (credentials: UserLoginDTO, { rejectWithValue }) => {
+  try {
+    await axiosClient.post("api/auth/login", credentials);
 
-// export const loginUser = createAsyncThunk<
-//   AuthReponse,
-//   UserLoginDTO,
-//   { dispatch: AppDispatch }
-// >("auth/loginUser", async (credentials: UserLoginDTO, { rejectWithValue }) => {
-//   try {
-//     const response = await axiosClient.post<AuthReponse>(
-//       "api/auth/login",
-//       credentials
-//     );
-//     return response.data;
-//   } catch {
-//     return rejectWithValue("Login failed");
-//   }
-// });
+    // After login, call /me to retrieve the user
+    const me = await axiosClient.get<User>("api/auth/me", {
+      withCredentials: true,
+    });
 
-// export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
-//   localStorage.removeItem("token");
-//   setAuthToken(null);
-// });
+    return me.data;
+  } catch {
+    return rejectWithValue("Login failed");
+  }
+});
 
-// // Slice
-// const authSlice = createSlice({
-//   name: "auth",
-//   initialState,
-//   reducers: {
-//     hydrateFromLocalStorage(state) {
-//       const token = localStorage.getItem("token");
+export const fetchCurrentUser = createAsyncThunk<User>(
+  "auth/fetchCurrentUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const me = await axiosClient.get<User>("api/auth/me", {
+        withCredentials: true,
+      });
+      return me.data;
+    } catch {
+      return rejectWithValue("Not authenticated");
+    }
+  }
+);
 
-//       if (token) {
-//         state.token = token;
+export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
+  await axiosClient.post("api/auth/logout");
+});
 
-//         try {
-//           const decoded = jwtDecode<DecodedToken>(token);
-//           state.user = {
-//             id: +decoded.id,
-//             email: decoded.email,
-//           };
-//         } catch {
-//           console.error("Invalid token in storage");
-//           localStorage.removeItem("token");
-//         }
-//       }
-//     },
-//   },
+// Slice
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {},
 
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(loginUser.pending, (state) => {
-//         state.loading = true;
-//         state.error = null;
-//       })
-//       .addCase(
-//         loginUser.fulfilled,
-//         (state, action: PayloadAction<AuthReponse>) => {
-//           const token = action.payload.token;
-//           state.loading = false;
-//           const decoded = jwtDecode<DecodedToken>(token);
-//           state.user = {
-//             id: +decoded.id,
-//             email: decoded.email,
-//           };
-//           state.token = token;
+  extraReducers: (builder) => {
+    builder
+      // LOGIN
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload; // we get user from /me
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
 
-//           localStorage.setItem("token", token);
-//           setAuthToken(token);
-//         }
-//       )
-//       .addCase(loginUser.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload as string;
-//       })
-//       .addCase(logoutUser.fulfilled, (state) => {
-//         state.user = null;
-//         state.token = null;
-//         state.error = null;
+      // FETCH CURRENT USER
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(fetchCurrentUser.rejected, (state) => {
+        state.user = null;
+      })
 
-//         setAuthToken(null);
-//       });
-//   },
-// });
+      // LOGOUT
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.error = null;
+      });
+  },
+});
 
-// export const { hydrateFromLocalStorage } = authSlice.actions;
-// export default authSlice.reducer;
+export default authSlice.reducer;
