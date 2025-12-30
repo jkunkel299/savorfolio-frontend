@@ -47,7 +47,7 @@ export default function RecipeForm({
       <Grid container spacing={3} width="100%">
         {/* Recipe Title */}
         <FormGrid size={{ xs: 12 }}>
-          <FormLabel htmlFor="recipe-title" required>
+          <FormLabel sx={{ fontWeight: "bold" }} htmlFor="recipe-title" required>
             Recipe Title
           </FormLabel>
           <Controller
@@ -76,7 +76,7 @@ export default function RecipeForm({
 
         {/* Recipe Description */}
         <FormGrid size={{ xs: 12 }}>
-          <FormLabel htmlFor="recipe-description" required>
+          <FormLabel sx={{ fontWeight: "bold" }} htmlFor="recipe-description">
             Recipe Description
           </FormLabel>
           <Controller
@@ -99,7 +99,7 @@ export default function RecipeForm({
 
         {/* Servings */}
         <FormGrid size={{ xs: 12 }}>
-          <FormLabel htmlFor="servings" required>
+          <FormLabel sx={{ fontWeight: "bold" }} htmlFor="servings">
             Servings
           </FormLabel>
           <Controller
@@ -120,8 +120,8 @@ export default function RecipeForm({
         </FormGrid>
 
         {/* Prep Time */}
-        <FormGrid size={{ xs: 6 }}>
-          <FormLabel htmlFor="prep-time">Prep Time</FormLabel>
+        <FormGrid size={{ xs: 12, sm: 6 }}>
+          <FormLabel sx={{ fontWeight: "bold" }} htmlFor="prep-time">Prep Time</FormLabel>
           <Controller
             name="recipeSummary.prepTime"
             control={control}
@@ -143,8 +143,8 @@ export default function RecipeForm({
         </FormGrid>
 
         {/* Cook Time */}
-        <FormGrid size={{ xs: 6 }}>
-          <FormLabel htmlFor="cook-time">Cook Time</FormLabel>
+        <FormGrid size={{ xs: 12, sm: 6 }}>
+          <FormLabel sx={{ fontWeight: "bold" }} htmlFor="cook-time">Cook Time</FormLabel>
           <Controller
             name="recipeSummary.cookTime"
             control={control}
@@ -166,8 +166,8 @@ export default function RecipeForm({
         </FormGrid>
 
         {/* Bake Temperature */}
-        <FormGrid size={{ xs: 6 }}>
-          <FormLabel htmlFor="bakeTemp">Bake Temperature</FormLabel>
+        <FormGrid size={{ xs: 12, sm: 6 }}>
+          <FormLabel sx={{ fontWeight: "bold" }} htmlFor="bakeTemp">Bake Temperature</FormLabel>
           <Controller
             name="recipeSummary.bakeTemp"
             control={control}
@@ -190,10 +190,10 @@ export default function RecipeForm({
         </FormGrid>
 
         {/* Temperature Unit -- should only be visible if BakeTemp is populated */}
-        {bakeTemp !== null && (
-          <FormGrid size={{ xs: 6 }}>
+        {Boolean(bakeTemp) && (
+          <FormGrid size={{ xs: 12, sm: 6 }}>
             <FormControl>
-              <FormLabel id="temp-unit">Unit</FormLabel>
+              <FormLabel sx={{ fontWeight: "bold" }} id="temp-unit">Unit</FormLabel>
               <Controller
                 name="recipeSummary.temp_unit"
                 control={control}
@@ -210,7 +210,7 @@ export default function RecipeForm({
 
         <FormGrid size={{ xs: 12 }}>
           <FormControl>
-            <FormLabel id="hasSections">
+            <FormLabel sx={{ fontWeight: "bold" }} id="hasSections">
               Does the recipe have sections?
             </FormLabel>
             <RadioGroup

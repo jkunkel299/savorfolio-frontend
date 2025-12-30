@@ -1,7 +1,9 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 export default function HomePage() {
+  useDocumentTitle("Home");
   return (
     <Box
       display="flex"

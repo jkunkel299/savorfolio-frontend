@@ -3,7 +3,7 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 // import CardMedia from '@mui/material/CardMedia';
 import Typography from "@mui/material/Typography";
-import { Link, /* useNavigate */ } from "react-router-dom";
+import { Link /* useNavigate */ } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { slugify } from "../../utils/slugify";
 
@@ -28,10 +28,10 @@ export default function RecipeCard({
     <Card
       sx={{
         width: {
-          xs: "100%", // width 100px for extra small screens and up
-          sm: 200, // width 200px for small screens and up
-          md: 300, // width 300px for medium screens and up
+          xs: "100%",
+          md: "auto",
         },
+        maxWidth: { md: "25vw" },
         padding: 1,
       }}
     >

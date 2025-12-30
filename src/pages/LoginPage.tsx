@@ -1,8 +1,12 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import FormGroup from "@mui/material/FormGroup";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Typography from "@mui/material/Typography";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
 import type { RootState } from "../react-redux/store";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,6 +19,7 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -22,6 +27,10 @@ export default function LoginPage() {
   useDocumentTitle("Log In");
 
   const { loading, error } = useAppSelector((state: RootState) => state.auth);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +59,7 @@ export default function LoginPage() {
       flexDirection="column"
       sx={{ gap: 2 }}
     >
-      <Box display="flex" flexDirection="column" gap={3}>
+      <Box display="flex" flexDirection="column" gap={3} minWidth="20vw">
         <Typography variant="h4" textAlign="center" gutterBottom>
           Log In
         </Typography>
@@ -71,8 +80,19 @@ export default function LoginPage() {
           <OutlinedInput
             placeholder="Password"
             value={password}
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             onChange={(e) => setPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
         </FormGroup>
 
