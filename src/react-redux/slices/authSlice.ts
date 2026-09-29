@@ -1,7 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { User, UserLoginDTO } from "../../types";
 import axiosClient from "../../api/axiosClient";
 import type { AppDispatch } from "../store";
@@ -10,7 +7,7 @@ export type AuthState = {
   user: User | null;
   loading: boolean;
   error: string | null;
-}
+};
 
 const initialState: AuthState = {
   user: null,
@@ -27,8 +24,12 @@ export const registerUser = createAsyncThunk<
   try {
     const response = await axiosClient.post("api/auth/register", credentials);
     return response.data;
-  } catch {
-    return rejectWithValue("Registration failed");
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return rejectWithValue(
+        "A user with that email already exists, please try again."
+      );
+    }
   }
 });
 
@@ -73,7 +74,11 @@ export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -87,6 +92,20 @@ const authSlice = createSlice({
         state.user = action.payload; // we get user from /me
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // REGISTER
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
@@ -107,4 +126,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { clearError } = authSlice.actions;
 export default authSlice.reducer;

@@ -40,16 +40,17 @@ export default function AddRecipePage() {
     null
   );
   const user = useAppSelector((state: RootState) => state.auth.user);
-  // const userId = 12;
+  const { trigger } = useForm();
 
+  // set dynamic document title
   useDocumentTitle("Add Recipe");
 
+  // set form methods and default values
   const methods = useForm<NewRecipeDTO>({
     mode: "all",
     shouldUnregister: false,
     defaultValues: {
       userId: user?.id,
-      // userId: userId,
       recipeSummary: {
         name: draftRecipe?.recipeSummary.name || "",
         servings: draftRecipe?.recipeSummary.servings || null,
@@ -71,6 +72,7 @@ export default function AddRecipePage() {
     },
   });
 
+  // set steps components and validated fields for the add recipe form
   const steps: Step[] = [
     {
       component: (
@@ -111,6 +113,7 @@ export default function AddRecipePage() {
     },
   ]; // add notes page
 
+  // create the ingredient prefill list if a draft recipe exists, i.e., if the web scraper was used
   useEffect(() => {
     if (draftRecipe) {
       const ingredientPrefillList: string[] = [];
@@ -128,6 +131,12 @@ export default function AddRecipePage() {
     }
   }, [draftRecipe]);
 
+  // trigger form validation on each page
+  useEffect(() => {
+    trigger();
+  }, [trigger]);
+
+  // handle navigation forward in the form
   const handleNext = async () => {
     const isValid = await handlePageValid();
     if (isValid) {
@@ -135,10 +144,12 @@ export default function AddRecipePage() {
     }
   };
 
+  // handle navigation backward in the form
   const handleBack = () => {
     setCurrentStep((prev) => (prev = prev - 1));
   };
 
+  // handle form submission
   const handleSubmitForm = async (data: NewRecipeDTO) => {
     const isValid = await handlePageValid();
     if (isValid && currentStep == steps.length - 1) {
@@ -162,11 +173,13 @@ export default function AddRecipePage() {
     }, 2000);
   };
 
+  // handle canceling the form
   const handleCancelForm = () => {
     if (draftRecipe) dispatch(clearDraftRecipe());
     navigate("/add-input");
   };
 
+  // handle page validation
   const handlePageValid = async () => {
     let fieldsToValidate: FieldPath<NewRecipeDTO>[] = [];
     fieldsToValidate = steps[currentStep]?.fields;
@@ -180,6 +193,7 @@ export default function AddRecipePage() {
   const renderCurrentPage = () =>
     steps[currentStep].component ?? <Typography>Unknown Step</Typography>;
 
+  // set form state
   const { formState } = methods;
 
   return (

@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -49,54 +50,65 @@ export default function TagFilter({ type, label, multiple }: TagFilterProps) {
 
   return (
     <FormGroup>
-      <FormLabel>{label}</FormLabel>
-      {multiple ? (
-        // Multi-select (Checkbox)
-        visibleOptions.map((tag) => (
-          <FormControlLabel
-            key={tag}
-            control={
-              <Checkbox
-                checked={selectedTags.includes(tag)}
-                onChange={() => handleToggle(tag)}
-              />
-            }
-            label={tag}
-          />
-        ))
-      ) : (
-        // Single-select (RadioGroup)
-        <RadioGroup
-          value={selectedTags[0] || "any"} // default to "any" if no tag selected
-          onChange={(e) =>
-            e.target.value === "any"
-              ? handleAnySelect()
-              : handleToggle(e.target.value)
-          }
-        >
-          <FormControlLabel value="any" control={<Radio />} label="Any" />
-          {visibleOptions.map((tag) => (
+      <FormLabel sx={{ variant: "body2" }}>{label}</FormLabel>
+      <Box
+        sx={{
+          ml: 1.5,
+          maxHeight: showAll ? "40vh" : "auto",
+          overflowY: showAll ? "auto" : "visible",
+          pr: 1,
+          border: showAll && options.length > 10 ? "1px solid #ddd" : "none",
+          borderRadius: showAll && options.length > 10 ? 1 : 0,
+        }}
+      >
+        {multiple ? (
+          // Multi-select (Checkbox)
+          visibleOptions.map((tag) => (
             <FormControlLabel
               key={tag}
-              value={tag}
-              control={<Radio />}
+              control={
+                <Checkbox
+                  checked={selectedTags.includes(tag)}
+                  onChange={() => handleToggle(tag)}
+                />
+              }
               label={tag}
             />
-          ))}
-        </RadioGroup>
-      )}
+          ))
+        ) : (
+          // Single-select (RadioGroup)
+          <RadioGroup
+            value={selectedTags[0] || "any"} // default to "any" if no tag selected
+            onChange={(e) =>
+              e.target.value === "any"
+                ? handleAnySelect()
+                : handleToggle(e.target.value)
+            }
+          >
+            <FormControlLabel value="any" control={<Radio />} label="Any" />
+            {visibleOptions.map((tag) => (
+              <FormControlLabel
+                key={tag}
+                value={tag}
+                control={<Radio />}
+                label={tag}
+              />
+            ))}
+          </RadioGroup>
+        )}
 
-      {/* show more/hide button for collapsing the list */}
-      {options.length > 3 && (
-        <Button
-          variant="text"
-          size="small"
-          sx={{ mt: 1, textTransform: "none" }}
-          onClick={() => setShowAll((prev) => !prev)}
-        >
-          {showAll ? "Hide" : "Show more"}
-        </Button>
-      )}
+        {/* show more/hide button for collapsing the list */}
+        {options.length > 3 && (
+          <Button
+            variant="text"
+            size="small"
+            sx={{ mt: 1, textTransform: "none" }}
+            onClick={() => setShowAll((prev) => !prev)}
+          >
+            {showAll ? "Hide" : "Show more"}
+          </Button>
+        )}
+      </Box>
     </FormGroup>
   );
 }
